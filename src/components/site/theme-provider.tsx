@@ -3,8 +3,8 @@
 import {
   createContext,
   useContext,
-  useLayoutEffect,
-  useState,
+  useCallback,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -20,41 +20,74 @@ const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 const STORAGE_KEY = "ravenclaw-theme";
 
-function getInitialTheme(): Theme {
-  if (typeof window === "undefined") return "light";
-  try {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "light" || stored === "dark") return stored;
-  } catch {
-    // ignore
-  }
-  return window.matchMedia?.("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+/* ------------------------------------------------------------------ */
+/* External theme "store" — backs useSyncExternalStore so React can   */
+/* read the theme the inline script already applied to the DOM without */
+/* triggering a hydration mismatch.                                    */
+/* ------------------------------------------------------------------ */
+
+const listeners = new Set<() => void>();
+
+/** Client snapshot: reads the class the inline script set on <html>. */
+function getTheme(): Theme {
+  if (typeof document === "undefined") return "light";
+  return document.documentElement.classList.contains("dark") ? "dark" : "light";
 }
 
-function applyTheme(theme: Theme) {
+/**
+ * Server snapshot: MUST be stable across renders so SSR HTML matches the
+ * first client render. The real theme is applied post-hydration.
+ */
+function getServerTheme(): Theme {
+  return "light";
+}
+
+function subscribe(callback: () => void) {
+  listeners.add(callback);
+  // Cross-tab sync: if another tab changes the theme, catch up.
+  const onStorage = (e: StorageEvent) => {
+    if (e.key === STORAGE_KEY && e.newValue) {
+      applyTheme(e.newValue === "dark" ? "dark" : "light", false);
+      callback();
+    }
+  };
+  window.addEventListener("storage", onStorage);
+  return () => {
+    listeners.delete(callback);
+    window.removeEventListener("storage", onStorage);
+  };
+}
+
+function applyTheme(theme: Theme, persist = true) {
   const root = document.documentElement;
   root.classList.toggle("dark", theme === "dark");
   root.setAttribute("data-theme", theme);
   root.style.colorScheme = theme;
-}
-
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
-
-  useLayoutEffect(() => {
-    applyTheme(theme);
+  if (persist) {
     try {
       window.localStorage.setItem(STORAGE_KEY, theme);
     } catch {
       // ignore
     }
-  }, [theme]);
+  }
+  listeners.forEach((cb) => cb());
+}
 
-  const setTheme = (next: Theme) => setThemeState(next);
-  const toggleTheme = () =>
-    setThemeState((prev) => (prev === "light" ? "dark" : "light"));
+/* ------------------------------------------------------------------ */
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  // useSyncExternalStore: returns getServerTheme() during SSR + the first
+  // client render (so they match → no hydration error), then getTheme()
+  // on subsequent renders (picks up the real theme from the DOM).
+  const theme = useSyncExternalStore(subscribe, getTheme, getServerTheme);
+
+  const setTheme = useCallback((next: Theme) => {
+    applyTheme(next);
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    applyTheme(getTheme() === "light" ? "dark" : "light");
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
