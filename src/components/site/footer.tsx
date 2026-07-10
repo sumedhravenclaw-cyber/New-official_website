@@ -28,6 +28,10 @@ const socialIcons = [
   { Icon: Twitter, color: "#d5dee6", href: "https://twitter.com/" },
 ];
 
+// Fixed dark footer — stays dark in both light and dark themes.
+const FOOTER_BG = "#050505";
+const FOOTER_TEXT = "#FEFEFE";
+
 export function Footer() {
   const [email, setEmail] = useState("");
   const navigate = useNav((s) => s.navigate);
@@ -51,7 +55,11 @@ export function Footer() {
   };
 
   return (
-    <footer id="footer" className="bg-ink text-snow relative overflow-hidden mt-auto">
+    <footer
+      id="footer"
+      className="relative overflow-hidden mt-auto"
+      style={{ backgroundColor: FOOTER_BG, color: FOOTER_TEXT }}
+    >
       {/* Top gradient line */}
       <div
         className="h-1"
@@ -76,7 +84,10 @@ export function Footer() {
                 className="w-[90px] h-[90px] object-contain"
               />
             </button>
-            <p className="text-snow/45 text-sm leading-relaxed mb-6 max-w-xs">
+            <p
+              className="text-sm leading-relaxed mb-6 max-w-xs"
+              style={{ color: "rgba(254, 254, 254, 0.45)" }}
+            >
               We help businesses grow with stunning digital presence that
               creates impact.
             </p>
@@ -99,7 +110,10 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-display font-bold text-snow text-sm tracking-wide mb-5">
+            <h4
+              className="font-display font-bold text-sm tracking-wide mb-5"
+              style={{ color: FOOTER_TEXT }}
+            >
               Quick Links
             </h4>
             <ul className="space-y-2.5">
@@ -107,7 +121,8 @@ export function Footer() {
                 <li key={link.label}>
                   <button
                     onClick={() => scrollTo(link.id)}
-                    className="text-snow/40 text-sm hover:text-snow/80 transition-colors text-left"
+                    className="text-sm transition-colors text-left hover:opacity-100"
+                    style={{ color: "rgba(254, 254, 254, 0.4)" }}
                   >
                     {link.label}
                   </button>
@@ -118,7 +133,10 @@ export function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="font-display font-bold text-snow text-sm tracking-wide mb-5">
+            <h4
+              className="font-display font-bold text-sm tracking-wide mb-5"
+              style={{ color: FOOTER_TEXT }}
+            >
               Services
             </h4>
             <ul className="space-y-2.5">
@@ -126,7 +144,8 @@ export function Footer() {
                 <li key={s.slug}>
                   <button
                     onClick={() => navigate("service", { slug: s.slug })}
-                    className="text-snow/40 text-sm hover:text-snow/80 transition-colors text-left"
+                    className="text-sm transition-colors text-left hover:opacity-100"
+                    style={{ color: "rgba(254, 254, 254, 0.4)" }}
                   >
                     {s.title}
                   </button>
@@ -137,7 +156,10 @@ export function Footer() {
 
           {/* Resources + Newsletter */}
           <div>
-            <h4 className="font-display font-bold text-snow text-sm tracking-wide mb-5">
+            <h4
+              className="font-display font-bold text-sm tracking-wide mb-5"
+              style={{ color: FOOTER_TEXT }}
+            >
               Resources
             </h4>
             <ul className="space-y-2.5 mb-7">
@@ -145,7 +167,8 @@ export function Footer() {
                 <li key={r.view}>
                   <button
                     onClick={() => navigate(r.view)}
-                    className="text-snow/40 text-sm hover:text-snow/80 transition-colors text-left"
+                    className="text-sm transition-colors text-left hover:opacity-100"
+                    style={{ color: "rgba(254, 254, 254, 0.4)" }}
                   >
                     {r.label}
                   </button>
@@ -153,10 +176,16 @@ export function Footer() {
               ))}
             </ul>
 
-            <h4 className="font-display font-bold text-snow text-sm tracking-wide mb-3">
+            <h4
+              className="font-display font-bold text-sm tracking-wide mb-3"
+              style={{ color: FOOTER_TEXT }}
+            >
               Newsletter
             </h4>
-            <p className="text-snow/40 text-xs mb-3">
+            <p
+              className="text-xs mb-3"
+              style={{ color: "rgba(254, 254, 254, 0.4)" }}
+            >
               Subscribe to get updates on our latest projects and offers.
             </p>
             <div className="flex gap-2">
@@ -165,7 +194,11 @@ export function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
-                className="flex-1 min-w-0 bg-white/8 border border-white/10 rounded-lg px-3 py-2 text-xs text-snow placeholder:text-snow/30 focus:outline-none focus:border-golden/50"
+                className="flex-1 min-w-0 border border-white/10 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-golden/50"
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.08)",
+                  color: FOOTER_TEXT,
+                }}
               />
               <button
                 onClick={() => setEmail("")}
@@ -185,8 +218,13 @@ export function Footer() {
         <div className="h-px bg-white/8 mb-6" />
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-snow/30 text-xs">
-          <p>&copy; {new Date().getFullYear()} RavenClaw. All rights reserved.</p>
+        <div
+          className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs"
+          style={{ color: "rgba(254, 254, 254, 0.3)" }}
+        >
+          <p>
+            &copy; {new Date().getFullYear()} RavenClaw. All rights reserved.
+          </p>
           <p>
             Made with <span className="text-crimson">&hearts;</span> for your
             success

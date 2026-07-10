@@ -29,7 +29,10 @@ export function TestimonialsSection() {
   const t = testimonials[current];
 
   return (
-    <section className="py-24 bg-ink relative overflow-hidden">
+    <section
+      className="py-24 relative overflow-hidden"
+      style={{ backgroundColor: "#050505" }}
+    >
       {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div
@@ -47,7 +50,10 @@ export function TestimonialsSection() {
           <span className="text-xs font-medium tracking-widest uppercase mb-4 block">
             <span className="text-gradient">Testimonials</span>
           </span>
-          <h2 className="font-display font-bold text-4xl md:text-5xl text-snow mb-4">
+          <h2
+            className="font-display font-bold text-4xl md:text-5xl mb-4"
+            style={{ color: "#FEFEFE" }}
+          >
             What Clients <span className="text-gradient">Say</span>
           </h2>
         </div>
@@ -58,7 +64,10 @@ export function TestimonialsSection() {
             <Quote size={80} className="text-violet" />
           </div>
 
-          <div className="glass-dark rounded-3xl p-8 md:p-12 shadow-2xl border border-white/10 min-h-[280px] flex flex-col justify-between">
+          <div
+            className="rounded-3xl p-8 md:p-12 shadow-2xl border border-white/10 min-h-[280px] flex flex-col justify-between"
+            style={{ backgroundColor: "rgba(5, 5, 5, 0.6)", backdropFilter: "blur(20px)" }}
+          >
             <div>
               <div className="flex gap-1 mb-6">
                 {Array.from({ length: t.rating }).map((_, i) => (
@@ -69,7 +78,10 @@ export function TestimonialsSection() {
                   />
                 ))}
               </div>
-              <p className="text-snow/80 text-base md:text-lg leading-relaxed italic mb-8">
+              <p
+                className="text-base md:text-lg leading-relaxed italic mb-8"
+                style={{ color: "rgba(254, 254, 254, 0.8)" }}
+              >
                 &ldquo;{t.review}&rdquo;
               </p>
             </div>
@@ -81,8 +93,16 @@ export function TestimonialsSection() {
                 className="w-12 h-12 rounded-full object-cover border-2 border-violet/40"
               />
               <div>
-                <p className="font-display font-semibold text-snow">{t.name}</p>
-                <p className="text-xs text-snow/50">
+                <p
+                  className="font-display font-semibold"
+                  style={{ color: "#FEFEFE" }}
+                >
+                  {t.name}
+                </p>
+                <p
+                  className="text-xs"
+                  style={{ color: "rgba(254, 254, 254, 0.5)" }}
+                >
                   {t.role}, {t.company}
                 </p>
               </div>
@@ -99,11 +119,12 @@ export function TestimonialsSection() {
                     setIsAutoPlaying(false);
                     setCurrent(i);
                   }}
-                  className={`transition-all duration-300 rounded-full ${
+                  className="transition-all duration-300 rounded-full"
+                  style={
                     i === current
-                      ? "w-8 h-2 bg-violet"
-                      : "w-2 h-2 bg-snow/20 hover:bg-snow/40"
-                  }`}
+                      ? { width: 32, height: 8, backgroundColor: "#631DFE" }
+                      : { width: 8, height: 8, backgroundColor: "rgba(254,254,254,0.2)" }
+                  }
                   aria-label={`Go to testimonial ${i + 1}`}
                 />
               ))}
@@ -112,7 +133,8 @@ export function TestimonialsSection() {
             <div className="flex gap-3">
               <button
                 onClick={prev}
-                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-snow/60 hover:text-snow hover:border-white/30 transition-all"
+                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center transition-all hover:border-white/30"
+                style={{ color: "rgba(254, 254, 254, 0.6)" }}
                 aria-label="Previous testimonial"
               >
                 <ChevronLeft size={18} />

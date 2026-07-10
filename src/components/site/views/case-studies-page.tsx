@@ -129,18 +129,25 @@ export function CaseStudiesPage() {
 
         {/* CTA */}
         <section className="mt-20 section-reveal">
-          <div className="bg-charcoal rounded-2xl px-6 py-10 md:px-12 md:py-14 text-center">
-            <h3 className="font-display font-black text-2xl md:text-3xl text-snow mb-3">
+          <div
+            className="rounded-2xl px-6 py-10 md:px-12 md:py-14 text-center"
+            style={{ backgroundColor: "#050505", color: "#FEFEFE" }}
+          >
+            <h3 className="font-display font-black text-2xl md:text-3xl mb-3">
               Want results like these for your brand?
             </h3>
-            <p className="text-sm md:text-base text-snow/70 max-w-xl mx-auto mb-8 leading-relaxed">
+            <p
+              className="text-sm md:text-base max-w-xl mx-auto mb-8 leading-relaxed"
+              style={{ color: "rgba(254, 254, 254, 0.7)" }}
+            >
               Tell us about your goals and we&apos;ll send back a plan — no
               obligation, no fluff.
             </p>
             <button
               type="button"
               onClick={() => navigate("home", { scrollTarget: "contact" })}
-              className="px-8 py-3.5 rounded-xl bg-golden text-charcoal text-sm font-display font-bold hover:opacity-90 transition-opacity cursor-pointer"
+              className="px-8 py-3.5 rounded-xl bg-golden text-sm font-display font-bold hover:opacity-90 transition-opacity cursor-pointer"
+              style={{ color: "#050505" }}
             >
               Start a project
             </button>

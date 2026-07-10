@@ -176,11 +176,17 @@ export function BlogPage() {
 
         {/* Newsletter CTA */}
         <section className="mt-20 section-reveal">
-          <div className="bg-charcoal rounded-2xl px-6 py-10 md:px-12 md:py-14 text-center">
-            <h3 className="font-display font-black text-2xl md:text-3xl text-snow mb-3">
+          <div
+            className="rounded-2xl px-6 py-10 md:px-12 md:py-14 text-center"
+            style={{ backgroundColor: "#050505", color: "#FEFEFE" }}
+          >
+            <h3 className="font-display font-black text-2xl md:text-3xl mb-3">
               Get the next post in your inbox
             </h3>
-            <p className="text-sm md:text-base text-snow/70 max-w-xl mx-auto mb-8 leading-relaxed">
+            <p
+              className="text-sm md:text-base max-w-xl mx-auto mb-8 leading-relaxed"
+              style={{ color: "rgba(254, 254, 254, 0.7)" }}
+            >
               One practical email a week. No fluff, no spam — just the things
               we&apos;re actually testing in our work.
             </p>
@@ -194,11 +200,16 @@ export function BlogPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@brand.com"
-                className="placeholder-muted flex-1 px-4 py-3 rounded-xl bg-black/10 border border-white/15 text-snow text-sm focus:outline-none focus:border-golden transition-colors"
+                className="flex-1 px-4 py-3 rounded-xl border border-white/15 text-sm focus:outline-none focus:border-golden transition-colors"
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.08)",
+                  color: "#FEFEFE",
+                }}
               />
               <button
                 type="submit"
-                className="px-6 py-3 rounded-xl bg-golden text-charcoal text-sm font-display font-bold hover:opacity-90 transition-opacity cursor-pointer"
+                className="px-6 py-3 rounded-xl bg-golden text-sm font-display font-bold hover:opacity-90 transition-opacity cursor-pointer"
+                style={{ color: "#050505" }}
               >
                 Subscribe
               </button>
