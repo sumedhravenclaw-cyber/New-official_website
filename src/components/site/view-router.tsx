@@ -6,7 +6,9 @@ import { ServiceDetail } from "./views/service-detail";
 import { PortfolioDetail } from "./views/portfolio-detail";
 import { AboutPage } from "./views/about-page";
 import { BlogPage } from "./views/blog-page";
+import { BlogDetail } from "./views/blog-post-detail";
 import { CaseStudiesPage } from "./views/case-studies-page";
+import { CaseStudyDetail } from "./views/case-study-detail";
 import { CareersPage } from "./views/careers-page";
 import { PrivacyPage } from "./views/privacy-page";
 import { TermsPage } from "./views/terms-page";
@@ -25,8 +27,12 @@ export function ViewRouter() {
       return <AboutPage />;
     case "blog":
       return <BlogPage />;
+    case "blog-post":
+      return <BlogDetail slug={slug} />;
     case "case-studies":
       return <CaseStudiesPage />;
+    case "case-study":
+      return <CaseStudyDetail slug={slug} />;
     case "careers":
       return <CareersPage />;
     case "privacy":

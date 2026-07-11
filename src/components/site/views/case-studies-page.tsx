@@ -9,7 +9,6 @@ import {
 } from "@/lib/site-data";
 import { useNav } from "@/lib/nav-store";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
-import { toast } from "@/hooks/use-toast";
 
 export function CaseStudiesPage() {
   const navigate = useNav((s) => s.navigate);
@@ -25,11 +24,8 @@ export function CaseStudiesPage() {
       ? caseStudies
       : caseStudies.filter((s) => s.industry === activeIndustry);
 
-  const handleStudyClick = () => {
-    toast({
-      title: "Coming soon",
-      description: "Full case study pages are on the way.",
-    });
+  const handleStudyClick = (id: string) => {
+    navigate("case-study", { slug: id });
   };
 
   return (
@@ -79,7 +75,7 @@ export function CaseStudiesPage() {
             <button
               key={study.id}
               type="button"
-              onClick={handleStudyClick}
+              onClick={() => handleStudyClick(study.id)}
               className="group flex flex-col bg-card border border-black/10 rounded-2xl overflow-hidden text-left card-hover section-reveal cursor-pointer"
             >
               <div className="relative aspect-[16/10] overflow-hidden">

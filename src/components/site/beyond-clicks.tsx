@@ -28,15 +28,28 @@ export default function BeyondClicks() {
     const slideUp = (selector: string) =>
       animate(selector, { y: "0%", opacity: 1 }, { duration: 0.7, ease: EASE_UP });
 
+    // The while-loop's `cancelled` check only guards the *next* lap.
+    // A single lap is a long chain of awaited animate() calls, and if
+    // we unmount mid-chain (route change, Fast Refresh, etc.) scope.current
+    // goes null immediately - but the remaining queued animate() calls in
+    // that lap don't know that yet and fire anyway. This helper re-checks
+    // right before every step so we bail the instant we've gone stale.
+    const stopped = () => cancelled || !scope.current;
+
     const run = async () => {
       while (!cancelled) {
         await reset();
+        if (stopped()) return;
         await new Promise(requestAnimationFrame);
+        if (stopped()) return;
 
         animate(".beyond", { opacity: 1 }, { duration: 0.5 });
         await slideUp(".word-1");
+        if (stopped()) return;
         await slideUp(".word-2");
+        if (stopped()) return;
         await slideUp(".word-3");
+        if (stopped()) return;
 
         // Read the actual computed color so framer-motion can interpolate it
         // (CSS variables themselves aren't animatable values).
@@ -49,8 +62,10 @@ export default function BeyondClicks() {
           { color: targetColor, letterSpacing: "1.28em" },
           { duration: 1.7, ease: [0.16, 1, 0.3, 1] }
         );
+        if (stopped()) return;
 
         await wait(1500);
+        if (stopped()) return;
 
         await animate([
           [".word", { y: "-40%", opacity: 0 }, { duration: 0.6, ease: "easeIn" }],
@@ -64,7 +79,7 @@ export default function BeyondClicks() {
     return () => {
       cancelled = true;
     };
-  }, [animate]);
+  }, [animate, scope]);
 
   return (
     <div

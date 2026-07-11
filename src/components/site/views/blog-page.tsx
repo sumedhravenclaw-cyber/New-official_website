@@ -7,10 +7,12 @@ import {
   blogPosts,
   type BlogCategory,
 } from "@/lib/site-data";
+import { useNav } from "@/lib/nav-store";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 import { toast } from "@/hooks/use-toast";
 
 export function BlogPage() {
+  const navigate = useNav((s) => s.navigate);
   useScrollReveal([]);
   const [activeCategory, setActiveCategory] = useState<BlogCategory>("All");
   const [email, setEmail] = useState("");
@@ -27,11 +29,8 @@ export function BlogPage() {
       ? blogPosts.filter((p) => !p.featured)
       : blogPosts.filter((p) => p.category === activeCategory);
 
-  const handlePostClick = () => {
-    toast({
-      title: "Coming soon",
-      description: "Full article pages are on the way.",
-    });
+  const handlePostClick = (id: string) => {
+    navigate("blog-post", { slug: id });
   };
 
   const handleSubscribe = (e: React.FormEvent) => {
@@ -90,7 +89,7 @@ export function BlogPage() {
           <section className="mb-14 section-reveal">
             <button
               type="button"
-              onClick={handlePostClick}
+              onClick={() => handlePostClick(featuredPost.id)}
               className="group block w-full text-left bg-card border border-black/10 rounded-2xl overflow-hidden card-hover cursor-pointer"
             >
               <div className="grid md:grid-cols-2">
@@ -132,7 +131,7 @@ export function BlogPage() {
             <button
               key={post.id}
               type="button"
-              onClick={handlePostClick}
+              onClick={() => handlePostClick(post.id)}
               className="group flex flex-col bg-card border border-black/10 rounded-2xl overflow-hidden text-left card-hover section-reveal cursor-pointer"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
