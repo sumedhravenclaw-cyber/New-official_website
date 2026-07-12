@@ -6,6 +6,26 @@ import { aboutValues, missionVision, stats, WHATSAPP_LINK, BRAND_GRADIENT } from
 import { useNav } from "@/lib/nav-store";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
+// Swap `img` for the real teammate photo once uploaded — keep filenames in
+// /public/images/team/ to match the /images/bird.png public-path pattern
+// used for the hero bird above. Replace name/role/bio placeholders with real copy.
+const team = [
+  {
+    name: "Teammate One",
+    role: "Role / Title",
+    bio: "One line about what they do and bring to the team.",
+    img: "/images/team/teammate-1.jpg",
+    color: "#EA9D12",
+  },
+  {
+    name: "Teammate Two",
+    role: "Role / Title",
+    bio: "One line about what they do and bring to the team.",
+    img: "/images/team/teammate-2.jpg",
+    color: "#5B9EFE",
+  },
+];
+
 export function AboutPage() {
   const navigate = useNav((s) => s.navigate);
   useScrollReveal([]);
@@ -87,6 +107,56 @@ export function AboutPage() {
             and AI — but the goal hasn&apos;t changed: build things that make a
             measurable difference for the businesses we work with.
           </p>
+        </section>
+
+        {/* Meet the Team */}
+        <section className="mb-16 section-reveal">
+          <h2 className="font-display font-bold text-lg text-ink mb-6">
+            Meet the Team
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-6">
+            {team.map((member) => (
+              <div
+                key={member.name}
+                className="p-6 rounded-2xl border card-hover"
+                style={{
+                  borderColor: `${member.color}30`,
+                  background: `${member.color}0C`,
+                }}
+              >
+                <div
+                  className="w-full aspect-square rounded-xl mb-4 overflow-hidden flex items-center justify-center"
+                  style={{ background: `${member.color}15` }}
+                >
+                  {/* Swap this img src for a real import from
+                      /public/images/team/ once teammate photos are
+                      uploaded — same pattern as the bird image above.
+                      Until then this falls back to a colored placeholder
+                      if the file 404s. */}
+                  <img
+                    src={member.img}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                </div>
+                <h3 className="font-display font-bold text-ink text-sm mb-0.5">
+                  {member.name}
+                </h3>
+                <p
+                  className="text-xs font-semibold mb-2"
+                  style={{ color: member.color }}
+                >
+                  {member.role}
+                </p>
+                <p className="text-xs text-ink/60 leading-relaxed">
+                  {member.bio}
+                </p>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* Mission & Vision */}

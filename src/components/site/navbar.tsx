@@ -101,9 +101,9 @@ export function Navbar() {
             alt="RavenClaw"
             className="w-10 h-10 object-contain"
           />
-          <span className="font-display font-bold text-lg text-gradient hidden sm:inline">
+          {/* <span className="font-display font-bold text-lg text-gradient hidden sm:inline">
             RavenClaw
-          </span>
+          </span> */}
         </button>
 
         {/* Desktop nav */}

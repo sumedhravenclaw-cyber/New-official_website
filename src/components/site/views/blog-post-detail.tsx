@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { ArrowLeft, ArrowRight, Clock, TrendingUp } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
 import { getBlogPostById, blogPosts } from "@/lib/site-data";
 import { useNav } from "@/lib/nav-store";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
