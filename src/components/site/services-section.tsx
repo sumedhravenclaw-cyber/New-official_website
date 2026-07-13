@@ -2,11 +2,9 @@
 
 import { ArrowRight } from "lucide-react";
 import { services } from "@/lib/site-data";
-import { useNav } from "@/lib/nav-store";
+import { DetailLink } from "@/components/site/detail-link";
 
 export function ServicesSection() {
-  const navigate = useNav((s) => s.navigate);
-
   return (
     <section id="services" className="py-20 bg-surface">
       <div className="max-w-7xl mx-auto px-6">
@@ -24,9 +22,10 @@ export function ServicesSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           {services.map((s, i) => (
-            <button
+            <DetailLink
               key={s.slug}
-              onClick={() => navigate("service", { slug: s.slug })}
+              href={`/services/${s.slug}`}
+              sectionId="services"
               className="section-reveal group flex flex-col items-center text-center p-6 rounded-2xl border card-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 cursor-pointer"
               style={
                 {
@@ -58,7 +57,7 @@ export function ServicesSection() {
               >
                 View details <ArrowRight size={12} />
               </span>
-            </button>
+            </DetailLink>
           ))}
         </div>
       </div>

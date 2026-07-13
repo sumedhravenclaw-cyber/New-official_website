@@ -29,10 +29,18 @@ export function ContactSection() {
     setErrorMsg("");
 
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY,
+          subject: `New query from ${formData.name}`,
+          from_name: "RavenClaw Contact Form",
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          botcheck: "",
+        }),
       });
 
       const data = await res.json();
@@ -131,6 +139,15 @@ export function ContactSection() {
                 rows={5}
                 placeholder="Your Message"
                 className="w-full bg-card border border-black/8 rounded-xl px-4 py-3 text-sm text-ink placeholder-muted focus:outline-none focus:border-violet/40 focus:ring-2 focus:ring-violet/10 transition-all resize-none"
+              />
+
+              {/* Honeypot — hidden from users, catches bots */}
+              <input
+                type="checkbox"
+                name="botcheck"
+                style={{ display: "none" }}
+                tabIndex={-1}
+                autoComplete="off"
               />
 
               <button

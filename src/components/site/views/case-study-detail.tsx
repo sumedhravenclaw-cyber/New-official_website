@@ -1,37 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { ArrowLeft, ArrowRight, TrendingUp, MessageCircle } from "lucide-react";
-import { getCaseStudyById, caseStudies } from "@/lib/site-data";
-import { useNav } from "@/lib/nav-store";
+import { caseStudies, type CaseStudy } from "@/lib/site-data";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
-export function CaseStudyDetail({ slug }: { slug: string | undefined }) {
-  const navigate = useNav((s) => s.navigate);
-  const study = getCaseStudyById(slug);
-
-  useScrollReveal([slug]);
+export function CaseStudyDetail({ study }: { study: CaseStudy }) {
+  useScrollReveal([study.id]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [slug]);
-
-  if (!study) {
-    return (
-      <section className="pt-40 pb-24 text-center px-6">
-        <p className="font-display font-bold text-ink text-xl mb-4">
-          We couldn&apos;t find that case study.
-        </p>
-        <button
-          onClick={() => navigate("case-studies")}
-          className="text-sm font-bold cursor-pointer"
-          style={{ color: "#631DFE" }}
-        >
-          &larr; Back to case studies
-        </button>
-      </section>
-    );
-  }
+  }, [study.id]);
 
   const currentIndex = caseStudies.findIndex((c) => c.id === study.id);
   const next = caseStudies[(currentIndex + 1) % caseStudies.length];
@@ -59,14 +39,13 @@ export function CaseStudyDetail({ slug }: { slug: string | undefined }) {
         />
         <div className="absolute inset-0 flex flex-col justify-end px-6 pb-12">
           <div className="max-w-3xl mx-auto w-full">
-            <button
-              type="button"
-              onClick={() => navigate("case-studies")}
+            <Link
+              href="/case-studies"
               className="inline-flex items-center gap-1.5 text-xs font-bold mb-6 text-white/80 hover:text-white transition-colors cursor-pointer"
             >
               <ArrowLeft size={14} />
               Back to case studies
-            </button>
+            </Link>
             <span className="inline-block text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4 text-white"
               style={{ background: "#EA9D12" }}
             >
@@ -151,8 +130,8 @@ export function CaseStudyDetail({ slug }: { slug: string | undefined }) {
           className="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-4 section-reveal"
           aria-label="Adjacent case studies"
         >
-          <button
-            onClick={() => navigate("case-study", { slug: next.id })}
+          <Link
+            href={`/case-studies/${next.id}`}
             className="p-5 rounded-xl border border-black/8 bg-card card-hover flex flex-col text-left cursor-pointer"
           >
             <span className="text-[11px] font-bold text-ink/50 flex items-center gap-1 mb-1">
@@ -162,9 +141,9 @@ export function CaseStudyDetail({ slug }: { slug: string | undefined }) {
               {next.client}
             </span>
             <span className="text-xs text-ink/55 mt-0.5">{next.industry}</span>
-          </button>
-          <button
-            onClick={() => navigate("case-studies")}
+          </Link>
+          <Link
+            href="/case-studies"
             className="p-5 rounded-xl border border-black/8 bg-card card-hover flex flex-col justify-center text-left cursor-pointer"
           >
             <span className="text-[11px] font-bold text-ink/50 mb-1">
@@ -173,7 +152,7 @@ export function CaseStudyDetail({ slug }: { slug: string | undefined }) {
             <span className="font-display font-bold text-sm text-ink">
               See every success story
             </span>
-          </button>
+          </Link>
         </nav>
 
         {/* More case studies */}
@@ -183,9 +162,9 @@ export function CaseStudyDetail({ slug }: { slug: string | undefined }) {
           </h2>
           <div className="grid sm:grid-cols-3 gap-4">
             {others.map((c) => (
-              <button
+              <Link
                 key={c.id}
-                onClick={() => navigate("case-study", { slug: c.id })}
+                href={`/case-studies/${c.id}`}
                 className="group flex flex-col bg-card border border-black/8 rounded-xl overflow-hidden text-left card-hover cursor-pointer"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
@@ -209,7 +188,7 @@ export function CaseStudyDetail({ slug }: { slug: string | undefined }) {
                     <ArrowRight size={11} className="transition-transform group-hover:translate-x-1" />
                   </span>
                 </div>
-              </button>
+              </Link>
             ))}
           </div>
         </section>

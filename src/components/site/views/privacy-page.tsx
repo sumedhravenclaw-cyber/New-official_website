@@ -2,14 +2,12 @@
 
 import { useEffect } from "react";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
-import { useNav } from "@/lib/nav-store";
+import { SectionLink } from "@/components/site/section-link";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const COLOR = "#631DFE";
 
 export function PrivacyPage() {
-  const navigate = useNav((s) => s.navigate);
-
   useScrollReveal([]);
 
   useEffect(() => {
@@ -24,14 +22,13 @@ export function PrivacyPage() {
         style={{ background: `${COLOR}0C` }}
       >
         <div className="max-w-3xl mx-auto reveal-left">
-          <button
-            type="button"
-            onClick={() => navigate("home", { scrollTarget: "footer" })}
+          <SectionLink
+            sectionId="footer"
             className="inline-flex items-center gap-1.5 text-xs font-bold mb-8 text-ink/60 hover:text-ink transition-colors"
           >
             <ArrowLeft size={14} />
             Back
-          </button>
+          </SectionLink>
 
           <div
             className="w-16 h-16 rounded-full flex items-center justify-center mb-6 shadow-md"

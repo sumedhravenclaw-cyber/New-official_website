@@ -2,7 +2,7 @@
 
 import { CheckCircle2 } from "lucide-react";
 import { aboutBullets } from "@/lib/site-data";
-import { useNav } from "@/lib/nav-store";
+import { DetailLink } from "@/components/site/detail-link";
 
 const floatingDots = [
   { top: "8%", left: "12%", size: 8, color: "#EA9D12" },
@@ -26,8 +26,6 @@ const floatingDots = [
 ];
 
 export function AboutSection() {
-  const navigate = useNav((s) => s.navigate);
-
   return (
     <section id="about" className="py-20 bg-surface-alt relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
@@ -92,12 +90,13 @@ export function AboutSection() {
               ))}
             </div>
 
-            <button
-              onClick={() => navigate("about")}
+            <DetailLink
+              href="/about"
+              sectionId="about"
               className="inline-block px-6 py-3 rounded-full border-2 border-ink text-ink text-sm font-semibold hover:bg-ink hover:text-snow transition-all duration-300"
             >
               Know More About Us
-            </button>
+            </DetailLink>
           </div>
         </div>
       </div>

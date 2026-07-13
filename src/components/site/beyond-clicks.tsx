@@ -9,6 +9,10 @@ const wait = (ms: number): Promise<void> =>
 const DIM = "#5a5a66";
 const EASE_UP = [0.22, 1, 0.36, 1] as const;
 
+// Tweak these to reposition the vertical "BEYOND" word independently of
+// the .words stack — overrides the left/top set in globals.css.
+const BEYOND_POSITION = { left: "8%", top: "45%" };
+
 export default function BeyondClicks() {
   const [scope, animate] = useAnimate();
 
@@ -87,7 +91,7 @@ export default function BeyondClicks() {
       style={{ height: "clamp(200px, 64vmin, 620px)" }}
       ref={scope}
     >
-      <div className="beyond">BEYOND</div>
+      <div className="beyond" style={BEYOND_POSITION}>BEYOND</div>
 
       <div className="words">
         <span className="line">

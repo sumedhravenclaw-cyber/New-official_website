@@ -282,6 +282,25 @@ export function getProjectBySlug(slug: string | undefined): Project | undefined 
 
 export const portfolioCategories = ["All", "Websites", "Branding", "UI/UX", "Marketing"];
 
+/* ============ CLIENTS ============ */
+// Placeholder client roster for the "Our Clients" marquee — swap these
+// names for real client names/logos once provided.
+export interface Client {
+  name: string;
+  color: string;
+}
+
+export const clients: Client[] = [
+  { name: "Client One", color: "#EA9D12" },
+  { name: "Client Two", color: "#D96016" },
+  { name: "Client Three", color: "#CC2829" },
+  { name: "Client Four", color: "#A7069B" },
+  { name: "Client Five", color: "#631DFE" },
+  { name: "Client Six", color: "#5A5DFE" },
+  { name: "Client Seven", color: "#5B9EFE" },
+  { name: "Client Eight", color: "#5E9929" },
+];
+
 /* ============ TESTIMONIALS ============ */
 export interface Testimonial {
   name: string;

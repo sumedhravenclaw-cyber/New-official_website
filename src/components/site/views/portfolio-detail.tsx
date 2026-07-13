@@ -2,36 +2,17 @@
 
 import { useEffect } from "react";
 import { ArrowLeft, ArrowRight, Check, MessageCircle } from "lucide-react";
-import { getProjectBySlug, projects } from "@/lib/site-data";
-import { useNav } from "@/lib/nav-store";
+import { projects, type Project } from "@/lib/site-data";
+import { SectionLink } from "@/components/site/section-link";
+import { DetailLink } from "@/components/site/detail-link";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
-export function PortfolioDetail({ slug }: { slug: string | undefined }) {
-  const navigate = useNav((s) => s.navigate);
-  const project = getProjectBySlug(slug);
-
-  useScrollReveal([slug]);
+export function PortfolioDetail({ project }: { project: Project }) {
+  useScrollReveal([project.slug]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [slug]);
-
-  if (!project) {
-    return (
-      <section className="pt-40 pb-24 text-center px-6">
-        <p className="font-display font-bold text-ink text-xl mb-4">
-          We couldn&apos;t find that project.
-        </p>
-        <button
-          onClick={() => navigate("home", { scrollTarget: "portfolio" })}
-          className="text-sm font-bold"
-          style={{ color: "#631DFE" }}
-        >
-          &larr; Back to portfolio
-        </button>
-      </section>
-    );
-  }
+  }, [project.slug]);
 
   const currentIndex = projects.findIndex((p) => p.slug === project.slug);
   const prev = projects[(currentIndex - 1 + projects.length) % projects.length];
@@ -59,14 +40,13 @@ export function PortfolioDetail({ slug }: { slug: string | undefined }) {
         />
         <div className="absolute inset-0 flex flex-col justify-end px-6 pb-10">
           <div className="max-w-3xl mx-auto w-full">
-            <button
-              type="button"
-              onClick={() => navigate("home", { scrollTarget: "portfolio" })}
+            <SectionLink
+              sectionId="portfolio"
               className="inline-flex items-center gap-1.5 text-xs font-bold mb-6 text-white/80 hover:text-white transition-colors"
             >
               <ArrowLeft size={14} />
               Back
-            </button>
+            </SectionLink>
             <span
               className="inline-block text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3"
               style={{ background: `${project.color}30`, color: "white" }}
@@ -192,8 +172,9 @@ export function PortfolioDetail({ slug }: { slug: string | undefined }) {
           className="grid grid-cols-2 gap-4 mb-16 section-reveal"
           aria-label="Adjacent projects"
         >
-          <button
-            onClick={() => navigate("portfolio", { slug: prev.slug })}
+          <DetailLink
+            href={`/portfolio/${prev.slug}`}
+            sectionId="portfolio"
             className="p-4 rounded-xl border card-hover flex flex-col overflow-hidden text-left cursor-pointer"
             style={{
               borderColor: `${prev.color}30`,
@@ -206,9 +187,10 @@ export function PortfolioDetail({ slug }: { slug: string | undefined }) {
             <span className="font-display font-bold text-sm text-ink truncate">
               {prev.title}
             </span>
-          </button>
-          <button
-            onClick={() => navigate("portfolio", { slug: next.slug })}
+          </DetailLink>
+          <DetailLink
+            href={`/portfolio/${next.slug}`}
+            sectionId="portfolio"
             className="p-4 rounded-xl border card-hover flex flex-col items-end text-right overflow-hidden cursor-pointer"
             style={{
               borderColor: `${next.color}30`,
@@ -221,7 +203,7 @@ export function PortfolioDetail({ slug }: { slug: string | undefined }) {
             <span className="font-display font-bold text-sm text-ink truncate">
               {next.title}
             </span>
-          </button>
+          </DetailLink>
         </nav>
 
         {/* Explore other projects */}
@@ -231,9 +213,10 @@ export function PortfolioDetail({ slug }: { slug: string | undefined }) {
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {others.map((p) => (
-              <button
+              <DetailLink
                 key={p.slug}
-                onClick={() => navigate("portfolio", { slug: p.slug })}
+                href={`/portfolio/${p.slug}`}
+                sectionId="portfolio"
                 className="group flex items-center gap-4 p-3 rounded-xl border card-hover text-left cursor-pointer"
                 style={{
                   borderColor: `${p.color}30`,
@@ -256,7 +239,7 @@ export function PortfolioDetail({ slug }: { slug: string | undefined }) {
                   className="ml-auto flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
                   style={{ color: p.color }}
                 />
-              </button>
+              </DetailLink>
             ))}
           </div>
         </section>

@@ -2,36 +2,23 @@
 
 import { useEffect } from "react";
 import { ArrowLeft, ArrowRight, Check, MessageCircle } from "lucide-react";
-import { getServiceBySlug, services } from "@/lib/site-data";
-import { useNav } from "@/lib/nav-store";
+import { services, getServiceBySlug } from "@/lib/site-data";
+import { SectionLink } from "@/components/site/section-link";
+import { DetailLink } from "@/components/site/detail-link";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
-export function ServiceDetail({ slug }: { slug: string | undefined }) {
-  const navigate = useNav((s) => s.navigate);
-  const service = getServiceBySlug(slug);
+// Service.icon is a component reference, which can't be serialized across
+// the server/client boundary — so unlike the other detail pages, the route
+// file only resolves the slug for notFound()/generateMetadata, and this
+// client component re-resolves the full record (including the icon) itself.
+export function ServiceDetail({ slug }: { slug: string }) {
+  const service = getServiceBySlug(slug)!;
 
-  useScrollReveal([slug]);
+  useScrollReveal([service.slug]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [slug]);
-
-  if (!service) {
-    return (
-      <section className="pt-40 pb-24 text-center px-6">
-        <p className="font-display font-bold text-ink text-xl mb-4">
-          We couldn&apos;t find that service.
-        </p>
-        <button
-          onClick={() => navigate("home", { scrollTarget: "services" })}
-          className="text-sm font-bold"
-          style={{ color: "#631DFE" }}
-        >
-          &larr; Back to all services
-        </button>
-      </section>
-    );
-  }
+  }, [service.slug]);
 
   const currentIndex = services.findIndex((s) => s.slug === service.slug);
   const prev = services[(currentIndex - 1 + services.length) % services.length];
@@ -48,14 +35,13 @@ export function ServiceDetail({ slug }: { slug: string | undefined }) {
       {/* Hero */}
       <div className="pt-16 pb-14 px-6" style={{ background: service.bg }}>
         <div className="max-w-3xl mx-auto reveal-left">
-          <button
-            type="button"
-            onClick={() => navigate("home", { scrollTarget: "services" })}
+          <SectionLink
+            sectionId="services"
             className="inline-flex items-center gap-1.5 text-xs font-bold mb-8 text-ink/60 hover:text-ink transition-colors"
           >
             <ArrowLeft size={14} />
             Back
-          </button>
+          </SectionLink>
 
           <div
             className="w-16 h-16 rounded-full flex items-center justify-center mb-6 shadow-md"
@@ -157,8 +143,9 @@ export function ServiceDetail({ slug }: { slug: string | undefined }) {
           className="grid grid-cols-2 gap-4 mb-16 section-reveal"
           aria-label="Adjacent services"
         >
-          <button
-            onClick={() => navigate("service", { slug: prev.slug })}
+          <DetailLink
+            href={`/services/${prev.slug}`}
+            sectionId="services"
             className="p-4 rounded-xl border card-hover flex flex-col text-left cursor-pointer"
             style={{ borderColor: prev.border, background: prev.bg }}
           >
@@ -168,9 +155,10 @@ export function ServiceDetail({ slug }: { slug: string | undefined }) {
             <span className="font-display font-bold text-sm text-ink">
               {prev.title}
             </span>
-          </button>
-          <button
-            onClick={() => navigate("service", { slug: next.slug })}
+          </DetailLink>
+          <DetailLink
+            href={`/services/${next.slug}`}
+            sectionId="services"
             className="p-4 rounded-xl border card-hover flex flex-col items-end text-right cursor-pointer"
             style={{ borderColor: next.border, background: next.bg }}
           >
@@ -180,7 +168,7 @@ export function ServiceDetail({ slug }: { slug: string | undefined }) {
             <span className="font-display font-bold text-sm text-ink">
               {next.title}
             </span>
-          </button>
+          </DetailLink>
         </nav>
 
         {/* All other services */}
@@ -190,9 +178,10 @@ export function ServiceDetail({ slug }: { slug: string | undefined }) {
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {others.map((s) => (
-              <button
+              <DetailLink
                 key={s.slug}
-                onClick={() => navigate("service", { slug: s.slug })}
+                href={`/services/${s.slug}`}
+                sectionId="services"
                 className="group flex items-center gap-4 p-4 rounded-xl border card-hover text-left cursor-pointer"
                 style={{ borderColor: s.border, background: s.bg }}
               >
@@ -216,7 +205,7 @@ export function ServiceDetail({ slug }: { slug: string | undefined }) {
                   className="ml-auto flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
                   style={{ color: s.color }}
                 />
-              </button>
+              </DetailLink>
             ))}
           </div>
         </section>

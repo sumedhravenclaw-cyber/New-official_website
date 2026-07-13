@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { ArrowLeft, MessageCircle, Sparkles, Briefcase, MapPin } from "lucide-react";
-import { useNav } from "@/lib/nav-store";
+import { SectionLink } from "@/components/site/section-link";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 import { openRoles } from "@/lib/site-data";
 
@@ -11,8 +11,6 @@ const WHATSAPP_HREF =
   "https://wa.me/918010049620?text=Hello%20Ravenclaw%2C%20I%27m%20interested%20in%20a%20role";
 
 export function CareersPage() {
-  const navigate = useNav((s) => s.navigate);
-
   useScrollReveal([]);
 
   useEffect(() => {
@@ -27,14 +25,13 @@ export function CareersPage() {
         style={{ background: `${COLOR}0C` }}
       >
         <div className="max-w-3xl mx-auto reveal-left">
-          <button
-            type="button"
-            onClick={() => navigate("home", { scrollTarget: "footer" })}
+          <SectionLink
+            sectionId="footer"
             className="inline-flex items-center gap-1.5 text-xs font-bold mb-8 text-ink/60 hover:text-ink transition-colors"
           >
             <ArrowLeft size={14} />
             Back
-          </button>
+          </SectionLink>
 
           <div
             className="w-16 h-16 rounded-full flex items-center justify-center mb-6 shadow-md"

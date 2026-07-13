@@ -7,7 +7,7 @@ import { WHATSAPP_LINK, BRAND_GRADIENT } from "@/lib/site-data";
 const HERO_EYEBROW = "Digital Ravenclaw";
 
 const HERO_DESCRIPTION =
-  "At RavenClaw, we believe the best marketing begins with intelligent thinking. Every website, every brand, every campaign is crafted with wisdom, creativity, and purpose—not guesswork.";
+  "At Ravenclaw, we believe the best marketing begins with intelligent thinking. Every website, every brand, every campaign is crafted with wisdom, creativity, and purpose—not guesswork.";
 
 const FLOATING_DOTS = [
   { top: "8%", left: "12%", size: 8, color: "#EA9D12" },
@@ -71,10 +71,10 @@ export function HeroSection() {
         <div className="grid min-h-[calc(100vh-6rem)] items-center gap-8 pb-32 xl:grid-cols-2">
           <div className="flex flex-col gap-6 reveal-left">
             <p
-              className="text-xs font-bold uppercase tracking-widest"
-              style={{ color: "#8B016D" }}
+              className="relative text-xs font-bold uppercase tracking-widest"
+              style={{ color: "#8B016D", left: "4.5rem", top: "-1rem" }}
             >
-              <span className="text-gradient">{HERO_EYEBROW}</span>
+              {/* <span className="text-gradient">{HERO_EYEBROW}</span> */}
             </p>
 
             <BeyondClicks />

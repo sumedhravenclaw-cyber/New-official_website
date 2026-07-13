@@ -1,37 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
-import { getBlogPostById, blogPosts } from "@/lib/site-data";
-import { useNav } from "@/lib/nav-store";
+import { blogPosts, type BlogPost } from "@/lib/site-data";
+import { SectionLink } from "@/components/site/section-link";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
-export function BlogDetail({ slug }: { slug: string | undefined }) {
-  const navigate = useNav((s) => s.navigate);
-  const post = getBlogPostById(slug);
-
-  useScrollReveal([slug]);
+export function BlogDetail({ post }: { post: BlogPost }) {
+  useScrollReveal([post.id]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [slug]);
-
-  if (!post) {
-    return (
-      <section className="pt-40 pb-24 text-center px-6">
-        <p className="font-display font-bold text-ink text-xl mb-4">
-          We couldn&apos;t find that article.
-        </p>
-        <button
-          onClick={() => navigate("blog")}
-          className="text-sm font-bold"
-          style={{ color: "#631DFE" }}
-        >
-          &larr; Back to the journal
-        </button>
-      </section>
-    );
-  }
+  }, [post.id]);
 
   const related = blogPosts.filter((p) => p.id !== post.id).slice(0, 3);
 
@@ -53,14 +34,13 @@ export function BlogDetail({ slug }: { slug: string | undefined }) {
         />
         <div className="absolute inset-0 flex flex-col justify-end px-6 pb-12">
           <div className="max-w-3xl mx-auto w-full">
-            <button
-              type="button"
-              onClick={() => navigate("blog")}
+            <Link
+              href="/blog"
               className="inline-flex items-center gap-1.5 text-xs font-bold mb-6 text-white/80 hover:text-white transition-colors"
             >
               <ArrowLeft size={14} />
               Back to the journal
-            </button>
+            </Link>
             <span className="inline-block text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4 text-white"
               style={{ background: "#631DFE" }}
             >
@@ -140,14 +120,13 @@ export function BlogDetail({ slug }: { slug: string | undefined }) {
               We don&apos;t just write about this stuff — we do it, every day, for
               brands like yours.
             </p>
-            <button
-              type="button"
-              onClick={() => navigate("home", { scrollTarget: "contact" })}
-              className="px-8 py-3.5 rounded-xl text-sm font-display font-bold hover:opacity-90 transition-opacity cursor-pointer"
+            <SectionLink
+              sectionId="contact"
+              className="px-8 py-3.5 rounded-xl text-sm font-display font-bold hover:opacity-90 transition-opacity cursor-pointer inline-block"
               style={{ background: "linear-gradient(135deg, #EA9D12, #D96016)", color: "#050505" }}
             >
               Start a project
-            </button>
+            </SectionLink>
           </div>
         </section>
 
@@ -158,9 +137,9 @@ export function BlogDetail({ slug }: { slug: string | undefined }) {
           </h2>
           <div className="grid sm:grid-cols-3 gap-4">
             {related.map((p) => (
-              <button
+              <Link
                 key={p.id}
-                onClick={() => navigate("blog-post", { slug: p.id })}
+                href={`/blog/${p.id}`}
                 className="group flex flex-col bg-card border border-black/8 rounded-xl overflow-hidden text-left card-hover cursor-pointer"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
@@ -183,7 +162,7 @@ export function BlogDetail({ slug }: { slug: string | undefined }) {
                     <ArrowRight size={11} className="transition-transform group-hover:translate-x-1" />
                   </span>
                 </div>
-              </button>
+              </Link>
             ))}
           </div>
         </section>

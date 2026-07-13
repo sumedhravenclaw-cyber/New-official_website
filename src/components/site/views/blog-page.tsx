@@ -1,21 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { ArrowRight, Clock } from "lucide-react";
 import {
   blogCategories,
   blogPosts,
   type BlogCategory,
 } from "@/lib/site-data";
-import { useNav } from "@/lib/nav-store";
+import { SectionLink } from "@/components/site/section-link";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 import { toast } from "@/hooks/use-toast";
 
 export function BlogPage() {
-  const navigate = useNav((s) => s.navigate);
-  useScrollReveal([]);
   const [activeCategory, setActiveCategory] = useState<BlogCategory>("All");
   const [email, setEmail] = useState("");
+
+  // Re-run the reveal observer whenever the filtered post set changes —
+  // switching categories swaps in new cards that were never observed by
+  // the mount-time IntersectionObserver, so without this they'd stay at
+  // opacity:0 (the pre-reveal state) forever.
+  useScrollReveal([activeCategory]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -28,10 +33,6 @@ export function BlogPage() {
     activeCategory === "All"
       ? blogPosts.filter((p) => !p.featured)
       : blogPosts.filter((p) => p.category === activeCategory);
-
-  const handlePostClick = (id: string) => {
-    navigate("blog-post", { slug: id });
-  };
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,9 +88,8 @@ export function BlogPage() {
         {/* Featured spotlight */}
         {showFeatured && featuredPost && (
           <section className="mb-14 section-reveal">
-            <button
-              type="button"
-              onClick={() => handlePostClick(featuredPost.id)}
+            <Link
+              href={`/blog/${featuredPost.id}`}
               className="group block w-full text-left bg-card border border-black/10 rounded-2xl overflow-hidden card-hover cursor-pointer"
             >
               <div className="grid md:grid-cols-2">
@@ -121,17 +121,16 @@ export function BlogPage() {
                   </div>
                 </div>
               </div>
-            </button>
+            </Link>
           </section>
         )}
 
         {/* Post grid */}
         <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {visiblePosts.map((post) => (
-            <button
+            <Link
               key={post.id}
-              type="button"
-              onClick={() => handlePostClick(post.id)}
+              href={`/blog/${post.id}`}
               className="group flex flex-col bg-card border border-black/10 rounded-2xl overflow-hidden text-left card-hover section-reveal cursor-pointer"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
@@ -163,7 +162,7 @@ export function BlogPage() {
                   </span>
                 </div>
               </div>
-            </button>
+            </Link>
           ))}
         </section>
 

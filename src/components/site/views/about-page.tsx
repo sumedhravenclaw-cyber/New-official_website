@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { ArrowLeft, CheckCircle2, MessageCircle, Target, Eye } from "lucide-react";
 import { aboutValues, missionVision, stats, WHATSAPP_LINK, BRAND_GRADIENT } from "@/lib/site-data";
-import { useNav } from "@/lib/nav-store";
+import { SectionLink } from "@/components/site/section-link";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 // Swap `img` for the real teammate photo once uploaded — keep filenames in
@@ -27,28 +27,24 @@ const team = [
 ];
 
 export function AboutPage() {
-  const navigate = useNav((s) => s.navigate);
   useScrollReveal([]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const goToContact = () => navigate("home", { scrollTarget: "contact" });
-
   return (
     <article className="pt-24">
       {/* Hero */}
       <div className="relative pt-10 pb-16 px-6 bg-surface-alt overflow-hidden">
         <div className="max-w-5xl mx-auto relative">
-          <button
-            type="button"
-            onClick={() => navigate("home")}
+          <SectionLink
+            sectionId="about"
             className="inline-flex items-center gap-1.5 text-xs font-bold mb-8 text-ink/60 hover:text-ink transition-colors"
           >
             <ArrowLeft size={14} />
             Back
-          </button>
+          </SectionLink>
 
           <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-10 items-center">
             <div className="relative h-[280px] lg:h-[360px] reveal-left order-2 lg:order-1">
@@ -250,14 +246,13 @@ export function AboutPage() {
 
         {/* CTA */}
         <section className="section-reveal flex flex-wrap gap-4">
-          <button
-            type="button"
-            onClick={goToContact}
-            className="px-7 py-3.5 rounded-full text-white font-semibold text-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+          <SectionLink
+            sectionId="contact"
+            className="px-7 py-3.5 rounded-full text-white font-semibold text-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl inline-block"
             style={{ background: BRAND_GRADIENT }}
           >
             Get In Touch
-          </button>
+          </SectionLink>
           <a
             href={WHATSAPP_LINK}
             target="_blank"

@@ -1,19 +1,35 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { ArrowRight, TrendingUp } from "lucide-react";
 import {
-  caseStudies,
+  caseStudies as staticCaseStudies,
   industries,
+  type CaseStudy,
   type Industry,
 } from "@/lib/site-data";
-import { useNav } from "@/lib/nav-store";
+import { SectionLink } from "@/components/site/section-link";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 export function CaseStudiesPage() {
-  const navigate = useNav((s) => s.navigate);
-  useScrollReveal([]);
   const [activeIndustry, setActiveIndustry] = useState<Industry>("All");
+  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>(staticCaseStudies);
+
+  useEffect(() => {
+    fetch("/api/case-studies")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data.caseStudies)) setCaseStudies(data.caseStudies);
+      })
+      .catch((err) => console.error("Failed to load case studies:", err));
+  }, []);
+
+  // Re-run the reveal observer whenever the filtered study set changes —
+  // switching industries swaps in new cards that were never observed by
+  // the mount-time IntersectionObserver, so without this they'd stay at
+  // opacity:0 (the pre-reveal state) forever.
+  useScrollReveal([activeIndustry, caseStudies]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -23,10 +39,6 @@ export function CaseStudiesPage() {
     activeIndustry === "All"
       ? caseStudies
       : caseStudies.filter((s) => s.industry === activeIndustry);
-
-  const handleStudyClick = (id: string) => {
-    navigate("case-study", { slug: id });
-  };
 
   return (
     <main className="min-h-screen bg-surface pt-32 pb-24">
@@ -72,10 +84,9 @@ export function CaseStudiesPage() {
         {/* Grid */}
         <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {visibleStudies.map((study) => (
-            <button
+            <Link
               key={study.id}
-              type="button"
-              onClick={() => handleStudyClick(study.id)}
+              href={`/case-studies/${study.id}`}
               className="group flex flex-col bg-card border border-black/10 rounded-2xl overflow-hidden text-left card-hover section-reveal cursor-pointer"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
@@ -113,7 +124,7 @@ export function CaseStudiesPage() {
                   />
                 </div>
               </div>
-            </button>
+            </Link>
           ))}
         </section>
 
@@ -139,14 +150,13 @@ export function CaseStudiesPage() {
               Tell us about your goals and we&apos;ll send back a plan — no
               obligation, no fluff.
             </p>
-            <button
-              type="button"
-              onClick={() => navigate("home", { scrollTarget: "contact" })}
-              className="px-8 py-3.5 rounded-xl bg-golden text-sm font-display font-bold hover:opacity-90 transition-opacity cursor-pointer"
+            <SectionLink
+              sectionId="contact"
+              className="px-8 py-3.5 rounded-xl bg-golden text-sm font-display font-bold hover:opacity-90 transition-opacity cursor-pointer inline-block"
               style={{ color: "#050505" }}
             >
               Start a project
-            </button>
+            </SectionLink>
           </div>
         </section>
       </div>

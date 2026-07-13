@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
-import { useNav, type ViewType } from "@/lib/nav-store";
+import { SectionLink } from "./section-link";
 
 const navLinks = [
   { label: "Home", id: "home" },
@@ -13,11 +15,14 @@ const navLinks = [
   { label: "Contact", id: "contact" },
 ];
 
-const moreLinks: { label: string; view: ViewType }[] = [
-  { label: "Blog", view: "blog" },
-  { label: "Case Studies", view: "case-studies" },
+const moreLinks = [
+  { label: "Blog", href: "/blog" },
+  { label: "Case Studies", href: "/case-studies" },
 ];
 
+const HERO_EYEBROW = "Digital RavenClaw";
+// Shift the eyebrow text left/right independently of the logo icon (px, negative = left).
+const HERO_EYEBROW_OFFSET_X = 0;
 export function Navbar() {
   const [scrollScrolled, setScrollScrolled] = useState(false);
   const [active, setActive] = useState("home");
@@ -25,10 +30,9 @@ export function Navbar() {
   const [moreOpen, setMoreOpen] = useState(false);
   const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
   const moreRef = useRef<HTMLLIElement>(null);
-  const navigate = useNav((s) => s.navigate);
-  const view = useNav((s) => s.view);
+  const pathname = usePathname();
 
-  const isHome = view === "home";
+  const isHome = pathname === "/";
   // Detail views always show the scrolled (compact, blurred) navbar.
   const scrolled = isHome ? scrollScrolled : true;
 
@@ -74,15 +78,6 @@ export function Navbar() {
     };
   }, [moreOpen]);
 
-  const handleSectionNav = (id: string) => {
-    setMenuOpen(false);
-    if (isHome) {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    } else {
-      navigate("home", { scrollTarget: id });
-    }
-  };
-
   return (
     <nav
       className={`navbar fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -91,9 +86,9 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6">
         {/* Logo */}
-        <button
-          onClick={() => handleSectionNav("home")}
-          className="flex items-center gap-2"
+        <SectionLink
+          sectionId="home"
+          className="flex flex-col items-start  gap-0.5"
           aria-label="RavenClaw home"
         >
           <img
@@ -101,10 +96,16 @@ export function Navbar() {
             alt="RavenClaw"
             className="w-10 h-10 object-contain"
           />
-          {/* <span className="font-display font-bold text-lg text-gradient hidden sm:inline">
-            RavenClaw
-          </span> */}
-        </button>
+          <p
+            className="text-[10px] font-bold uppercase tracking-widest sm:text-xs"
+            style={{
+              color: "#8B016D", 
+              transform: `translateX(-50px)`,
+            }}
+          >
+            <span className="text-gradient">{HERO_EYEBROW}</span>
+          </p>
+        </SectionLink>
 
         {/* Desktop nav */}
         <ul className="hidden md:flex items-center gap-8">
@@ -112,8 +113,8 @@ export function Navbar() {
             const isActive = isHome && active === link.id;
             return (
               <li key={link.label}>
-                <button
-                  onClick={() => handleSectionNav(link.id)}
+                <SectionLink
+                  sectionId={link.id}
                   className={`relative font-display text-base font-medium pb-1 transition-colors duration-200 ${
                     isActive
                       ? "text-gradient"
@@ -124,7 +125,7 @@ export function Navbar() {
                   {isActive && (
                     <span className="absolute bottom-0 left-0 w-full h-0.5 rounded-full bg-accent-golden" />
                   )}
-                </button>
+                </SectionLink>
               </li>
             );
           })}
@@ -153,16 +154,14 @@ export function Navbar() {
               }`}
             >
               {moreLinks.map((link) => (
-                <button
+                <Link
                   key={link.label}
-                  onClick={() => {
-                    setMoreOpen(false);
-                    navigate(link.view);
-                  }}
+                  href={link.href}
+                  onClick={() => setMoreOpen(false)}
                   className="block w-full text-left px-4 py-2 font-display text-sm text-ink hover:text-gradient transition-colors duration-150"
                 >
                   {link.label}
-                </button>
+                </Link>
               ))}
             </div>
           </li>
@@ -192,13 +191,14 @@ export function Navbar() {
       >
         <div className="navbar-mobile-panel px-6 py-4 space-y-3">
           {navLinks.map((link) => (
-            <button
+            <SectionLink
               key={link.label}
-              onClick={() => handleSectionNav(link.id)}
+              sectionId={link.id}
+              onClick={() => setMenuOpen(false)}
               className="block w-full text-left text-sm font-medium text-ink hover:text-accent-golden py-1"
             >
               {link.label}
-            </button>
+            </SectionLink>
           ))}
           <div>
             <button
@@ -224,17 +224,17 @@ export function Navbar() {
             >
               <div className="pl-3 space-y-2 border-l border-surface">
                 {moreLinks.map((link) => (
-                  <button
+                  <Link
                     key={link.label}
+                    href={link.href}
                     onClick={() => {
                       setMenuOpen(false);
                       setMobileMoreOpen(false);
-                      navigate(link.view);
                     }}
                     className="block w-full text-left text-sm font-medium text-ink hover:text-accent-golden py-1"
                   >
                     {link.label}
-                  </button>
+                  </Link>
                 ))}
               </div>
             </div>

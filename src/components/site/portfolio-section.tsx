@@ -3,11 +3,10 @@
 import { useState } from "react";
 import { ExternalLink } from "lucide-react";
 import { projects, portfolioCategories } from "@/lib/site-data";
-import { useNav } from "@/lib/nav-store";
+import { DetailLink } from "@/components/site/detail-link";
 
 export function PortfolioSection() {
   const [activeFilter, setActiveFilter] = useState("All");
-  const navigate = useNav((s) => s.navigate);
 
   const filtered =
     activeFilter === "All"
@@ -55,9 +54,10 @@ export function PortfolioSection() {
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((project, i) => (
-              <button
+              <DetailLink
                 key={project.slug}
-                onClick={() => navigate("portfolio", { slug: project.slug })}
+                href={`/portfolio/${project.slug}`}
+                sectionId="portfolio"
                 className="animate-fade-in-up group rounded-2xl overflow-hidden shadow-sm border border-black/5 bg-card card-hover block text-left cursor-pointer"
                 style={{ animationDelay: `${i * 60}ms` }}
               >
@@ -83,7 +83,7 @@ export function PortfolioSection() {
                     {project.type}
                   </p>
                 </div>
-              </button>
+              </DetailLink>
             ))}
           </div>
         ) : (
