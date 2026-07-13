@@ -36,8 +36,8 @@ export function HomeView() {
       <WhyChooseUs />
       <ServicesSection />
       <PortfolioSection />
-      <ClientsSection />
       <TestimonialsSection />
+      <ClientsSection />
       <ProcessSection />
       <ContactSection />
     </>

@@ -1,34 +1,20 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import BeyondClicks from "./beyond-clicks";
 import { WHATSAPP_LINK, BRAND_GRADIENT } from "@/lib/site-data";
+
+// Three.js touches window/canvas on mount, so it's loaded client-only and
+// kept out of the initial hero bundle.
+const Hero3D = dynamic(() => import("./hero-3d").then((m) => m.Hero3D), {
+  ssr: false,
+});
 
 const HERO_EYEBROW = "Digital Ravenclaw";
 
 const HERO_DESCRIPTION =
   "At Ravenclaw, we believe the best marketing begins with intelligent thinking. Every website, every brand, every campaign is crafted with wisdom, creativity, and purpose—not guesswork.";
-
-const FLOATING_DOTS = [
-  { top: "8%", left: "12%", size: 8, color: "#EA9D12" },
-  { top: "15%", left: "58%", size: 10, color: "#EA9D12" },
-  { top: "22%", left: "82%", size: 8, color: "#A7069B" },
-  { top: "35%", left: "92%", size: 12, color: "#5B9EFE" },
-  { top: "52%", left: "86%", size: 8, color: "#5E9929" },
-  { top: "20%", left: "65%", size: 6, color: "#CC2829" },
-  { top: "45%", left: "57%", size: 7, color: "#EA9D12" },
-  { top: "68%", left: "75%", size: 9, color: "#5B9EFE" },
-  { top: "12%", left: "73%", size: 5, color: "#5E9929" },
-  { top: "60%", left: "93%", size: 6, color: "#631DFE" },
-  { top: "78%", left: "8%", size: 7, color: "#A7069B" },
-  { top: "30%", left: "4%", size: 9, color: "#5B9EFE" },
-  { top: "85%", left: "35%", size: 6, color: "#EA9D12" },
-  { top: "5%", left: "40%", size: 5, color: "#5E9929" },
-  { top: "90%", left: "65%", size: 8, color: "#CC2829" },
-  { top: "65%", left: "20%", size: 10, color: "#631DFE" },
-  { top: "40%", left: "25%", size: 6, color: "#A7069B" },
-  { top: "10%", left: "90%", size: 7, color: "#5B9EFE" },
-] as const;
 
 export function HeroSection() {
   const scrollTo = (id: string) =>
@@ -48,23 +34,8 @@ export function HeroSection() {
         />
       </div>
 
-      {/* Floating decorative dots */}
-      {FLOATING_DOTS.map((dot, i) => (
-        <div
-          key={i}
-          className="absolute z-[2] rounded-full pointer-events-none animate-float"
-          style={{
-            top: dot.top,
-            left: dot.left,
-            width: dot.size,
-            height: dot.size,
-            background: dot.color,
-            opacity: 0.8,
-            animationDelay: `${i * 0.4}s`,
-            animationDuration: `${4 + i * 0.5}s`,
-          }}
-        />
-      ))}
+      {/* 3D ember particle field + gem cluster, brand-gradient colored */}
+      <Hero3D />
 
       {/* Content */}
       <div className="relative left-[5%] z-[3] mx-auto px-6 max-w-8xl w-full">
