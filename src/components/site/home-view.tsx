@@ -10,6 +10,7 @@ import { ClientsSection } from "./clients-section";
 import { TestimonialsSection } from "./testimonials-section";
 import { ProcessSection } from "./process-section";
 import { ContactSection } from "./contact-section";
+import { LetsTalkSection } from "./lets-talk-section";
 import { useScrollReveal, useParallax } from "@/hooks/use-scroll-reveal";
 
 export function HomeView() {
@@ -40,6 +41,7 @@ export function HomeView() {
       <ClientsSection />
       <ProcessSection />
       <ContactSection />
+      <LetsTalkSection />
     </>
   );
 }

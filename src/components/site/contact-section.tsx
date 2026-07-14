@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { contactInfo } from "@/lib/site-data";
+import { CalendlyPopupButton } from "./calendly";
 
 type Status = "idle" | "sending" | "success" | "error";
 
@@ -102,6 +103,19 @@ export function ContactSection() {
                 </div>
               );
             })}
+
+            {/* Book a call — opens the Calendly scheduling popup */}
+            <div className="flex flex-col gap-3 p-5 rounded-2xl border border-black/5 bg-surface-alt">
+              <div>
+                <p className="text-xs text-muted tracking-wide uppercase mb-0.5">
+                  Prefer to talk?
+                </p>
+                <p className="font-semibold text-ink text-sm">
+                  Schedule a free 30-minute call
+                </p>
+              </div>
+              <CalendlyPopupButton className="flex items-center justify-center gap-2 py-3 rounded-xl text-white font-semibold text-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg" />
+            </div>
           </div>
 
           {/* Right: form */}

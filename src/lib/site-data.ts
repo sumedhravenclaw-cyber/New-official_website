@@ -787,5 +787,12 @@ export const socialLinks = [
 export const WHATSAPP_LINK =
   "https://wa.me/918010049620?text=Hello%20Ravenclaw%2C%20I%20would%20like%20to%20discuss%20a%20project";
 
+// Calendly scheduling link. Set NEXT_PUBLIC_CALENDLY_URL in your env to your own
+// event link (e.g. https://calendly.com/your-name/30min). Falls back to a demo
+// link so the widget renders during development.
+export const CALENDLY_URL =
+  process.env.NEXT_PUBLIC_CALENDLY_URL ||
+  "https://calendly.com/digitalravenclaw/30min";
+
 export const BRAND_GRADIENT =
   "linear-gradient(135deg, #EA9D12, #D96016, #CC2829, #A7069B, #631DFE, #5A5DFE)";

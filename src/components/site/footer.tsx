@@ -23,11 +23,11 @@ const resourceLinks = [
 ];
 
 const socialIcons = [
-  { Icon: Facebook, color: "#1877F2", href: "https://www.facebook.com/" },
-  { Icon: Instagram, color: "#E4405F", href: "https://www.instagram.com/" },
-  { Icon: Linkedin, color: "#0A66C2", href: "https://www.linkedin.com/" },
-  { Icon: Youtube, color: "#FF0000", href: "https://youtube.com/" },
-  { Icon: Twitter, color: "#d5dee6", href: "https://twitter.com/" },
+  { Icon: Facebook, color: "#1877F2", href: "https://www.facebook.com/digitalravenclaw" },
+  { Icon: Instagram, color: "#E4405F", href: "https://www.instagram.com/digitalravenclaw" },
+  { Icon: Linkedin, color: "#0A66C2", href: "https://www.linkedin.com/company/digitalravenclaw" },
+  { Icon: Youtube, color: "#FF0000", href: "https://youtube.com/@digitalravenclaw" },
+  { Icon: Twitter, color: "#d5dee6", href: "https://x.com/digiravenclaw" },
 ];
 
 // Fixed dark footer — stays dark in both light and dark themes.

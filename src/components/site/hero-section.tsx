@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import BeyondClicks from "./beyond-clicks";
+import { CalendlyPopupButton } from "./calendly";
 import { WHATSAPP_LINK, BRAND_GRADIENT } from "@/lib/site-data";
 
 // Three.js touches window/canvas on mount, so it's loaded client-only and
@@ -63,6 +64,8 @@ export function HeroSection() {
                 View Portfolio
                 <ArrowRight size={16} />
               </button>
+
+              <CalendlyPopupButton />
 
               <a
                 href={WHATSAPP_LINK}
