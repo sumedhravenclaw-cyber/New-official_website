@@ -2,22 +2,28 @@ import { db } from "@/lib/db";
 import { caseStudies as staticCaseStudies, type CaseStudy } from "@/lib/site-data";
 
 export async function getAllCaseStudies(): Promise<CaseStudy[]> {
-  const dbStudies = await db.caseStudy.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  try {
+    const dbStudies = await db.caseStudy.findMany({
+      orderBy: { createdAt: "desc" },
+    });
 
-  const mapped: CaseStudy[] = dbStudies.map((s) => ({
-    id: s.slug,
-    client: s.client,
-    industry: s.industry as CaseStudy["industry"],
-    summary: s.summary,
-    metric: s.metric,
-    metricLabel: s.metricLabel,
-    image: s.image,
-    content: JSON.parse(s.content),
-  }));
+    const mapped: CaseStudy[] = dbStudies.map((s) => ({
+      id: s.slug,
+      client: s.client,
+      industry: s.industry as CaseStudy["industry"],
+      summary: s.summary,
+      metric: s.metric,
+      metricLabel: s.metricLabel,
+      image: s.image,
+      content: JSON.parse(s.content),
+    }));
 
-  return [...mapped, ...staticCaseStudies];
+    return [...mapped, ...staticCaseStudies];
+  } catch (err) {
+    // No database configured (e.g. free test deploy) — fall back to static content.
+    console.warn("Case studies DB unavailable, using static data only:", err);
+    return staticCaseStudies;
+  }
 }
 
 export function caseStudiesEmailHtml(studies: CaseStudy[], siteUrl: string) {

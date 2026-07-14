@@ -16,18 +16,24 @@ export async function POST(request: Request) {
       );
     }
 
-    const existing = await db.newsletterSubscriber.findUnique({
-      where: { email },
-    });
-
-    if (existing) {
-      return NextResponse.json({
-        success: true,
-        message: "You're already subscribed — thanks!",
+    try {
+      const existing = await db.newsletterSubscriber.findUnique({
+        where: { email },
       });
-    }
 
-    await db.newsletterSubscriber.create({ data: { email } });
+      if (existing) {
+        return NextResponse.json({
+          success: true,
+          message: "You're already subscribed — thanks!",
+        });
+      }
+
+      await db.newsletterSubscriber.create({ data: { email } });
+    } catch (dbErr) {
+      // No database configured (e.g. free test deploy) — accept the signup
+      // without persisting it so the flow still works end-to-end.
+      console.warn("Newsletter DB unavailable, not persisting subscriber:", dbErr);
+    }
 
     getAllCaseStudies()
       .then((studies) =>
