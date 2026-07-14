@@ -30,11 +30,38 @@ export function Navbar() {
   const [moreOpen, setMoreOpen] = useState(false);
   const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
   const moreRef = useRef<HTMLLIElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   const isHome = pathname === "/";
   // Detail views always show the scrolled (compact, blurred) navbar.
   const scrolled = isHome ? scrollScrolled : true;
+
+  // Publish the navbar's resting height as --nav-h so the hero's top padding and
+  // the phoenix can anchor to it. The bar is content-sized (the logo block is
+  // taller on narrow screens: 106px vs 90px), so a hardcoded value is wrong at
+  // some width — measure it instead.
+  //
+  // Measured from the inner row, whose height does NOT change on scroll, plus the
+  // at-rest py-4. Measuring the <nav> itself would shrink the value to py-3 the
+  // moment the user scrolls and yank the hero art upward.
+  useEffect(() => {
+    const el = barRef.current;
+    if (!el) return;
+    const publish = () => {
+      const rem =
+        parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+      const restHeight = el.getBoundingClientRect().height + 2 * rem; // py-4
+      document.documentElement.style.setProperty(
+        "--nav-h",
+        `${Math.round(restHeight)}px`
+      );
+    };
+    publish();
+    const ro = new ResizeObserver(publish);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!isHome) return;
@@ -84,7 +111,10 @@ export function Navbar() {
         scrolled ? "navbar-scrolled backdrop-blur-md py-3" : "navbar-top py-4"
       }`}
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6">
+      <div
+        ref={barRef}
+        className="max-w-7xl mx-auto flex items-center justify-between px-6"
+      >
         {/* Logo */}
         <SectionLink
           sectionId="home"

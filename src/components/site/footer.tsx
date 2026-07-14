@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Send, Facebook, Instagram, Linkedin, Youtube, Twitter } from "lucide-react";
+import { Send, } from "lucide-react";
 import { services } from "@/lib/site-data";
 import { SectionLink } from "./section-link";
 import { DetailLink } from "./detail-link";
+import { XIcon, ThreadsIcon, FacebookIcon, InstagramIcon, YoutubeIcon,LinkedinIcon } from "./brand-icons";
 
 const quickLinks = [
   { label: "Home", id: "home" },
@@ -23,11 +24,14 @@ const resourceLinks = [
 ];
 
 const socialIcons = [
-  { Icon: Facebook, color: "#1877F2", href: "https://www.facebook.com/digitalravenclaw" },
-  { Icon: Instagram, color: "#E4405F", href: "https://www.instagram.com/digitalravenclaw" },
-  { Icon: Linkedin, color: "#0A66C2", href: "https://www.linkedin.com/company/digitalravenclaw" },
-  { Icon: Youtube, color: "#FF0000", href: "https://youtube.com/@digitalravenclaw" },
-  { Icon: Twitter, color: "#d5dee6", href: "https://x.com/digiravenclaw" },
+  { Icon: FacebookIcon, label: "Facebook", color: "#1877F2", href: "https://www.facebook.com/digitalravenclaw" },
+  { Icon: InstagramIcon, label: "Instagram", color: "#E4405F", href: "https://www.instagram.com/digitalravenclaw" },
+  { Icon: LinkedinIcon, label: "LinkedIn", color: "#0A66C2", href: "https://www.linkedin.com/company/digitalravenclaw" },
+  { Icon: YoutubeIcon, label: "YouTube", color: "#FF0000", href: "https://youtube.com/@digitalravenclaw" },
+  // X and Threads are both black-on-white marks, so on this dark footer they take
+  // the off-white tint the old Twitter bird used rather than their brand black.
+  { Icon: XIcon, label: "X", color: "#d5dee6", href: "https://x.com/digiravenclaw" },
+  { Icon: ThreadsIcon, label: "Threads", color: "#d5dee6", href: "https://www.threads.com/@digitalravenclaw" },
 ];
 
 // Fixed dark footer — stays dark in both light and dark themes.
@@ -125,15 +129,15 @@ export function Footer() {
               creates impact.
             </p>
             <div className="flex items-center gap-3 flex-wrap justify-center">
-              {socialIcons.map(({ Icon, color, href }, index) => (
+              {socialIcons.map(({ Icon, label, color, href }) => (
                 <a
-                  key={index}
+                  key={label}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center w-10 h-10 rounded-full transition-transform hover:scale-110"
                   style={{ color }}
-                  aria-label="Social media"
+                  aria-label={label}
                 >
                   <Icon size={20} />
                 </a>

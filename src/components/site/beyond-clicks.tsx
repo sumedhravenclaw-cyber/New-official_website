@@ -88,7 +88,11 @@ export default function BeyondClicks() {
   return (
     <div
       className="beyond-clicks-stage relative w-full"
-      style={{ height: "clamp(200px, 64vmin, 620px)" }}
+      // The word stack only needs ~300px at desktop sizes; the old 64vmin/620px
+      // stage was mostly empty canvas and pushed the hero's CTA row off-screen.
+      // Kept just above the stack so the three CTAs stay above the fold even on
+      // a 700px-tall window.
+      style={{ height: "clamp(180px, 44vmin, 460px)" }}
       ref={scope}
     >
       <div className="beyond" style={BEYOND_POSITION}>BEYOND</div>

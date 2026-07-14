@@ -41,7 +41,7 @@ export function AboutSection() {
               alt="RavenClaw Bird"
               className="absolute bottom-[-15%] left-[-10%] h-[140%] md:h-[100%] lg:h-[130%] w-auto max-w-none object-contain object-left-bottom pointer-events-none select-none"
             />
-            {floatingDots.map((dot, i) => (
+            {/* {floatingDots.map((dot, i) => (
               <div
                 key={i}
                 className="absolute rounded-full animate-float pointer-events-none"
@@ -57,7 +57,7 @@ export function AboutSection() {
                   zIndex: 2,
                 }}
               />
-            ))}
+            ))} */}
           </div>
 
           {/* Middle: divider line */}

@@ -47,6 +47,10 @@
 :root {
   --radius: 0.625rem;
 
+  /* Height of the fixed navbar at rest (py-4 + 58px of content). The hero art
+     anchors to this so it can never slide up under the bar. */
+  --nav-h: 5.625rem; /* 90px */
+
   /* shadcn defaults */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -314,14 +318,41 @@
     opacity: 0.40;
   }
 
-  /* Hero phoenix spans Hero + About. The tail runs off the bottom edge of the
-     source PNG, so dissolve the last stretch rather than letting that crop read
-     as a hard trim. The image sits from -30% to 120% of the hero's height, which
-     puts the Hero/About seam at ~87% of it — hence the fade starting there, well
-     inside About and past the boundary. */
+  /* Hero phoenix: spans -30% to 120% of the hero — see the img in
+     hero-section.tsx — which puts the Hero/About seam at ~87% of the image
+     (1.30 / 1.50). These stops are tied to that geometry; retune them if the
+     img's height or bottom offset changes.
+
+     The 58% stop is anatomical, not geometric: it's where the bird's body ends and
+     the tail begins IN THE SOURCE PNG, so it stays put no matter how the image is
+     scaled.
+
+     Two things must be true at once: the tail has to visibly carry INTO About, and
+     About's copy has to stay readable on top of it. So rather than cutting the tail
+     off, the mask drops it to a low alpha and lets it ride to the image's bottom:
+
+       0–58%    full        — the bird's body, entirely inside the hero
+       58–87%   1 -> 0.35   — the tail dims as it approaches the seam
+       87–100%  0.35 -> 0   — a faint sweep through About, ending where the tail does
+
+     Reaching 0 exactly at the image's bottom edge also conceals the fact that the
+     tail runs off the edge of the source PNG, which would otherwise read as a hard
+     trim. */
   .phoenix-flow {
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 87%, transparent 99%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 87%, transparent 99%);
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 58%,
+      rgba(0, 0, 0, 0.35) 87%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 58%,
+      rgba(0, 0, 0, 0.35) 87%,
+      rgba(0, 0, 0, 0) 100%
+    );
   }
 }
 
