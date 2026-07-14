@@ -50,7 +50,7 @@ export function HeroSection() {
 
             <BeyondClicks />
 
-            <p className="text-base leading-relaxed text-muted md:text-lg max-w-xl">
+            <p className="text-base leading-relaxed text-muted md:text-l max-w-xl">
               {HERO_DESCRIPTION}
             </p>
 
