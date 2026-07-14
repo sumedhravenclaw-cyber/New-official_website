@@ -4,9 +4,6 @@ import { ArrowUpRight } from "lucide-react";
 import { useCalendlyPopup } from "./calendly";
 import { contactInfo } from "@/lib/site-data";
 
-// Fixed dark band — stays dark in both light and dark themes, like the footer.
-const BAND_BG = "#050505";
-
 export function LetsTalkSection() {
   const { open, loading } = useCalendlyPopup();
 
@@ -14,10 +11,12 @@ export function LetsTalkSection() {
     contactInfo.find((c) => c.icon === "Mail")?.value || "hello@ravenclaw.com";
 
   return (
+    // No background of its own: this band now follows the theme (white in light,
+    // black in dark) by inheriting the body's single surface colour, like every
+    // other section. That also lets the site-wide dot field show through.
     <section
       id="lets-talk"
-      className="relative overflow-hidden section-reveal"
-      style={{ backgroundColor: BAND_BG, color: "#FEFEFE" }}
+      className="relative overflow-hidden section-reveal text-ink"
     >
       {/* Top gradient hairline */}
       <div
@@ -38,7 +37,7 @@ export function LetsTalkSection() {
       />
 
       <div className="relative max-w-7xl mx-auto px-6 py-24 md:py-32 text-center">
-        <p className="text-xs font-bold tracking-widest uppercase mb-6 text-white/50">
+        <p className="text-xs font-bold tracking-widest uppercase mb-6 text-muted">
           Ready to take the next step?
         </p>
 
@@ -57,22 +56,22 @@ export function LetsTalkSection() {
             {loading ? "Loading…" : "Let's Talk"}
           </span>
           <ArrowUpRight
-            className="mt-2 h-[clamp(2rem,7vw,5rem)] w-[clamp(2rem,7vw,5rem)] text-white/70 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+            className="mt-2 h-[clamp(2rem,7vw,5rem)] w-[clamp(2rem,7vw,5rem)] text-ink opacity-70 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
             strokeWidth={1.5}
           />
         </button>
 
-        <p className="mx-auto mt-8 max-w-xl text-sm md:text-base leading-relaxed text-white/50">
+        <p className="mx-auto mt-8 max-w-xl text-sm md:text-base leading-relaxed text-muted">
           Ready to grow? We help brands and founders build a powerful digital
           presence with wisdom, creativity, and purpose. Book a free call and
           let&apos;s make it happen.
         </p>
 
-        <p className="mt-8 text-sm text-white/40">
+        <p className="mt-8 text-sm text-muted">
           Prefer email?{" "}
           <a
             href={`mailto:${email}`}
-            className="font-semibold text-white/70 underline-offset-4 hover:text-white hover:underline"
+            className="font-semibold text-ink underline-offset-4 hover:underline"
           >
             {email}
           </a>

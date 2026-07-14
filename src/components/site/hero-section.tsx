@@ -1,16 +1,9 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import BeyondClicks from "./beyond-clicks";
 import { CalendlyPopupButton } from "./calendly";
 import { WHATSAPP_LINK, BRAND_GRADIENT } from "@/lib/site-data";
-
-// Three.js touches window/canvas on mount, so it's loaded client-only and
-// kept out of the initial hero bundle.
-const Hero3D = dynamic(() => import("./hero-3d").then((m) => m.Hero3D), {
-  ssr: false,
-});
 
 const HERO_EYEBROW = "Digital Ravenclaw";
 
@@ -24,19 +17,23 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-screen overflow-hidden bg-surface pt-24 pb-0 flex items-center section-reveal"
+      className="relative z-10 min-h-screen pt-24 pb-0 flex items-center section-reveal"
     >
-      {/* Phoenix background image */}
+      {/* Phoenix. Sized in % of the hero (which is content-taller than 100vh),
+          and hung 20% BELOW the hero's bottom edge so the tail carries on into
+          the About section instead of being sheared off at the seam. Nothing
+          clips it: the hero no longer sets overflow-hidden, and <HeroAboutFlow>
+          — which does — wraps both sections. */}
       <div className="absolute inset-0 z-[1] pointer-events-none">
         <img
           src="/images/homeBird.png"
           alt="RavenClaw Phoenix"
-          className="absolute bottom-0 right-[-5%] h-[130%] w-auto max-w-none select-none object-contain opacity-90"
+          className="phoenix-flow absolute bottom-[-20%] right-[-12%] h-[150%] w-auto max-w-none select-none object-contain opacity-90"
         />
       </div>
 
-      {/* 3D ember particle field + gem cluster, brand-gradient colored */}
-      <Hero3D />
+      {/* The drifting dot field is no longer a hero-only layer — it's mounted
+          once in the root layout so it runs behind every page. */}
 
       {/* Content */}
       <div className="relative left-[5%] z-[3] mx-auto px-6 max-w-8xl w-full">

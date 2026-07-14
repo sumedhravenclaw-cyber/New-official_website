@@ -1,10 +1,11 @@
 "use client";
 
 import { whyChooseFeatures, stats } from "@/lib/site-data";
+import { CountUp } from "./count-up";
 
 export function WhyChooseUs() {
   return (
-    <section className="py-20 bg-surface">
+    <section className="py-20">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-12 section-reveal">
@@ -64,9 +65,10 @@ export function WhyChooseUs() {
                   <s.icon size={22} className="text-golden" />
                 </div>
                 <div>
-                  <div className="font-display font-black text-2xl text-white">
-                    {s.value}
-                  </div>
+                  <CountUp
+                    value={s.value}
+                    className="font-display font-black text-2xl text-white block"
+                  />
                   <div className="text-xs text-white/50 mt-0.5">{s.label}</div>
                 </div>
               </div>

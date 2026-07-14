@@ -41,7 +41,7 @@ export function CaseStudiesPage() {
       : caseStudies.filter((s) => s.industry === activeIndustry);
 
   return (
-    <main className="min-h-screen bg-surface pt-32 pb-24">
+    <main className="min-h-screen pt-32 pb-24">
       <div className="max-w-7xl mx-auto px-6">
         {/* Hero */}
         <header className="max-w-3xl mb-14 section-reveal">

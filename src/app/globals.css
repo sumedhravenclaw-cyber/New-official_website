@@ -81,7 +81,9 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   /* RavenClaw brand tokens */
-  --color-snow: #FEFEFE;
+  /* Light theme is a single continuous white surface — page, alt sections and
+     cards all share #FFFFFF, so separation comes from borders/shadows only. */
+  --color-snow: #FFFFFF;
   --color-charcoal: #050505;
   --color-golden: #EA9D12;
   --accent-violet: #631DFE;
@@ -91,17 +93,17 @@
   --text-h: #050505;
   --social-bg: rgba(5, 5, 5, 0.04);
   --rc-shadow: 0 8px 20px rgba(5, 5, 5, 0.08);
-  --surface-alt: #F5F5F5;
+  --surface-alt: #FFFFFF;
   --rc-card: #FFFFFF;
-  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-subtle: rgba(0, 0, 0, 0.08);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: oklch(0 0 0);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --card: oklch(0 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(0 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
@@ -130,19 +132,21 @@
   --sidebar-ring: oklch(0.556 0 0);
 
   /* RavenClaw dark brand tokens */
-  --color-snow: #0B0B10;
+  /* Dark theme mirrors light: one continuous #000000 surface across page,
+     alt sections and cards. Borders/shadows carry the separation. */
+  --color-snow: #000000;
   --color-charcoal: #F3F3F5;
   --color-golden: #F5B942;
   --accent-violet: #9A7BFE;
   --accent-bg: rgba(154, 123, 254, 0.16);
   --accent-border: rgba(154, 123, 254, 0.5);
-  --rc-border: rgba(255, 255, 255, 0.1);
+  --rc-border: rgba(255, 255, 255, 0.12);
   --text-h: #F3F3F5;
   --social-bg: rgba(255, 255, 255, 0.06);
-  --rc-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-  --surface-alt: #13131F;
-  --rc-card: #1C1C2E;
-  --border-subtle: rgba(255, 255, 255, 0.08);
+  --rc-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --surface-alt: #000000;
+  --rc-card: #000000;
+  --border-subtle: rgba(255, 255, 255, 0.12);
 }
 
 /* Garet font faces */
@@ -197,15 +201,17 @@
     background-clip: text;
   }
 
+  /* On the single-tone white/black surfaces a tinted panel would break the
+     flow, so glass keeps only a whisper of fill and leans on its border. */
   .glass {
-    background: rgba(254, 254, 254, 0.7);
+    background: rgba(255, 255, 255, 0.72);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(254, 254, 254, 0.3);
+    border: 1px solid rgba(5, 5, 5, 0.08);
   }
   .dark .glass {
-    background: rgba(28, 28, 46, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.12);
   }
 
   .glass-dark {
@@ -306,6 +312,16 @@
   .placeholder-muted::placeholder {
     color: var(--color-charcoal);
     opacity: 0.40;
+  }
+
+  /* Hero phoenix spans Hero + About. The tail runs off the bottom edge of the
+     source PNG, so dissolve the last stretch rather than letting that crop read
+     as a hard trim. The image sits from -30% to 120% of the hero's height, which
+     puts the Hero/About seam at ~87% of it — hence the fade starting there, well
+     inside About and past the boundary. */
+  .phoenix-flow {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 87%, transparent 99%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 87%, transparent 99%);
   }
 }
 

@@ -61,7 +61,7 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-20 bg-surface">
+    <section id="contact" className="py-20">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12 section-reveal">
           <p

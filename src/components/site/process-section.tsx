@@ -4,7 +4,7 @@ import { processSteps } from "@/lib/site-data";
 
 export function ProcessSection() {
   return (
-    <section className="py-24 bg-surface-alt relative overflow-hidden">
+    <section className="py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16 section-reveal">
           <span className="text-xs font-medium tracking-widest uppercase mb-4 block">
@@ -21,13 +21,28 @@ export function ProcessSection() {
 
         {/* Desktop timeline */}
         <div className="hidden lg:block relative">
+          {/* Gradient rail, capped with a dot at each end, colour-matched to the
+              gradient stop it sits on. */}
           <div
-            className="absolute left-1/2 top-16 bottom-16 w-0.5 -translate-x-1/2"
-            style={{
-              background:
-                "linear-gradient(180deg, #EA9D12, #5B9EFE, #A7069B, #631DFE, #5E9929, #CC2829)",
-            }}
-          />
+            className="absolute left-1/2 top-16 bottom-16 -translate-x-1/2 flex flex-col items-center"
+            aria-hidden="true"
+          >
+            <span
+              className="h-2.5 w-2.5 shrink-0 rounded-full"
+              style={{ background: "#EA9D12", boxShadow: "0 0 10px #EA9D1288" }}
+            />
+            <div
+              className="w-0.5 flex-1"
+              style={{
+                background:
+                  "linear-gradient(180deg, #EA9D12, #5B9EFE, #A7069B, #631DFE, #5E9929, #CC2829)",
+              }}
+            />
+            <span
+              className="h-2.5 w-2.5 shrink-0 rounded-full"
+              style={{ background: "#CC2829", boxShadow: "0 0 10px #CC282988" }}
+            />
+          </div>
 
           <div className="space-y-12">
             {processSteps.map((step, i) => (

@@ -27,7 +27,11 @@ const floatingDots = [
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-20 bg-surface-alt relative overflow-hidden">
+    // No background: the hero's phoenix tail sweeps in behind this section, and
+    // painting a surface here would slice it off again. overflow-hidden still
+    // clips this section's OWN bird and dots — the phoenix is a child of the
+    // hero, so it is unaffected by this clip.
+    <section id="about" className="py-20 relative z-10 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-10 items-center">
           {/* Left: bird image */}
@@ -35,7 +39,7 @@ export function AboutSection() {
             <img
               src="/images/bird.png"
               alt="RavenClaw Bird"
-              className="absolute bottom-[-15%] h-[140%] md:h-[100%] lg:h-[130%] w-auto max-w-none object-contain object-left-bottom pointer-events-none select-none"
+              className="absolute bottom-[-15%] left-[-10%] h-[140%] md:h-[100%] lg:h-[130%] w-auto max-w-none object-contain object-left-bottom pointer-events-none select-none"
             />
             {floatingDots.map((dot, i) => (
               <div

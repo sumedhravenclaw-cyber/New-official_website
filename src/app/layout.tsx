@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/site/theme-provider";
 import { Navbar } from "@/components/site/navbar";
 import { Footer } from "@/components/site/footer";
+import { SiteBackground } from "@/components/site/site-background";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -65,7 +66,11 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider>
-          <div className="min-h-screen flex flex-col bg-surface">
+          {/* Fixed layer: above the body's surface colour, beneath all content.
+              The shell and its sections are transparent, so the dots drift
+              behind every page. */}
+          <SiteBackground />
+          <div className="relative z-10 min-h-screen flex flex-col">
             <Navbar />
             <main className="flex-1">{children}</main>
             <Footer />

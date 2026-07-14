@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { HeroSection } from "./hero-section";
-import { AboutSection } from "./about-section";
+import { HeroAboutFlow } from "./hero-about-flow";
 import { WhyChooseUs } from "./why-choose-us";
 import { ServicesSection } from "./services-section";
 import { PortfolioSection } from "./portfolio-section";
@@ -32,8 +31,7 @@ export function HomeView() {
 
   return (
     <>
-      <HeroSection />
-      <AboutSection />
+      <HeroAboutFlow />
       <WhyChooseUs />
       <ServicesSection />
       <PortfolioSection />

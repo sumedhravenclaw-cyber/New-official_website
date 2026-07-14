@@ -6,7 +6,7 @@ import { DetailLink } from "@/components/site/detail-link";
 
 export function ServicesSection() {
   return (
-    <section id="services" className="py-20 bg-surface">
+    <section id="services" className="py-20">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12 section-reveal">
           <p

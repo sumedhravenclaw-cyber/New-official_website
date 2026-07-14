@@ -36,7 +36,7 @@ export function AboutPage() {
   return (
     <article className="pt-24">
       {/* Hero */}
-      <div className="relative pt-10 pb-16 px-6 bg-surface-alt overflow-hidden">
+      <div className="relative pt-10 pb-16 px-6 overflow-hidden">
         <div className="max-w-5xl mx-auto relative">
           <SectionLink
             sectionId="about"
@@ -51,7 +51,7 @@ export function AboutPage() {
               <img
                 src="/images/bird.png"
                 alt="RavenClaw Bird"
-                className="absolute top-3 bottom-0 h-[130%] w-auto max-w-none object-contain object-left-bottom pointer-events-none select-none animate-float"
+                className="absolute top-3 bottom-0 left-[-10%] h-[130%] w-auto max-w-none object-contain object-left-bottom pointer-events-none select-none animate-float"
                 style={{ animationDuration: "20s" }}
               />
             </div>

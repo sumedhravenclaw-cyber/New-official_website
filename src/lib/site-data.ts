@@ -6,7 +6,7 @@ import {
   Bot,
   Search,
   Lightbulb,
-  TestTube,
+  Columns2,
   Rocket,
   Users,
   Trophy,
@@ -400,7 +400,8 @@ export const processSteps: ProcessStep[] = [
   {
     number: "05",
     title: "Testing",
-    icon: TestTube,
+    // Split-pane icon: this step is A/B testing, not lab-bench QA.
+    icon: Columns2,
     desc: "Rigorous quality assurance across all devices and scenarios — we ship nothing that isn't perfect.",
     color: "#5E9929",
   },

@@ -16,6 +16,8 @@ const BRAND_COLORS = [
   "#5E9929", // green
 ];
 
+const COUNT = 1000; // mobile-safe baseline per three.js perf guidance
+
 function useReducedMotion() {
   // Lazy-initialized: this component only ever mounts client-side (loaded
   // via next/dynamic with ssr:false), so `window` is always available here.
@@ -31,12 +33,39 @@ function useReducedMotion() {
   return reduced;
 }
 
-/** Ambient particle field — brand-colored points drifting behind the hero copy. */
-function ParticleField({ reduced }: { reduced: boolean }) {
+/**
+ * A soft round sprite for the points.
+ *
+ * Without a map, three.js renders every point as a hard-edged square — which is
+ * exactly what these used to look like. The radial alpha falloff is what makes
+ * them read as dots.
+ */
+function makeDotTexture() {
+  const size = 64;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d")!;
+
+  const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+  g.addColorStop(0, "rgba(255,255,255,1)");
+  g.addColorStop(0.45, "rgba(255,255,255,0.95)");
+  g.addColorStop(1, "rgba(255,255,255,0)");
+
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+/** Ambient particle field — brand-colored dots drifting behind the whole site. */
+function DotField({ reduced }: { reduced: boolean }) {
   const pointsRef = useRef<THREE.Points>(null);
   const { viewport } = useThree();
-
-  const COUNT = 1000; // mobile-safe baseline per three.js perf guidance
 
   const { positions, colors } = useMemo(() => {
     const pos = new Float32Array(COUNT * 3);
@@ -57,6 +86,9 @@ function ParticleField({ reduced }: { reduced: boolean }) {
     return { positions: pos, colors: col };
   }, []);
 
+  const dotTexture = useMemo(makeDotTexture, []);
+  useEffect(() => () => dotTexture.dispose(), [dotTexture]);
+
   useFrame((state) => {
     if (reduced || !pointsRef.current) return;
     const t = state.clock.getElapsedTime();
@@ -71,7 +103,8 @@ function ParticleField({ reduced }: { reduced: boolean }) {
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
       <pointsMaterial
-        size={0.055}
+        map={dotTexture}
+        size={0.075}
         vertexColors
         transparent
         opacity={0.85}
@@ -82,27 +115,24 @@ function ParticleField({ reduced }: { reduced: boolean }) {
   );
 }
 
-function Scene({ reduced }: { reduced: boolean }) {
-  return (
-    <>
-      <ParticleField reduced={reduced} />
-    </>
-  );
-}
-
 /**
- * Full-bleed 3D layer for the hero. Sits behind the copy (pointer-events
- * none) and is skipped on very small viewports to keep mobile TTI low.
+ * Site-wide ambient dot field.
+ *
+ * Mounted once in the root layout as a fixed, pointer-events-none layer that
+ * sits above the page background but beneath all content, so the dots drift
+ * behind every page rather than only the hero. Sections are transparent (they
+ * share the body's single surface colour), which is what lets this show through.
+ *
+ * Skipped on very small viewports to keep mobile TTI low.
  */
-export function Hero3D() {
+export function DotsBackground() {
   const reduced = useReducedMotion();
-  // Skip the 3D layer on very small viewports to keep mobile TTI low.
   const [enabled] = useState(() => window.innerWidth >= 480);
 
   if (!enabled) return null;
 
   return (
-    <div className="absolute inset-0 z-[2] pointer-events-none">
+    <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
       <Canvas
         dpr={[1, 1.5]}
         camera={{ position: [0, 0, 8], fov: 45 }}
@@ -112,7 +142,7 @@ export function Hero3D() {
           powerPreference: "high-performance",
         }}
       >
-        <Scene reduced={reduced} />
+        <DotField reduced={reduced} />
       </Canvas>
     </div>
   );
