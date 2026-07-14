@@ -153,21 +153,10 @@
   --border-subtle: rgba(255, 255, 255, 0.12);
 }
 
-/* Garet font faces */
-@font-face {
-  font-family: 'Garet';
-  src: url('/fonts/Garet-Book.woff2') format('woff2'), url('/fonts/Garet-Book.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Garet';
-  src: url('/fonts/Garet-Heavy.woff2') format('woff2'), url('/fonts/Garet-Heavy.woff') format('woff');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
+/* Garet's @font-face rules used to live here. They now come from next/font/local
+   in layout.tsx (see the comment there) so the font is preloaded and gets a
+   metric-matched fallback — a hand-written @font-face gets neither, which made
+   text resize mid-load in production. --font-garet is what next/font exposes. */
 
 @layer base {
   * {
@@ -178,7 +167,9 @@
     scroll-behavior: smooth;
   }
   body {
-    font-family: 'Garet', var(--font-geist-sans), sans-serif;
+    /* --font-garet already expands to `garet, "garet Fallback", sans-serif`, so
+       the metric-matched fallback is baked into this one var. */
+    font-family: var(--font-garet), sans-serif;
     background-color: var(--color-snow) !important;
     color: var(--color-charcoal) !important;
     overflow-x: hidden;
@@ -188,7 +179,7 @@
 
 @layer utilities {
   .font-display {
-    font-family: 'Garet', var(--font-geist-sans), sans-serif;
+    font-family: var(--font-garet), sans-serif;
   }
 
   .text-gradient {
