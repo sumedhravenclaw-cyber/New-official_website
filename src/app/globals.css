@@ -461,7 +461,10 @@
 .dark .text-charcoal\/80 { color: rgba(243, 243, 245, 0.85) !important; }
 .dark .text-charcoal { color: rgb(243, 243, 245) !important; }
 
-/* ===== BeyondClicks hero animation ===== */
+/* ===== BeyondClicks hero animation =====
+   SIZE KNOBS: `.word` font-size scales Campaigns/Clicks/Competition,
+   `.beyond` font-size scales the rotated BEYOND. Stage height that reserves
+   room for both lives in components/site/beyond-clicks.tsx. */
 .beyond-clicks-stage .words {
   position: absolute;
   left: 6%;
@@ -483,7 +486,7 @@
   display: inline-block;
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   font-weight: 600;
-  font-size: clamp(1.75rem, 5.6vw, 4.75rem);
+  font-size: clamp(1.5rem, 4.9vw, 4.15rem);
   line-height: 1.25;
   white-space: nowrap;
   will-change: transform, opacity;
@@ -505,7 +508,7 @@
   transform-origin: center;
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   font-weight: 700;
-  font-size: clamp(0.85rem, 6vmin, 3rem);
+  font-size: clamp(0.75rem, 5.25vmin, 2.6rem);
   letter-spacing: 0.04em;
   white-space: nowrap;
   color: var(--color-charcoal);

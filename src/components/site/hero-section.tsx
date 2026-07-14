@@ -40,14 +40,14 @@ export function HeroSection() {
           // the bird is far wider than the text — it would sit right under the
           // headline. There it drops to a faint wash so the copy stays readable;
           // from xl up the grid splits and the bird has its own column.
-          className="phoenix-flow absolute bottom-[-20%] right-[-10%] h-[160%] w-auto max-w-none select-none object-contain opacity-20 xl:opacity-90"
+          className="phoenix-flow absolute bottom-[-20%] right-[-10%] h-[155%] w-auto max-w-none select-none object-contain opacity-20 xl:opacity-90"
         />
       </div>
 
       <div className="relative left-[5%] z-[3] mx-auto px-6 max-w-8xl w-full">
         <div className="grid items-center gap-8 xl:grid-cols-2">
           <div className="flex flex-col gap-6 reveal-left">
-            <div className="mt-9">
+            <div className="mt-8">
               <BeyondClicks />
             </div>
 
