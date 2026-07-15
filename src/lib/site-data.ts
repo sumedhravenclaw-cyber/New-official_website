@@ -685,7 +685,6 @@ export const clients: Client[] = [
   { name: "Black Diamond Agro", src: "/images/clients/27.png" },
   { name: "VidyaNext", src: "/images/clients/28.png" },
   { name: "eVidyaloka", src: "/images/clients/29.png" },
-  { name: "VidyaNext", src: "/images/clients/30.png" },
   { name: "Ace Jee", src: "/images/clients/31.png" },
   { name: "Foresta", src: "/images/clients/32.png" },
   { name: "Vruksh Ecosystem", src: "/images/clients/33.png" },

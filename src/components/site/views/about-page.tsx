@@ -12,14 +12,14 @@ import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 // used for the hero bird above. Replace name/role/bio placeholders with real copy.
 const team = [
   {
-    name: "Teammate One",
+    name: "Srushti Jaiswal",
     role: "Role / Title",
     bio: "One line about what they do and bring to the team.",
     img: "/images/team/teammate-1.jpg",
     color: "#EA9D12",
   },
   {
-    name: "Teammate Two",
+    name: "Sumedh Salve",
     role: "Role / Title",
     bio: "One line about what they do and bring to the team.",
     img: "/images/team/teammate-2.jpg",

@@ -15,20 +15,22 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       title={isDark ? "Switch to light theme" : "Switch to dark theme"}
       className={`theme-toggle relative flex items-center justify-center w-9 h-9 rounded-full flex-shrink-0 ${className}`}
     >
+      {/* Show the icon of the theme you'll switch TO: sun in dark mode,
+          moon in light mode. */}
       <Sun
         size={18}
         className={`absolute transition-all duration-300 ${
           isDark
-            ? "opacity-0 -rotate-90 scale-50"
-            : "opacity-100 rotate-0 scale-100"
+            ? "opacity-100 rotate-0 scale-100"
+            : "opacity-0 -rotate-90 scale-50"
         }`}
       />
       <Moon
         size={18}
         className={`absolute transition-all duration-300 ${
           isDark
-            ? "opacity-100 rotate-0 scale-100"
-            : "opacity-0 rotate-90 scale-50"
+            ? "opacity-0 rotate-90 scale-50"
+            : "opacity-100 rotate-0 scale-100"
         }`}
       />
     </button>

@@ -56,12 +56,7 @@ export function ClientsSection() {
           {track.map((client, i) => (
             <div
               key={`${client.name}-${i}`}
-              className="flex items-center justify-center mx-4 px-8 h-24 w-52 rounded-2xl border flex-shrink-0"
-              style={{
-                borderColor: "rgba(254, 254, 254, 0.08)",
-                backgroundColor: "rgba(254, 254, 254, 0.04)",
-                backdropFilter: "blur(20px)",
-              }}
+              className="flex items-center justify-center mx-4 px-8 h-24 w-52 flex-shrink-0"
             >
               <img
                 src={client.src}
