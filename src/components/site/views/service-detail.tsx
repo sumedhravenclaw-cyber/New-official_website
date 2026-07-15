@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { ArrowLeft, ArrowRight, Check, MessageCircle } from "lucide-react";
-import { services, getServiceBySlug } from "@/lib/site-data";
+import { services, getServiceBySlug, BRAND_GRADIENT } from "@/lib/site-data";
 import { SectionLink } from "@/components/site/section-link";
 import { DetailLink } from "@/components/site/detail-link";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
@@ -61,6 +61,108 @@ export function ServiceDetail({ slug }: { slug: string }) {
           </p>
         </div>
       </div>
+
+      {/* Packages / pricing boxes (only where defined, e.g. Web Development) */}
+      {service.packages && (
+        <section className="max-w-5xl mx-auto px-6 mt-16">
+          <div className="text-center mb-10 section-reveal">
+            <p
+              className="text-xs font-bold tracking-widest uppercase mb-2"
+              style={{ color: service.color }}
+            >
+              Packages
+            </p>
+            <h2 className="font-display font-black text-2xl md:text-3xl text-ink">
+              Pick a <span className="text-gradient">package</span>
+            </h2>
+            <p className="text-sm text-ink/60 mt-2 max-w-md mx-auto">
+              Fixed packages to launch fast, or a custom plan built around
+              exactly what you need.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 items-stretch">
+            {service.packages.map((pkg, i) => {
+              const pkgHref = `https://wa.me/918010049620?text=${encodeURIComponent(
+                `Hello RavenClaw, I'm interested in the ${pkg.name} package for web development.`
+              )}`;
+              return (
+                <div
+                  key={pkg.name}
+                  className={`section-reveal relative flex flex-col rounded-2xl p-6 card-hover ${
+                    pkg.highlight ? "shadow-xl md:-mt-2 md:mb-2" : ""
+                  }`}
+                  style={{
+                    background: pkg.highlight
+                      ? `${service.color}0F`
+                      : "var(--rc-card)",
+                    border: `${pkg.highlight ? 2 : 1}px solid ${
+                      pkg.highlight ? service.color : "var(--border-subtle)"
+                    }`,
+                    transitionDelay: `${i * 70}ms`,
+                  }}
+                >
+                  {pkg.badge && (
+                    <span
+                      className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white whitespace-nowrap"
+                      style={{ background: service.color }}
+                    >
+                      {pkg.badge}
+                    </span>
+                  )}
+
+                  <h3 className="font-display font-black text-lg text-ink mb-1">
+                    {pkg.name}
+                  </h3>
+                  <p className="text-[12px] text-ink/55 leading-relaxed mb-5 min-h-[32px]">
+                    {pkg.tagline}
+                  </p>
+
+                  <ul className="space-y-3 mb-6 flex-1">
+                    {pkg.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2.5">
+                        <span
+                          className="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
+                          style={{ background: `${service.color}20` }}
+                        >
+                          <Check
+                            size={10}
+                            strokeWidth={3}
+                            style={{ color: service.color }}
+                          />
+                        </span>
+                        <span className="text-[13px] text-ink/80 leading-snug">
+                          {f}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a
+                    href={pkgHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-auto inline-flex items-center justify-center gap-2 w-full font-display font-bold text-sm px-5 py-3 rounded-xl transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                    style={
+                      pkg.custom
+                        ? { background: BRAND_GRADIENT, color: "#fff" }
+                        : pkg.highlight
+                        ? { background: service.color, color: "#fff" }
+                        : {
+                            border: `2px solid ${service.color}`,
+                            color: service.color,
+                          }
+                    }
+                  >
+                    <MessageCircle size={15} />
+                    {pkg.cta}
+                  </a>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Body */}
       <div className="max-w-3xl mx-auto px-6 mt-14 pb-20">

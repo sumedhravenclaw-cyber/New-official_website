@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { ArrowLeft, CheckCircle2, MessageCircle, Target, Eye } from "lucide-react";
 import { aboutValues, missionVision, stats, WHATSAPP_LINK, BRAND_GRADIENT } from "@/lib/site-data";
 import { SectionLink } from "@/components/site/section-link";
+import { CountUp } from "@/components/site/count-up";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 // Swap `img` for the real teammate photo once uploaded — keep filenames in
@@ -219,13 +220,20 @@ export function AboutPage() {
               "linear-gradient(135deg, #050505 0%, #1a1a2e 50%, #16213e 100%)",
           }}
         >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y md:divide-y-0 md:divide-x divide-white/10">
+          <div className="grid grid-cols-2 md:grid-cols-4">
             {stats.map((s, i) => (
               <div
                 key={s.label}
-                className={`flex items-center gap-4 ${
-                  i > 0 ? "pt-5 md:pt-0 md:pl-6" : ""
-                }`}
+                className={[
+                  "flex items-center gap-4 px-4 py-4 md:py-2",
+                  // Mobile 2-col grid: a clean center cross — a vertical line
+                  // between the columns and a horizontal line between the rows.
+                  i % 2 === 1 ? "border-l border-white/10" : "",
+                  i >= 2 ? "border-t border-white/10" : "",
+                  // Desktop 4-col row: vertical dividers only, no top border.
+                  "md:border-t-0",
+                  i === 0 ? "md:border-l-0" : "md:border-l md:border-white/10",
+                ].join(" ")}
               >
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -234,9 +242,10 @@ export function AboutPage() {
                   <s.icon size={22} className="text-golden" />
                 </div>
                 <div>
-                  <div className="font-display font-black text-2xl text-white">
-                    {s.value}
-                  </div>
+                  <CountUp
+                    value={s.value}
+                    className="font-display font-black text-2xl text-white block"
+                  />
                   <div className="text-xs text-white/50 mt-0.5">{s.label}</div>
                 </div>
               </div>

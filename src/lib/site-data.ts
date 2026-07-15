@@ -20,6 +20,18 @@ import {
 } from "lucide-react";
 
 /* ============ SERVICES ============ */
+export interface ServicePackage {
+  name: string;
+  tagline: string;
+  features: string[];
+  cta: string;
+  /** Highlight the recommended tier (brand-coloured border + badge). */
+  highlight?: boolean;
+  badge?: string;
+  /** Premium "build your own" tier — rendered with the brand gradient CTA. */
+  custom?: boolean;
+}
+
 export interface Service {
   slug: string;
   icon: LucideIcon;
@@ -31,6 +43,8 @@ export interface Service {
   longDesc: string;
   features: string[];
   process: { title: string; desc: string }[];
+  /** Optional pricing tiers, shown as boxes on the detail page. */
+  packages?: ServicePackage[];
 }
 
 export const services: Service[] = [
@@ -55,6 +69,50 @@ export const services: Service[] = [
       { title: "Build", desc: "Iterative development with regular preview deploys." },
       { title: "Launch", desc: "QA, performance pass, and a smooth go-live." },
     ],
+    packages: [
+      {
+        name: "Starter Website",
+        tagline: "Get online fast with all the essentials covered.",
+        features: [
+          "5–7 pages",
+          "Responsive design",
+          "Basic SEO setup",
+          "Contact form",
+          "WhatsApp integration",
+          "1 month free support",
+        ],
+        cta: "Choose Starter",
+      },
+      {
+        name: "Business Website",
+        tagline: "For growing brands that need to convert and scale.",
+        highlight: true,
+        badge: "Most Popular",
+        features: [
+          "8–12 pages",
+          "Custom UI/UX",
+          "Blog setup",
+          "On-page SEO",
+          "Google Analytics",
+          "Search Console",
+          "Speed optimization",
+          "Basic chatbot",
+          "3 months support",
+        ],
+        cta: "Choose Business",
+      },
+      {
+        name: "Custom Plan",
+        tagline: "Mix, match and scale — built exactly around your goals.",
+        custom: true,
+        features: [
+          "Choose any combination instead of a fixed plan",
+          "Customize a bigger, tailored package",
+          "Everything in Business, plus your requirements",
+        ],
+        cta: "Build Your Plan",
+      },
+    ],
   },
   {
     slug: "ui-ux-design",
@@ -76,6 +134,49 @@ export const services: Service[] = [
       { title: "Research", desc: "Interviews and journey mapping to find real friction points." },
       { title: "Design", desc: "Wireframes to high-fidelity, interactive prototypes." },
       { title: "Validate", desc: "Usability tests before a single line of code is written." },
+    ],
+    packages: [
+      {
+        name: "Starter Design",
+        tagline: "A clean, usable interface for a focused product or page.",
+        features: [
+          "Up to 5 screens",
+          "Wireframes",
+          "Mobile-responsive layouts",
+          "1 revision round",
+          "Figma source files",
+          "1 month support",
+        ],
+        cta: "Choose Starter",
+      },
+      {
+        name: "Product Design",
+        tagline: "End-to-end product design your team can build straight from.",
+        highlight: true,
+        badge: "Most Popular",
+        features: [
+          "Up to 15 screens",
+          "User flows & journey mapping",
+          "Interactive prototype",
+          "Custom UI kit / design system",
+          "3 revision rounds",
+          "Usability review",
+          "Developer handoff",
+          "3 months support",
+        ],
+        cta: "Choose Product",
+      },
+      {
+        name: "Custom Plan",
+        tagline: "A design partnership scaled to your roadmap.",
+        custom: true,
+        features: [
+          "Choose any combination instead of a fixed plan",
+          "Full design system & component library",
+          "Ongoing design retainer available",
+        ],
+        cta: "Build Your Plan",
+      },
     ],
   },
   {
@@ -99,6 +200,49 @@ export const services: Service[] = [
       { title: "Identity", desc: "Logo, palette, type, and voice explored in parallel." },
       { title: "System", desc: "A guidelines doc your whole team can apply consistently." },
     ],
+    packages: [
+      {
+        name: "Starter Brand",
+        tagline: "The core identity a new business needs to launch.",
+        features: [
+          "Logo design (2 concepts)",
+          "Colour palette",
+          "Typography selection",
+          "Business card design",
+          "Social profile kit",
+          "1 month support",
+        ],
+        cta: "Choose Starter",
+      },
+      {
+        name: "Complete Brand",
+        tagline: "A full, consistent identity system across every touchpoint.",
+        highlight: true,
+        badge: "Most Popular",
+        features: [
+          "Logo suite (primary + variations)",
+          "Full brand guidelines",
+          "Colour & typography system",
+          "Brand voice & messaging",
+          "Stationery & templates",
+          "Social media kit",
+          "Launch asset pack",
+          "3 months support",
+        ],
+        cta: "Choose Complete",
+      },
+      {
+        name: "Custom Plan",
+        tagline: "Strategy-led branding shaped around your market.",
+        custom: true,
+        features: [
+          "Choose any combination instead of a fixed plan",
+          "Brand strategy workshops",
+          "Packaging & print collateral",
+        ],
+        cta: "Build Your Plan",
+      },
+    ],
   },
   {
     slug: "digital-marketing",
@@ -121,6 +265,49 @@ export const services: Service[] = [
       { title: "Campaign", desc: "Launch targeted, budgeted campaigns across channels." },
       { title: "Optimize", desc: "Monthly reporting with clear, actionable next steps." },
     ],
+    packages: [
+      {
+        name: "Starter Growth",
+        tagline: "Get visible on the channels that matter most.",
+        features: [
+          "2 channels (social + search)",
+          "SEO audit & basic setup",
+          "8 social posts / month",
+          "Google Business setup",
+          "Monthly performance report",
+          "1 month support",
+        ],
+        cta: "Choose Starter",
+      },
+      {
+        name: "Growth Engine",
+        tagline: "A full-funnel engine that turns reach into revenue.",
+        highlight: true,
+        badge: "Most Popular",
+        features: [
+          "Up to 4 channels",
+          "SEO & content strategy",
+          "Paid ad campaign management",
+          "16 social posts / month",
+          "Email & lifecycle marketing",
+          "Landing page optimization",
+          "Bi-weekly reporting & insights",
+          "3 months support",
+        ],
+        cta: "Choose Growth",
+      },
+      {
+        name: "Custom Plan",
+        tagline: "Multi-channel scaling with a dedicated strategist.",
+        custom: true,
+        features: [
+          "Choose any combination instead of a fixed plan",
+          "Dedicated growth strategist",
+          "Custom budget & channel mix",
+        ],
+        cta: "Build Your Plan",
+      },
+    ],
   },
   {
     slug: "ai-solutions",
@@ -142,6 +329,48 @@ export const services: Service[] = [
       { title: "Scope", desc: "Find the highest-leverage, lowest-risk place to start." },
       { title: "Prototype", desc: "A working proof of concept, fast, on real data." },
       { title: "Ship", desc: "Harden, evaluate, and integrate into your product." },
+    ],
+    packages: [
+      {
+        name: "Starter AI",
+        tagline: "Prove one high-value AI use case, fast.",
+        features: [
+          "1 use-case scoping",
+          "Chatbot or automation MVP",
+          "Single data-source integration",
+          "Prompt engineering & tuning",
+          "Deployment setup",
+          "1 month support",
+        ],
+        cta: "Choose Starter",
+      },
+      {
+        name: "AI Integration",
+        tagline: "Production-ready AI woven into your real workflows.",
+        highlight: true,
+        badge: "Most Popular",
+        features: [
+          "Multiple workflows automated",
+          "Custom AI agent / copilot",
+          "RAG on your own data",
+          "CRM & tool integrations",
+          "Evaluation & safety guardrails",
+          "Analytics dashboard",
+          "3 months support",
+        ],
+        cta: "Choose Integration",
+      },
+      {
+        name: "Custom Plan",
+        tagline: "Enterprise-grade AI systems built end to end.",
+        custom: true,
+        features: [
+          "Choose any combination instead of a fixed plan",
+          "Model fine-tuning & data pipelines",
+          "Ongoing model evaluation & support",
+        ],
+        cta: "Build Your Plan",
+      },
     ],
   },
 ];
