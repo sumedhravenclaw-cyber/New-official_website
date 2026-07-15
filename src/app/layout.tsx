@@ -44,14 +44,15 @@ const garet = localFont({
 export const metadata: Metadata = {
   title: "RavenClaw — Digital Agency for Web, Design, Branding & AI",
   description:
-    "RavenClaw is a digital agency crafting websites, UI/UX design, branding, digital marketing, and AI solutions that help businesses grow with wisdom, creativity, and purpose.",
+    "RavenClaw is a digital agency crafting websites, UI/UX design, branding, social media, performance marketing, and AI solutions that help businesses grow with wisdom, creativity, and purpose.",
   keywords: [
     "RavenClaw",
     "digital agency",
     "web development",
     "UI/UX design",
     "branding",
-    "digital marketing",
+    "social media",
+    "performance marketing",
     "AI solutions",
   ],
   authors: [{ name: "RavenClaw" }],

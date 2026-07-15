@@ -30,6 +30,17 @@ export function ServiceDetail({ slug }: { slug: string }) {
     `Hello RavenClaw, I'd like to discuss a ${service.title} project`
   )}`;
 
+  // Packages grid adapts to how many tiers a service offers: 3 stays a tidy
+  // 3-up row, while platform-style services with 4–5 packages spread wider.
+  const pkgCount = service.packages?.length ?? 0;
+  const pkgSectionMax = pkgCount >= 4 ? "max-w-7xl" : "max-w-5xl";
+  const pkgGridCols =
+    pkgCount >= 5
+      ? "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+      : pkgCount === 4
+      ? "sm:grid-cols-2 lg:grid-cols-4"
+      : "md:grid-cols-3";
+
   return (
     <article className="pt-24">
       {/* Hero */}
@@ -64,7 +75,7 @@ export function ServiceDetail({ slug }: { slug: string }) {
 
       {/* Packages / pricing boxes (only where defined, e.g. Web Development) */}
       {service.packages && (
-        <section className="max-w-5xl mx-auto px-6 mt-16">
+        <section className={`${pkgSectionMax} mx-auto px-6 mt-16`}>
           <div className="text-center mb-10 section-reveal">
             <p
               className="text-xs font-bold tracking-widest uppercase mb-2"
@@ -81,7 +92,7 @@ export function ServiceDetail({ slug }: { slug: string }) {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 items-stretch">
+          <div className={`grid ${pkgGridCols} gap-6 items-stretch`}>
             {service.packages.map((pkg, i) => {
               const pkgHref = `https://wa.me/918010049620?text=${encodeURIComponent(
                 `Hello RavenClaw, I'm interested in the ${pkg.name} package for web development.`
