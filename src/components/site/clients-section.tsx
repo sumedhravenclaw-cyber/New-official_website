@@ -2,8 +2,7 @@
 
 import { clients } from "@/lib/site-data";
 
-// Placeholder "logos" — a colored initial badge + name. Swap each entry
-// for a real client logo image once provided.
+// Duplicated once so the marquee (which translates -50%) loops seamlessly.
 const track = [...clients, ...clients];
 
 export function ClientsSection() {
@@ -57,25 +56,20 @@ export function ClientsSection() {
           {track.map((client, i) => (
             <div
               key={`${client.name}-${i}`}
-              className="flex items-center gap-3 mx-4 px-8 h-20 rounded-2xl border flex-shrink-0"
+              className="flex items-center justify-center mx-4 px-8 h-24 w-52 rounded-2xl border flex-shrink-0"
               style={{
-                borderColor: `${client.color}30`,
+                borderColor: "rgba(254, 254, 254, 0.08)",
                 backgroundColor: "rgba(254, 254, 254, 0.04)",
                 backdropFilter: "blur(20px)",
               }}
             >
-              <div
-                className="w-9 h-9 rounded-full flex items-center justify-center font-display font-bold text-sm flex-shrink-0"
-                style={{ background: `${client.color}20`, color: client.color }}
-              >
-                {client.name.charAt(0)}
-              </div>
-              <span
-                className="font-display font-bold text-sm whitespace-nowrap"
-                style={{ color: "#FEFEFE" }}
-              >
-                {client.name}
-              </span>
+              <img
+                src={client.src}
+                alt={`${client.name} logo`}
+                loading="lazy"
+                decoding="async"
+                className="max-h-14 w-auto object-contain opacity-90 transition-opacity duration-300 hover:opacity-100"
+              />
             </div>
           ))}
         </div>

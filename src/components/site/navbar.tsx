@@ -127,7 +127,7 @@ export function Navbar() {
             className="w-10 h-10 object-contain"
           />
           <p
-            className="text-[10px] font-bold uppercase tracking-widest sm:text-xs"
+            className="text-[10px]  uppercase tracking-widest sm:text-xs"
             style={{
               color: "#8B016D", 
               transform: `translateX(-50px)`,

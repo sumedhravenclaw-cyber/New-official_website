@@ -49,7 +49,8 @@
 
   /* Height of the fixed navbar at rest (py-4 + 58px of content). The hero art
      anchors to this so it can never slide up under the bar. */
-  --nav-h: 5.625rem; /* 90px */
+  --nav-h: 5.625rem;
+  /* 90px */
 
   /* shadcn defaults */
   --background: oklch(1 0 0);
@@ -163,9 +164,11 @@
     @apply border-border outline-ring/50;
     box-sizing: border-box;
   }
+
   html {
     scroll-behavior: smooth;
   }
+
   body {
     /* --font-garet already expands to `garet, "garet Fallback", sans-serif`, so
        the metric-matched fallback is baked into this one var. */
@@ -204,6 +207,7 @@
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(5, 5, 5, 0.08);
   }
+
   .dark .glass {
     background: rgba(255, 255, 255, 0.035);
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -219,6 +223,7 @@
   .card-hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
+
   .card-hover:hover {
     transform: translateY(-8px);
     box-shadow: 0 24px 60px rgba(99, 29, 254, 0.15);
@@ -229,6 +234,7 @@
     transform: translateY(40px);
     transition: opacity 0.7s ease, transform 0.7s ease;
   }
+
   .section-reveal.visible {
     opacity: 1;
     transform: translateY(0);
@@ -239,6 +245,7 @@
     transform: translateX(-50px);
     transition: opacity 0.7s ease, transform 0.7s ease;
   }
+
   .reveal-left.visible {
     opacity: 1;
     transform: translateX(0);
@@ -249,6 +256,7 @@
     transform: translateX(50px);
     transition: opacity 0.7s ease, transform 0.7s ease;
   }
+
   .reveal-right.visible {
     opacity: 1;
     transform: translateX(0);
@@ -258,52 +266,68 @@
   .bg-surface {
     background-color: var(--color-snow) !important;
   }
+
   .text-ink {
     color: var(--color-charcoal) !important;
   }
+
   .bg-accent-golden {
     background-color: var(--color-golden) !important;
   }
+
   .text-accent-golden {
     color: var(--color-golden) !important;
   }
+
   .text-violet {
     color: var(--accent-violet) !important;
   }
+
   .bg-violet {
     background-color: var(--accent-violet) !important;
   }
+
   .text-snow {
     color: var(--color-snow) !important;
   }
+
   .bg-ink {
     background-color: var(--color-charcoal) !important;
   }
+
   .text-golden {
     color: var(--color-golden) !important;
   }
+
   .text-crimson {
     color: #CC2829 !important;
   }
+
   .bg-charcoal {
     background-color: var(--color-charcoal) !important;
   }
+
   .border-surface {
     border-color: var(--rc-border) !important;
   }
+
   .bg-surface-alt {
     background-color: var(--surface-alt) !important;
   }
+
   .bg-card {
     background-color: var(--rc-card) !important;
   }
+
   .border-subtle {
     border-color: var(--border-subtle) !important;
   }
+
   .text-muted {
     color: var(--color-charcoal);
     opacity: 0.72;
   }
+
   .placeholder-muted::placeholder {
     color: var(--color-charcoal);
     opacity: 0.40;
@@ -330,20 +354,16 @@
      tail runs off the edge of the source PNG, which would otherwise read as a hard
      trim. */
   .phoenix-flow {
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      #000 0%,
-      #000 58%,
-      rgba(0, 0, 0, 0.35) 87%,
-      rgba(0, 0, 0, 0) 100%
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      #000 0%,
-      #000 58%,
-      rgba(0, 0, 0, 0.35) 87%,
-      rgba(0, 0, 0, 0) 100%
-    );
+    -webkit-mask-image: linear-gradient(to bottom,
+        #000 0%,
+        #000 58%,
+        rgba(0, 0, 0, 0.35) 87%,
+        rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(to bottom,
+        #000 0%,
+        #000 58%,
+        rgba(0, 0, 0, 0.35) 87%,
+        rgba(0, 0, 0, 0) 100%);
   }
 }
 
@@ -351,18 +371,22 @@
 .navbar {
   transition: background-color 0.4s ease, box-shadow 0.4s ease;
 }
+
 .navbar-top {
   background-color: var(--color-snow) !important;
 }
+
 .navbar-scrolled {
   background-color: color-mix(in srgb, var(--color-snow) 92%, transparent) !important;
   box-shadow: var(--rc-shadow);
 }
+
 .navbar-dropdown {
   background-color: var(--color-snow) !important;
   border: 1px solid var(--rc-border);
   box-shadow: var(--rc-shadow);
 }
+
 .navbar-mobile-panel {
   background-color: var(--color-snow) !important;
   border-top: 1px solid var(--rc-border);
@@ -375,10 +399,12 @@
   color: var(--color-charcoal);
   transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
 }
+
 .theme-toggle:hover {
   box-shadow: 0 4px 14px var(--accent-bg);
   border-color: var(--accent-border);
 }
+
 .theme-toggle:focus-visible {
   outline: 2px solid var(--accent-violet);
   outline-offset: 2px;
@@ -386,33 +412,65 @@
 
 /* ===== Animations ===== */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-18px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-18px);
+  }
 }
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
 
 @keyframes fadeSlide {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 .animate-fadeSlide {
   animation: fadeSlide 0.5s ease forwards;
 }
 
 @keyframes fadeInUp {
-  0% { opacity: 0; transform: translateY(30px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 .animate-fade-in-up {
   animation: fadeInUp 0.6s ease forwards;
 }
 
 @keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
+
 .gradient-bg {
   background: linear-gradient(135deg, #EA9D12, #D96016, #CC2829, #A7069B, #631DFE, #5A5DFE, #5B9EFE, #5E9929);
   background-size: 300% 300%;
@@ -420,15 +478,23 @@
 }
 
 @keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
+
 .animate-marquee {
-  animation: marquee 30s linear infinite;
+  animation: marquee 60s linear infinite;
 }
+
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee {
     animation: none;
@@ -439,27 +505,60 @@
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--surface-alt);
 }
+
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #631DFE, #A7069B);
   border-radius: 3px;
 }
 
 /* Dark mode border flips */
-.dark .border-black\/5 { border-color: rgba(255, 255, 255, 0.06) !important; }
-.dark .border-black\/8 { border-color: rgba(255, 255, 255, 0.09) !important; }
-.dark .border-black\/10 { border-color: rgba(255, 255, 255, 0.12) !important; }
+.dark .border-black\/5 {
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
 
-.dark .text-charcoal\/40 { color: rgba(243, 243, 245, 0.45) !important; }
-.dark .text-charcoal\/50 { color: rgba(243, 243, 245, 0.55) !important; }
-.dark .text-charcoal\/55 { color: rgba(243, 243, 245, 0.60) !important; }
-.dark .text-charcoal\/60 { color: rgba(243, 243, 245, 0.65) !important; }
-.dark .text-charcoal\/65 { color: rgba(243, 243, 245, 0.70) !important; }
-.dark .text-charcoal\/70 { color: rgba(243, 243, 245, 0.75) !important; }
-.dark .text-charcoal\/80 { color: rgba(243, 243, 245, 0.85) !important; }
-.dark .text-charcoal { color: rgb(243, 243, 245) !important; }
+.dark .border-black\/8 {
+  border-color: rgba(255, 255, 255, 0.09) !important;
+}
+
+.dark .border-black\/10 {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.dark .text-charcoal\/40 {
+  color: rgba(243, 243, 245, 0.45) !important;
+}
+
+.dark .text-charcoal\/50 {
+  color: rgba(243, 243, 245, 0.55) !important;
+}
+
+.dark .text-charcoal\/55 {
+  color: rgba(243, 243, 245, 0.60) !important;
+}
+
+.dark .text-charcoal\/60 {
+  color: rgba(243, 243, 245, 0.65) !important;
+}
+
+.dark .text-charcoal\/65 {
+  color: rgba(243, 243, 245, 0.70) !important;
+}
+
+.dark .text-charcoal\/70 {
+  color: rgba(243, 243, 245, 0.75) !important;
+}
+
+.dark .text-charcoal\/80 {
+  color: rgba(243, 243, 245, 0.85) !important;
+}
+
+.dark .text-charcoal {
+  color: rgb(243, 243, 245) !important;
+}
 
 /* ===== BeyondClicks hero animation =====
    SIZE KNOBS: `.word` font-size scales Campaigns/Clicks/Competition,
@@ -476,12 +575,14 @@
   gap: 0.18em;
   z-index: 1;
 }
+
 .beyond-clicks-stage .line {
   display: block;
   overflow: hidden;
   line-height: 1.25;
   padding: 0.05em 0.06em 0.15em 0;
 }
+
 .beyond-clicks-stage .word {
   display: inline-block;
   font-family: var(--font-geist-sans), system-ui, sans-serif;
@@ -500,6 +601,7 @@
   color: transparent;
   opacity: 0;
 }
+
 .beyond-clicks-stage .beyond {
   position: absolute;
   left: 8%;

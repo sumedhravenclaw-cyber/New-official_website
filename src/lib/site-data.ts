@@ -368,7 +368,6 @@ export const services: Service[] = [
           "Creative & copy guidance",
           "Conversion tracking setup",
           "Monthly performance report",
-          "1 month support",
         ],
         cta: "Choose Starter",
       },
@@ -385,7 +384,6 @@ export const services: Service[] = [
           "Weekly optimization",
           "Bi-weekly reporting & insights",
           "Dedicated ads manager",
-          "3 months support",
         ],
         cta: "Choose Growth",
       },
@@ -489,9 +487,45 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "social-growth-engine",
+    title: "Social Growth Engine",
+    category: "Social Media",
+    type: "Social Media",
+    img: "https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    color: "#EA9D12",
+    client: "GlowUp Skincare",
+    year: "2026",
+    description:
+      "A full-funnel social presence across Instagram, LinkedIn and YouTube — strategy, scripting, editing, and done-for-you posting that turned a quiet brand into a consistent inbound channel.",
+    highlights: [
+      "Followers up 4.3x in five months",
+      "1.2M organic monthly views",
+      "38% of new leads sourced from social",
+    ],
+    tags: ["Instagram", "LinkedIn", "YouTube", "Content Strategy"],
+  },
+  {
+    slug: "ai-support-copilot",
+    title: "AI Support Copilot",
+    category: "AI Solutions",
+    type: "AI Solutions",
+    img: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    color: "#631DFE",
+    client: "Nimbus SaaS",
+    year: "2026",
+    description:
+      "A retrieval-augmented support copilot trained on the client's docs and tickets — deflecting routine questions and drafting agent replies grounded in real, approved content.",
+    highlights: [
+      "62% of tickets auto-resolved",
+      "First-response time down 74%",
+      "Grounded on 4,000+ help articles",
+    ],
+    tags: ["RAG", "LLM", "Automation", "Support"],
+  },
+  {
     slug: "fintech-website",
     title: "Fintech Website",
-    category: "Websites",
+    category: "Web Development",
     type: "Web Development",
     img: "https://images.pexels.com/photos/7567441/pexels-photo-7567441.jpeg?auto=compress&cs=tinysrgb&w=1200",
     color: "#5B9EFE",
@@ -509,7 +543,7 @@ export const projects: Project[] = [
   {
     slug: "travelgo",
     title: "TravelGo",
-    category: "Websites",
+    category: "Web Development",
     type: "Web Development",
     img: "https://images.pexels.com/photos/1051075/pexels-photo-1051075.jpeg?auto=compress&cs=tinysrgb&w=1200",
     color: "#5E9929",
@@ -545,7 +579,7 @@ export const projects: Project[] = [
   {
     slug: "dashboard-ui",
     title: "Dashboard UI",
-    category: "UI/UX",
+    category: "UI/UX Design",
     type: "UI/UX Design",
     img: "https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=1200",
     color: "#631DFE",
@@ -563,8 +597,8 @@ export const projects: Project[] = [
   {
     slug: "marketing-campaign",
     title: "Marketing Campaign",
-    category: "Marketing",
-    type: "Digital Marketing",
+    category: "Performance Marketing",
+    type: "Performance Marketing",
     img: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=1200",
     color: "#A7069B",
     client: "BloomTech",
@@ -581,7 +615,7 @@ export const projects: Project[] = [
   {
     slug: "ecommerce-store",
     title: "E-Commerce Store",
-    category: "Websites",
+    category: "Web Development",
     type: "Web Development",
     img: "https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=1200",
     color: "#CC2829",
@@ -602,25 +636,66 @@ export function getProjectBySlug(slug: string | undefined): Project | undefined 
   return projects.find((p) => p.slug === slug);
 }
 
-export const portfolioCategories = ["All", "Websites", "Branding", "UI/UX", "Marketing"];
+export const portfolioCategories = [
+  "All",
+  "Web Development",
+  "UI/UX Design",
+  "Branding",
+  "Social Media",
+  "Performance Marketing",
+  "AI Solutions",
+];
 
 /* ============ CLIENTS ============ */
-// Placeholder client roster for the "Our Clients" marquee — swap these
-// names for real client names/logos once provided.
+// Real client logos for the "Our Clients" marquee. Source art is the "black"
+// (dark-background) logo set; each file is trimmed and normalised to a 200px
+// height in /public/images/clients/. `name` is used for image alt text.
 export interface Client {
   name: string;
-  color: string;
+  src: string;
 }
 
 export const clients: Client[] = [
-  { name: "Client One", color: "#EA9D12" },
-  { name: "Client Two", color: "#D96016" },
-  { name: "Client Three", color: "#CC2829" },
-  { name: "Client Four", color: "#A7069B" },
-  { name: "Client Five", color: "#631DFE" },
-  { name: "Client Six", color: "#5A5DFE" },
-  { name: "Client Seven", color: "#5B9EFE" },
-  { name: "Client Eight", color: "#5E9929" },
+  { name: "Minimal Wave", src: "/images/clients/1.png" },
+  { name: "Aarya Singhania", src: "/images/clients/2.png" },
+  { name: "Just Another Tale", src: "/images/clients/3.png" },
+  { name: "Arcadix", src: "/images/clients/4.png" },
+  { name: "Aarya Singhania", src: "/images/clients/5.png" },
+  { name: "Client", src: "/images/clients/6.png" },
+  { name: "Haven Holic", src: "/images/clients/7.png" },
+  { name: "Talent Triathlon", src: "/images/clients/8.png" },
+  { name: "Shivam Fitness", src: "/images/clients/9.png" },
+  { name: "Homeschooling Luv", src: "/images/clients/10.png" },
+  { name: "Team Kapoor", src: "/images/clients/11.png" },
+  { name: "HomeLife", src: "/images/clients/12.png" },
+  { name: "L&B Opticals", src: "/images/clients/13.png" },
+  { name: "L&B Opticals", src: "/images/clients/14.png" },
+  { name: "Zone", src: "/images/clients/15.png" },
+  { name: "Spectronix", src: "/images/clients/16.png" },
+  { name: "Laumep Buhfer", src: "/images/clients/17.png" },
+  { name: "Web Shala", src: "/images/clients/18.png" },
+  { name: "Sparkling Nest", src: "/images/clients/19.png" },
+  { name: "Entersoft", src: "/images/clients/20.png" },
+  { name: "The Machi", src: "/images/clients/21.png" },
+  { name: "Affinity Mortgage", src: "/images/clients/22.png" },
+  { name: "Tarang Patel", src: "/images/clients/23.png" },
+  { name: "Exotica", src: "/images/clients/24.png" },
+  { name: "Tripoclan", src: "/images/clients/25.png" },
+  { name: "Sambhali", src: "/images/clients/26.png" },
+  { name: "Black Diamond Agro", src: "/images/clients/27.png" },
+  { name: "VidyaNext", src: "/images/clients/28.png" },
+  { name: "eVidyaloka", src: "/images/clients/29.png" },
+  { name: "VidyaNext", src: "/images/clients/30.png" },
+  { name: "Ace Jee", src: "/images/clients/31.png" },
+  { name: "Foresta", src: "/images/clients/32.png" },
+  { name: "Vruksh Ecosystem", src: "/images/clients/33.png" },
+  { name: "HighYield", src: "/images/clients/34.png" },
+  { name: "ProSofos", src: "/images/clients/35.png" },
+  { name: "Honey Bunny", src: "/images/clients/36.png" },
+  { name: "Shital's Gift Collection", src: "/images/clients/37.png" },
+  { name: "Shital's Homemade Bakery", src: "/images/clients/38.png" },
+  { name: "Shital's Homemade", src: "/images/clients/39.png" },
+  { name: "Shital's Souvenir Center", src: "/images/clients/40.png" },
 ];
 
 /* ============ TESTIMONIALS ============ */
