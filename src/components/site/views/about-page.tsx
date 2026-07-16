@@ -7,22 +7,24 @@ import { SectionLink } from "@/components/site/section-link";
 import { CountUp } from "@/components/site/count-up";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
-// Swap `img` for the real teammate photo once uploaded — keep filenames in
-// /public/images/team/ to match the /images/bird.png public-path pattern
-// used for the hero bird above. Replace name/role/bio placeholders with real copy.
+// Photos live in /public/images/teammates/, named after the teammate.
+// `objectPosition` tunes the square crop per photo so the face keeps headroom —
+// portrait-ratio sources need a top-biased crop, square sources are uncropped.
 const team = [
   {
     name: "Srushti Jaiswal",
-    role: "Role / Title",
-    bio: "One line about what they do and bring to the team.",
-    img: "/images/team/teammate-1.jpg",
+    role: "Founder",
+    bio: `Leads brand strategy and performance marketing, helping businesses grow with creative, data-driven solutions.`,
+    img: "/images/teammates/srushti.jpeg",
+    objectPosition: "50% 20%",
     color: "#EA9D12",
   },
   {
     name: "Sumedh Salve",
-    role: "Role / Title",
-    bio: "One line about what they do and bring to the team.",
-    img: "/images/team/teammate-2.jpg",
+    role: "Co-Founder",
+    bio: `Builds high-performing websites and creates engaging content that helps brands stand out.`,
+    img: "/images/teammates/sumedh.jpeg",
+    objectPosition: "50% 50%",
     color: "#5B9EFE",
   },
 ];
@@ -88,21 +90,12 @@ export function AboutPage() {
             Our Story
           </h2>
           <p className="text-sm text-ink/70 leading-relaxed mb-4">
-            RavenClaw was born from the idea that marketing should be driven by
-            intelligent thinking, not just trends. Inspired by the timeless
-            values of Ravenclaw — intelligence, wisdom, wit, and creativity — we
-            set out to build an agency that values thoughtful strategy as much
-            as exceptional execution. In a world filled with noise, we focus on
-            creating meaningful experiences that connect brands with people.
-            Every project we take on is an opportunity to solve problems
-            creatively, tell compelling stories, and help businesses grow with
-            confidence. Our journey is fueled by curiosity, continuous learning,
-            and a passion for creating work that stands the test of time.
+            Ravenclaw was founded on a simple belief: the best ideas come from intelligent thinking. Inspired by the Ravenclaw values of intelligence, wisdom, wit, and creativity, we blend strategy, design, technology, and marketing to build brands that leave a lasting impact.
+
+From branding and web development to digital marketing and AI, everything we create is driven by purpose, innovation, and measurable results. Our mission is simple, to help businesses grow through smart ideas and exceptional execution.
           </p>
           <p className="text-sm text-ink/70 leading-relaxed">
-            Today we work across web development, design, branding, marketing,
-            and AI — but the goal hasn&apos;t changed: build things that make a
-            measurable difference for the businesses we work with.
+            
           </p>
         </section>
 
@@ -125,15 +118,15 @@ export function AboutPage() {
                   className="w-full aspect-square rounded-xl mb-4 overflow-hidden flex items-center justify-center"
                   style={{ background: `${member.color}15` }}
                 >
-                  {/* Swap this img src for a real import from
-                      /public/images/team/ once teammate photos are
-                      uploaded — same pattern as the bird image above.
-                      Until then this falls back to a colored placeholder
-                      if the file 404s. */}
+                  {/* Falls back to the colored placeholder behind it if the
+                      file 404s. */}
                   <img
                     src={member.img}
-                    alt={member.name}
+                    alt={`${member.name}, ${member.role}`}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
+                    style={{ objectPosition: member.objectPosition }}
                     onError={(e) => {
                       e.currentTarget.style.display = "none";
                     }}
@@ -184,7 +177,7 @@ export function AboutPage() {
         {/* Values */}
         <section className="mb-16 section-reveal">
           <h2 className="font-display font-bold text-lg text-ink mb-6">
-            What We Stand For
+            Our Core Values
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {aboutValues.map((v) => (
@@ -197,11 +190,11 @@ export function AboutPage() {
                 }}
               >
                 <div className="flex items-center gap-2.5 mb-2">
-                  <CheckCircle2
+                  {/* <CheckCircle2
                     size={18}
                     style={{ color: v.color }}
                     className="flex-shrink-0"
-                  />
+                  /> */}
                   <h3 className="font-display font-bold text-ink text-sm">
                     {v.label}
                   </h3>

@@ -835,9 +835,9 @@ export interface Stat {
 }
 
 export const stats: Stat[] = [
-  { icon: Users, value: "150+", label: "Happy Clients" },
-  { icon: Trophy, value: "200+", label: "Projects Completed" },
-  { icon: Star, value: "5+", label: "Years Experience" },
+  { icon: Users, value: "50+", label: "Happy Clients" },
+  { icon: Trophy, value: "120+", label: "Projects Completed" },
+  { icon: Star, value: "7+", label: "Years Experience" },
   { icon: Star, value: "50+", label: "Positive Reviews" },
 ];
 
@@ -850,24 +850,24 @@ export interface Value {
 
 export const aboutValues: Value[] = [
   {
-    label: "Creative Thinking",
+    label: "🧠 Intelligence ",
     color: "#EA9D12",
-    desc: "We approach every brief like it's the first one — no recycled templates, no shortcuts on ideas.",
+    desc: "Every strategy is backed by research and insights.",
   },
   {
-    label: "Innovative Solutions",
+    label: "💡 Wit",
     color: "#5E9929",
-    desc: "We stay close to new tools and techniques so your project benefits from what's actually working today.",
+    desc: "We think differently to solve challenges creatively.",
   },
   {
-    label: "Quality & Reliability",
+    label: "📖 Wisdom",
     color: "#5B9EFE",
-    desc: "Deadlines are commitments. What we ship is tested, polished, and built to last.",
+    desc: "Experience and continuous learning guide our decisions. ",
   },
   {
-    label: "Client First Approach",
+    label: "🎨 Creativity",
     color: "#631DFE",
-    desc: "Your goals set the direction. We're transparent about tradeoffs and honest about what will and won't work.",
+    desc: "Original ideas that help brands stand out and connect. ",
   },
 ];
 
@@ -882,13 +882,13 @@ export const missionVision = [
   {
     icon: Target,
     title: "Our Mission",
-    desc: "Help businesses grow with digital experiences that are as effective as they are memorable.",
+    desc: "To help businesses grow through intelligent strategies, creative ideas, and impactful digital solutions driven by intelligence, wit, wisdom, and creativity. ",
     color: "#631DFE",
   },
   {
     icon: Eye,
     title: "Our Vision",
-    desc: "To be the studio businesses trust with the digital work that actually moves the needle.",
+    desc: "To be a trusted digital partner that transforms brands through innovation, creativity, and smart execution. ",
     color: "#A7069B",
   },
 ];
