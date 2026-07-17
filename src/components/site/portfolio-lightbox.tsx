@@ -146,43 +146,49 @@ export function PortfolioLightbox({ posts, index, onClose, onNavigate }: Props) 
         className="relative z-[1] flex flex-col items-center max-h-full"
         onClick={(e) => e.stopPropagation()}
       >
-        {post.video ? (
-          <div className="relative">
-            <video
+        {/* Same frame as the grid card the visitor clicked: hairline brand
+            border, a margin of open space, transparent fill. Here that margin
+            reads as the dark backdrop rather than the page. */}
+        <div
+          className="relative rounded-2xl p-2 shadow-2xl"
+          style={{ border: `2px solid ${post.color}` }}
+        >
+          {post.video ? (
+            <>
+              <video
+                key={post.slug}
+                ref={videoRef}
+                src={post.video}
+                poster={post.src}
+                width={post.w}
+                height={post.h}
+                controls
+                loop
+                playsInline
+                aria-label={`${post.title} reel${post.client ? ` for ${post.client}` : ""}`}
+                className="max-h-[78vh] w-auto max-w-full object-contain rounded-lg block"
+              />
+              {blocked && (
+                <button
+                  onClick={unmute}
+                  className="absolute top-5 left-5 inline-flex items-center gap-1.5 px-3 h-11 rounded-full text-xs font-bold text-white bg-black/70 hover:bg-black/85 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white cursor-pointer"
+                >
+                  <Volume2 size={14} />
+                  Tap for sound
+                </button>
+              )}
+            </>
+          ) : (
+            <img
               key={post.slug}
-              ref={videoRef}
-              src={post.video}
-              poster={post.src}
+              src={post.src}
+              alt={`${post.title} social media post${post.client ? ` for ${post.client}` : ""}`}
               width={post.w}
               height={post.h}
-              controls
-              loop
-              playsInline
-              aria-label={`${post.title} reel${post.client ? ` for ${post.client}` : ""}`}
-              className="max-h-[80vh] w-auto max-w-full object-contain rounded-xl shadow-2xl"
-              style={{ border: `2px solid ${post.color}` }}
+              className="max-h-[78vh] w-auto max-w-full object-contain rounded-lg block"
             />
-            {blocked && (
-              <button
-                onClick={unmute}
-                className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-3 h-11 rounded-full text-xs font-bold text-white bg-black/70 hover:bg-black/85 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white cursor-pointer"
-              >
-                <Volume2 size={14} />
-                Tap for sound
-              </button>
-            )}
-          </div>
-        ) : (
-          <img
-            key={post.slug}
-            src={post.src}
-            alt={`${post.title} social media post${post.client ? ` for ${post.client}` : ""}`}
-            width={post.w}
-            height={post.h}
-            className="max-h-[80vh] w-auto max-w-full object-contain rounded-xl shadow-2xl"
-            style={{ border: `2px solid ${post.color}` }}
-          />
-        )}
+          )}
+        </div>
         <figcaption className="mt-4 text-center">
           <p className="font-display font-bold text-white text-sm">
             {post.title}

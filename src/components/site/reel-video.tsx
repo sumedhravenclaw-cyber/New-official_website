@@ -126,7 +126,7 @@ export function ReelVideo({
         height={post.h}
         loading="lazy"
         decoding="async"
-        className="w-full h-auto block"
+        className="w-full h-full block"
       />
     );
   }
@@ -146,7 +146,7 @@ export function ReelVideo({
       preload={hoverMode ? "metadata" : "none"}
       aria-label={`${post.title} reel${post.client ? ` for ${post.client}` : ""}`}
       onError={() => setFailed(true)}
-      className="w-full h-auto block"
+      className="w-full h-full block"
     />
   );
 }

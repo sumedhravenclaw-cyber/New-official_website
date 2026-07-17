@@ -14,29 +14,57 @@ import { ReelVideo } from "@/components/site/reel-video";
 const SOCIAL = "Social Media";
 
 /**
- * A masonry column count per breakpoint. Columns (rather than a fixed-cell
- * grid) let every piece keep its true aspect ratio: these posts have copy baked
- * into the artwork, so cropping them to uniform tiles would cut off headlines
- * and contact details.
+ * Masonry columns per breakpoint. Columns (not a fixed-cell grid) let every
+ * piece keep its true aspect ratio — these posts have copy baked into the
+ * artwork, so cropping to uniform tiles would slice off headlines and contact
+ * details.
  */
 const COLUMNS = "columns-2 sm:columns-3 lg:columns-4 xl:columns-5";
+
+/**
+ * Spread reels evenly through the stills instead of letting them clump. The
+ * cadence is measured in *stills* — one reel every `stills / reels` cards —
+ * because reels are slotted between stills as we walk the still run. Measuring
+ * against total posts (stills + reels) overshoots the run and dumps the last
+ * reels at the end, so the divisor is deliberately the still count alone.
+ *
+ * Order is otherwise preserved, and the same order feeds the lightbox so its
+ * prev/next matches what the eye sees.
+ */
+function interleaveReels(posts: SocialPost[]): SocialPost[] {
+  const reels = posts.filter((p) => p.video);
+  const stills = posts.filter((p) => !p.video);
+  if (!reels.length || !stills.length) return posts;
+
+  const step = stills.length / reels.length;
+  const out: SocialPost[] = [];
+  let r = 0;
+  let nextReelAt = step / 2; // first reel lands mid-way into the opening run
+  stills.forEach((still, i) => {
+    while (r < reels.length && i >= nextReelAt) {
+      out.push(reels[r++]);
+      nextReelAt += step;
+    }
+    out.push(still);
+  });
+  while (r < reels.length) out.push(reels[r++]); // guard: any rounding remainder
+  return out;
+}
 
 export function PortfolioSection() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   /**
-   * Off by default, and deliberately so: browsers refuse to start audio until
-   * the visitor has clicked something, and this toggle is that click. Once it's
-   * on, hovering a reel plays it with sound; it doubles as the stop control
-   * WCAG requires for audio that starts on its own.
+   * Off by default: browsers refuse audio until the visitor clicks something,
+   * and this toggle is that click. Once on, hovering a reel plays it with sound;
+   * it doubles as the stop control WCAG requires for auto-starting audio.
    */
   const [soundOn, setSoundOn] = useState(false);
 
   const showSocial = activeFilter === "All" || activeFilter === SOCIAL;
 
-  // The lightbox steps through whatever social work is currently on screen.
   const visibleSocial: SocialPost[] = useMemo(
-    () => (showSocial ? socialPosts : []),
+    () => (showSocial ? interleaveReels(socialPosts) : []),
     [showSocial]
   );
 
@@ -49,7 +77,6 @@ export function PortfolioSection() {
   );
 
   const isEmpty = visibleSocial.length === 0 && visibleProjects.length === 0;
-  // No reels on screen means nothing to unmute — don't offer a dead control.
   const hasReels = visibleSocial.some((p) => p.video);
 
   return (
@@ -84,7 +111,7 @@ export function PortfolioSection() {
                   setActiveFilter(cat);
                   setLightboxIndex(null);
                 }}
-                className={`px-5 py-3 rounded-full text-sm font-semibold leading-5 transition-all duration-300 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet ${
+                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet ${
                   active
                     ? "text-white shadow-md"
                     : "bg-card border border-black/8 text-ink hover:border-violet/30"
@@ -132,7 +159,7 @@ export function PortfolioSection() {
                   post.video
                     ? `Play ${post.title} reel${
                         post.client ? ` for ${post.client}` : ""
-                      } with sound`
+                      }`
                     : `View ${post.title}${
                         post.client ? ` for ${post.client}` : ""
                       } full size`
@@ -159,8 +186,8 @@ export function PortfolioSection() {
                   />
                 )}
 
-                {/* Caption rides in on hover/focus; the artwork stays unobscured at rest. */}
-                <div className="absolute inset-x-0 bottom-0 p-3 pt-8 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300">
+                {/* Caption + metrics ride in on hover/focus; artwork clear at rest. */}
+                <div className="absolute inset-x-0 bottom-0 p-3 pt-8 bg-gradient-to-t from-black/85 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300">
                   <p className="font-display font-bold text-white text-xs leading-tight">
                     {post.title}
                   </p>
@@ -170,20 +197,27 @@ export function PortfolioSection() {
                     </p>
                   )}
                 </div>
-                {/* Reels loop silently, so the badge stays visible to advertise
-                    that sound exists behind a click. Stills only need the
-                    zoom affordance on hover. */}
+
+                {/* Reels loop silently, so the badge stays visible and carries
+                    the duration. Stills only get the zoom affordance on hover. */}
                 <span
-                  className={`absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center transition-opacity duration-300 ${
+                  className={`absolute top-2 right-2 h-7 rounded-full flex items-center justify-center gap-1 transition-opacity duration-300 ${
                     post.video
-                      ? "opacity-90"
-                      : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"
+                      ? "px-2 opacity-90"
+                      : "w-7 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"
                   }`}
                   style={{ background: `${post.color}E6` }}
                   aria-hidden="true"
                 >
                   {post.video ? (
-                    <Play size={12} className="text-white fill-white" />
+                    <>
+                      <Play size={11} className="text-white fill-white" />
+                      {post.dur && (
+                        <span className="text-[10px] font-bold text-white">
+                          {post.dur}
+                        </span>
+                      )}
+                    </>
                   ) : (
                     <Maximize2 size={12} className="text-white" />
                   )}
@@ -200,8 +234,7 @@ export function PortfolioSection() {
                   animationDelay: `${Math.min(visibleSocial.length + i, 12) * 45}ms`,
                 }}
               >
-                {/* Stock photography, unlike the social posts, carries no copy —
-                    so a uniform 4:3 crop is safe here. */}
+                {/* Stock photography carries no copy, so a uniform 4:3 crop is safe. */}
                 <img
                   src={project.img}
                   alt={project.title}
