@@ -636,6 +636,327 @@ export function getProjectBySlug(slug: string | undefined): Project | undefined 
   return projects.find((p) => p.slug === slug);
 }
 
+/* ============ SOCIAL MEDIA WORK ============ */
+// Real client work, extracted from the agency's Canva portfolio deck and
+// re-encoded to WebP. Each entry is a finished post — branding is baked into
+// the artwork, so these render as-is with no overlaid text.
+// `w`/`h` are the true pixel dimensions: the masonry relies on them to reserve
+// space before load (prevents layout shift) and to keep every post uncropped.
+// `client` is set only where the artwork itself names the client.
+export interface SocialPost {
+  slug: string;
+  src: string;
+  title: string;
+  client?: string;
+  w: number;
+  h: number;
+  color: string;
+  /**
+   * Path to an MP4 for pieces that are reels rather than static posts. When
+   * set, `src` doubles as the poster frame, so the card still shows the
+   * artwork before the video loads (or if it never does).
+   *
+   * Browsers refuse to autoplay audible video, so reels loop muted in the grid
+   * and only gain sound in the lightbox, where the visitor's click supplies the
+   * user gesture that unlocks audio.
+   */
+  video?: string;
+}
+
+export const socialPosts: SocialPost[] = [
+  {
+    slug: "lb-opticals-gandhi-jayanti",
+    src: "/images/portfolio/social/lb-opticals-gandhi-jayanti.webp",
+    title: "Gandhi Jayanti",
+    client: "L&B Opticals",
+    w: 891,
+    h: 1000,
+    color: "#631DFE",
+  },
+  {
+    slug: "anishas-art-independence-day",
+    src: "/images/portfolio/social/anishas-art-independence-day.webp",
+    title: "Independence Day",
+    client: "Anisha's Art Academy",
+    w: 1000,
+    h: 1000,
+    color: "#EA9D12",
+  },
+  {
+    slug: "lb-opticals-labour-day",
+    src: "/images/portfolio/social/lb-opticals-labour-day.webp",
+    title: "Labour Day",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#5E9929",
+  },
+  {
+    slug: "lb-opticals-mahavir-jayanti",
+    src: "/images/portfolio/social/lb-opticals-mahavir-jayanti.webp",
+    title: "Mahavir Jayanti",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#CC2829",
+  },
+  {
+    slug: "lb-opticals-mothers-day",
+    src: "/images/portfolio/social/lb-opticals-mothers-day.webp",
+    title: "Mother's Day",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#5B9EFE",
+  },
+  {
+    slug: "fitness-reel-01",
+    src: "/images/portfolio/social/fitness-reel-01.webp",
+    title: "Fitness Reel",
+    w: 563,
+    h: 1000,
+    color: "#A7069B",
+  },
+  {
+    slug: "fitness-reel-02",
+    src: "/images/portfolio/social/fitness-reel-02.webp",
+    title: "Fitness Reel",
+    w: 563,
+    h: 1000,
+    color: "#631DFE",
+  },
+  {
+    slug: "fitness-reel-03",
+    src: "/images/portfolio/social/fitness-reel-03.webp",
+    title: "Fitness Reel",
+    w: 563,
+    h: 1000,
+    color: "#EA9D12",
+  },
+  {
+    slug: "fitness-reel-04",
+    src: "/images/portfolio/social/fitness-reel-04.webp",
+    title: "Fitness Reel",
+    w: 563,
+    h: 1000,
+    color: "#5E9929",
+  },
+  {
+    slug: "gym-photography-01",
+    src: "/images/portfolio/social/gym-photography-01.webp",
+    title: "Gym Photography",
+    w: 667,
+    h: 1000,
+    color: "#CC2829",
+  },
+  {
+    slug: "gym-photography-02",
+    src: "/images/portfolio/social/gym-photography-02.webp",
+    title: "Gym Photography",
+    w: 667,
+    h: 1000,
+    color: "#5B9EFE",
+  },
+  {
+    slug: "gym-photography-03",
+    src: "/images/portfolio/social/gym-photography-03.webp",
+    title: "Gym Photography",
+    w: 648,
+    h: 1000,
+    color: "#A7069B",
+  },
+  {
+    slug: "gym-photography-04",
+    src: "/images/portfolio/social/gym-photography-04.webp",
+    title: "Gym Photography",
+    w: 667,
+    h: 1000,
+    color: "#631DFE",
+  },
+  {
+    slug: "gym-photography-05",
+    src: "/images/portfolio/social/gym-photography-05.webp",
+    title: "Gym Photography",
+    w: 667,
+    h: 1000,
+    color: "#EA9D12",
+  },
+  {
+    slug: "gym-photography-06",
+    src: "/images/portfolio/social/gym-photography-06.webp",
+    title: "Gym Photography",
+    w: 1000,
+    h: 667,
+    color: "#5E9929",
+  },
+  {
+    slug: "food-photography-01",
+    src: "/images/portfolio/social/food-photography-01.webp",
+    title: "Food Photography",
+    w: 1000,
+    h: 666,
+    color: "#CC2829",
+  },
+  {
+    slug: "food-photography-02",
+    src: "/images/portfolio/social/food-photography-02.webp",
+    title: "Food Photography",
+    w: 666,
+    h: 1000,
+    color: "#5B9EFE",
+  },
+  {
+    slug: "food-photography-03",
+    src: "/images/portfolio/social/food-photography-03.webp",
+    title: "Food Photography",
+    w: 1000,
+    h: 666,
+    color: "#A7069B",
+  },
+  {
+    slug: "food-photography-04",
+    src: "/images/portfolio/social/food-photography-04.webp",
+    title: "Food Photography",
+    w: 1000,
+    h: 666,
+    color: "#631DFE",
+  },
+  {
+    slug: "anishas-art-student-feature",
+    src: "/images/portfolio/social/anishas-art-student-feature.webp",
+    title: "Student Feature",
+    client: "Anisha's Art Academy",
+    w: 474,
+    h: 1000,
+    color: "#EA9D12",
+  },
+  {
+    slug: "lb-opticals-neon-reel",
+    src: "/images/portfolio/social/lb-opticals-neon-reel.webp",
+    title: "Brand Reel",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#5E9929",
+  },
+  {
+    slug: "real-estate-willow-way",
+    src: "/images/portfolio/social/real-estate-willow-way.webp",
+    title: "Property Tour",
+    w: 563,
+    h: 1000,
+    color: "#CC2829",
+  },
+  {
+    slug: "eyewear-product-01",
+    src: "/images/portfolio/social/eyewear-product-01.webp",
+    title: "Product Shot",
+    client: "L&B Opticals",
+    w: 820,
+    h: 820,
+    color: "#5B9EFE",
+  },
+  {
+    slug: "eyewear-product-02",
+    src: "/images/portfolio/social/eyewear-product-02.webp",
+    title: "Product Shot",
+    client: "L&B Opticals",
+    w: 820,
+    h: 820,
+    color: "#A7069B",
+  },
+  {
+    slug: "lb-opticals-store-01",
+    src: "/images/portfolio/social/lb-opticals-store-01.webp",
+    title: "In-Store Campaign",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#631DFE",
+  },
+  {
+    slug: "lb-opticals-store-02",
+    src: "/images/portfolio/social/lb-opticals-store-02.webp",
+    title: "In-Store Campaign",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#EA9D12",
+  },
+  {
+    slug: "lb-opticals-store-03",
+    src: "/images/portfolio/social/lb-opticals-store-03.webp",
+    title: "In-Store Campaign",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#5E9929",
+  },
+  {
+    slug: "lb-opticals-store-04",
+    src: "/images/portfolio/social/lb-opticals-store-04.webp",
+    title: "In-Store Campaign",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#CC2829",
+  },
+  {
+    slug: "lb-opticals-store-05",
+    src: "/images/portfolio/social/lb-opticals-store-05.webp",
+    title: "In-Store Campaign",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#5B9EFE",
+  },
+  {
+    slug: "lb-opticals-store-06",
+    src: "/images/portfolio/social/lb-opticals-store-06.webp",
+    title: "In-Store Campaign",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#A7069B",
+  },
+  {
+    slug: "lb-opticals-store-07",
+    src: "/images/portfolio/social/lb-opticals-store-07.webp",
+    title: "In-Store Campaign",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#631DFE",
+  },
+  {
+    slug: "lb-opticals-store-08",
+    src: "/images/portfolio/social/lb-opticals-store-08.webp",
+    title: "In-Store Campaign",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#EA9D12",
+  },
+  {
+    slug: "lb-opticals-store-09",
+    src: "/images/portfolio/social/lb-opticals-store-09.webp",
+    title: "In-Store Campaign",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#5E9929",
+  },
+  {
+    slug: "lb-opticals-store-10",
+    src: "/images/portfolio/social/lb-opticals-store-10.webp",
+    title: "In-Store Campaign",
+    client: "L&B Opticals",
+    w: 563,
+    h: 1000,
+    color: "#CC2829",
+  },
+];
+
 export const portfolioCategories = [
   "All",
   "Web Development",
