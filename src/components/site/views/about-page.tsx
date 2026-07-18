@@ -2,32 +2,19 @@
 
 import { useEffect } from "react";
 import { ArrowLeft, CheckCircle2, MessageCircle, Target, Eye } from "lucide-react";
-import { aboutValues, missionVision, stats, WHATSAPP_LINK, BRAND_GRADIENT } from "@/lib/site-data";
+import {
+  aboutStory,
+  aboutValues,
+  missionVision,
+  stats,
+  team,
+  WHATSAPP_LINK,
+  BRAND_GRADIENT,
+} from "@/lib/site-data";
 import { SectionLink } from "@/components/site/section-link";
 import { CountUp } from "@/components/site/count-up";
+import { LinkedinIcon } from "@/components/site/brand-icons";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
-
-// Photos live in /public/images/teammates/, named after the teammate.
-// `objectPosition` tunes the square crop per photo so the face keeps headroom —
-// portrait-ratio sources need a top-biased crop, square sources are uncropped.
-const team = [
-  {
-    name: "Srushti Jaiswal",
-    role: "Founder",
-    bio: `Leads brand strategy and performance marketing, helping businesses grow with creative, data-driven solutions.`,
-    img: "/images/teammates/srushti.jpeg",
-    objectPosition: "50% 20%",
-    color: "#EA9D12",
-  },
-  {
-    name: "Sumedh Salve",
-    role: "Co-Founder",
-    bio: `Builds high-performing websites and creates engaging content that helps brands stand out.`,
-    img: "/images/teammates/sumedh.jpeg",
-    objectPosition: "50% 50%",
-    color: "#5B9EFE",
-  },
-];
 
 export function AboutPage() {
   useScrollReveal([]);
@@ -89,14 +76,11 @@ export function AboutPage() {
           <h2 className="font-display font-bold text-lg text-ink mb-4">
             Our Story
           </h2>
-          <p className="text-sm text-ink/70 leading-relaxed mb-4">
-            Ravenclaw was founded on a simple belief: the best ideas come from intelligent thinking. Inspired by the Ravenclaw values of intelligence, wisdom, wit, and creativity, we blend strategy, design, technology, and marketing to build brands that leave a lasting impact.
-
-From branding and web development to digital marketing and AI, everything we create is driven by purpose, innovation, and measurable results. Our mission is simple, to help businesses grow through smart ideas and exceptional execution.
-          </p>
-          <p className="text-sm text-ink/70 leading-relaxed">
-            
-          </p>
+          {aboutStory.map((para) => (
+            <p key={para} className="text-sm text-ink/70 leading-relaxed mb-4">
+              {para}
+            </p>
+          ))}
         </section>
 
         {/* Meet the Team */}
@@ -144,6 +128,16 @@ From branding and web development to digital marketing and AI, everything we cre
                 <p className="text-xs text-ink/60 leading-relaxed">
                   {member.bio}
                 </p>
+                <a
+                  href={member.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${member.name} on LinkedIn`}
+                  className="mt-3 w-10 h-10 rounded-full inline-flex items-center justify-center transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet"
+                  style={{ background: "#0A66C215", color: "#0A66C2" }}
+                >
+                  <LinkedinIcon size={18} />
+                </a>
               </div>
             ))}
           </div>

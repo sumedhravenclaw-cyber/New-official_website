@@ -483,152 +483,161 @@ export interface Project {
   description: string;
   highlights: string[];
   tags: string[];
+  /** Live website URL — the card and detail page link out to it. */
+  link?: string;
+  /** Companion app store listing (e.g. Google Play), shown on the detail page. */
+  appLink?: string;
 }
 
 export const projects: Project[] = [
+  // {
+  //   slug: "social-growth-engine",
+  //   title: "Social Growth Engine",
+  //   category: "Social Media",
+  //   type: "Social Media",
+  //   img: "https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  //   color: "#EA9D12",
+  //   client: "GlowUp Skincare",
+  //   year: "2026",
+  //   description:
+  //     "A full-funnel social presence across Instagram, LinkedIn and YouTube — strategy, scripting, editing, and done-for-you posting that turned a quiet brand into a consistent inbound channel.",
+  //   highlights: [
+  //     "Followers up 4.3x in five months",
+  //     "1.2M organic monthly views",
+  //     "38% of new leads sourced from social",
+  //   ],
+  //   tags: ["Instagram", "LinkedIn", "YouTube", "Content Strategy"],
+  // },
+  // {
+  //   slug: "ai-support-copilot",
+  //   title: "AI Support Copilot",
+  //   category: "AI Solutions",
+  //   type: "AI Solutions",
+  //   img: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  //   color: "#631DFE",
+  //   client: "Nimbus SaaS",
+  //   year: "2026",
+  //   description:
+  //     "A retrieval-augmented support copilot trained on the client's docs and tickets — deflecting routine questions and drafting agent replies grounded in real, approved content.",
+  //   highlights: [
+  //     "62% of tickets auto-resolved",
+  //     "First-response time down 74%",
+  //     "Grounded on 4,000+ help articles",
+  //   ],
+  //   tags: ["RAG", "LLM", "Automation", "Support"],
+  // },
   {
-    slug: "social-growth-engine",
-    title: "Social Growth Engine",
-    category: "Social Media",
-    type: "Social Media",
-    img: "https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    color: "#EA9D12",
-    client: "GlowUp Skincare",
-    year: "2026",
-    description:
-      "A full-funnel social presence across Instagram, LinkedIn and YouTube — strategy, scripting, editing, and done-for-you posting that turned a quiet brand into a consistent inbound channel.",
-    highlights: [
-      "Followers up 4.3x in five months",
-      "1.2M organic monthly views",
-      "38% of new leads sourced from social",
-    ],
-    tags: ["Instagram", "LinkedIn", "YouTube", "Content Strategy"],
-  },
-  {
-    slug: "ai-support-copilot",
-    title: "AI Support Copilot",
-    category: "AI Solutions",
-    type: "AI Solutions",
-    img: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    color: "#631DFE",
-    client: "Nimbus SaaS",
-    year: "2026",
-    description:
-      "A retrieval-augmented support copilot trained on the client's docs and tickets — deflecting routine questions and drafting agent replies grounded in real, approved content.",
-    highlights: [
-      "62% of tickets auto-resolved",
-      "First-response time down 74%",
-      "Grounded on 4,000+ help articles",
-    ],
-    tags: ["RAG", "LLM", "Automation", "Support"],
-  },
-  {
-    slug: "fintech-website",
-    title: "Fintech Website",
+    slug: "aj-design-co",
+    title: "AJ Design Co.",
     category: "Web Development",
     type: "Web Development",
-    img: "https://images.pexels.com/photos/7567441/pexels-photo-7567441.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    img: "/images/portfolio/web/ajdesignco.webp",
     color: "#5B9EFE",
-    client: "Confidential Fintech Client",
-    year: "2025",
+    client: "AJ Design",
+    year: "2026",
     description:
-      "A full rebuild of a fintech platform's public site — faster load times, a clearer product story, and a conversion-focused signup flow.",
+      "A premium website for AJ Design, an interior design studio in Gorakhpur — an image-led showcase of residential, commercial, retail, hospitality and healthcare projects, built to feel as considered as the interiors it presents.",
     highlights: [
-      "Cut page load time by 60%",
-      "Sign-up conversion up 34%",
-      "Fully WCAG-accessible components",
+      "Elegant, image-forward project showcase",
+      "Six service verticals presented in depth",
+      "Built with Next.js, deployed on Vercel",
     ],
-    tags: ["React", "Next.js", "Tailwind CSS", "Stripe"],
+    tags: ["Next.js", "Vercel", "Responsive Design", "SEO"],
+    link: "https://www.ajdesignco.in/",
   },
   {
-    slug: "travelgo",
-    title: "TravelGo",
+    slug: "travilo",
+    title: "Travilo",
     category: "Web Development",
     type: "Web Development",
-    img: "https://images.pexels.com/photos/1051075/pexels-photo-1051075.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    color: "#5E9929",
-    client: "TravelGo",
-    year: "2025",
-    description:
-      "A booking-first travel platform with rich destination content, live pricing, and a checkout designed to convert on mobile.",
-    highlights: [
-      "Mobile bookings up 2.1x",
-      "Sub-second search response",
-      "Integrated with 3 booking APIs",
-    ],
-    tags: ["React", "Node.js", "PostgreSQL", "Mapbox"],
-  },
-  {
-    slug: "brand-identity",
-    title: "Brand Identity",
-    category: "Branding",
-    type: "Branding",
-    img: "https://images.pexels.com/photos/3944405/pexels-photo-3944405.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    color: "#EA9D12",
-    client: "Serene Spaces",
-    year: "2024",
-    description:
-      "A ground-up identity system — logo, palette, type, and a guidelines doc the client's team uses across every touchpoint.",
-    highlights: [
-      "Full brand guidelines delivered",
-      "Launch-ready social & print kit",
-      "Consistent identity across 12 channels",
-    ],
-    tags: ["Brand Strategy", "Logo Design", "Guidelines", "Packaging"],
-  },
-  {
-    slug: "dashboard-ui",
-    title: "Dashboard UI",
-    category: "UI/UX Design",
-    type: "UI/UX Design",
-    img: "https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    color: "#631DFE",
-    client: "NovaPrime Solutions",
-    year: "2025",
-    description:
-      "An internal analytics dashboard redesigned around the tasks users actually do daily — fewer clicks, clearer data, less training.",
-    highlights: [
-      "Task completion time down 45%",
-      "Support tickets down 30%",
-      "Full component library handed off",
-    ],
-    tags: ["Figma", "Design System", "Data Visualization"],
-  },
-  {
-    slug: "marketing-campaign",
-    title: "Marketing Campaign",
-    category: "Performance Marketing",
-    type: "Performance Marketing",
-    img: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    color: "#A7069B",
-    client: "BloomTech",
-    year: "2025",
-    description:
-      "A quarter-long, multi-channel campaign spanning paid social, search, and email — built around one consistent launch narrative.",
-    highlights: [
-      "3.2x return on ad spend",
-      "45k qualified leads generated",
-      "CAC reduced by 28%",
-    ],
-    tags: ["Paid Social", "SEO", "Email Marketing", "Analytics"],
-  },
-  {
-    slug: "ecommerce-store",
-    title: "E-Commerce Store",
-    category: "Web Development",
-    type: "Web Development",
-    img: "https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    img: "/images/portfolio/web/travilo.webp",
     color: "#CC2829",
-    client: "Luminary Retail",
-    year: "2024",
+    client: "Travilo",
+    year: "2026",
     description:
-      "A custom storefront built for scale — fast checkout, real-time inventory, and an admin panel the team can run without a developer.",
+      "The product site for Travilo, an AI-powered travel reimbursement platform — sales teams submit a whole trip from one photo of their receipts, while finance gets automatic policy checks, duplicate detection and cleaner approvals. The site pairs with Travilo's Android app on Google Play.",
     highlights: [
-      "Checkout conversion up 41%",
-      "Handles 10k+ SKUs",
-      "Cart abandonment down 22%",
+      "One-image trip submission, AI receipt capture",
+      "Policy checks & duplicate-claim flags for finance",
+      "Companion Android app live on Google Play",
     ],
-    tags: ["Shopify", "React", "Custom Checkout"],
+    tags: ["SaaS", "AI Product", "Android", "WordPress"],
+    link: "https://travilo.in/",
+    appLink: "https://play.google.com/store/apps/details?id=com.travilo.app",
+  }
+  ,
+  // {
+  //   slug: "brand-identity",
+  //   title: "Brand Identity",
+  //   category: "Branding",
+  //   type: "Branding",
+  //   img: "https://images.pexels.com/photos/3944405/pexels-photo-3944405.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  //   color: "#EA9D12",
+  //   client: "Serene Spaces",
+  //   year: "2024",
+  //   description:
+  //     "A ground-up identity system — logo, palette, type, and a guidelines doc the client's team uses across every touchpoint.",
+  //   highlights: [
+  //     "Full brand guidelines delivered",
+  //     "Launch-ready social & print kit",
+  //     "Consistent identity across 12 channels",
+  //   ],
+  //   tags: ["Brand Strategy", "Logo Design", "Guidelines", "Packaging"],
+  // },
+  // {
+  //   slug: "dashboard-ui",
+  //   title: "Dashboard UI",
+  //   category: "UI/UX Design",
+  //   type: "UI/UX Design",
+  //   img: "https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  //   color: "#631DFE",
+  //   client: "NovaPrime Solutions",
+  //   year: "2025",
+  //   description:
+  //     "An internal analytics dashboard redesigned around the tasks users actually do daily — fewer clicks, clearer data, less training.",
+  //   highlights: [
+  //     "Task completion time down 45%",
+  //     "Support tickets down 30%",
+  //     "Full component library handed off",
+  //   ],
+  //   tags: ["Figma", "Design System", "Data Visualization"],
+  // },
+  // {
+  //   slug: "marketing-campaign",
+  //   title: "Marketing Campaign",
+  //   category: "Performance Marketing",
+  //   type: "Performance Marketing",
+  //   img: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  //   color: "#A7069B",
+  //   client: "BloomTech",
+  //   year: "2025",
+  //   description:
+  //     "A quarter-long, multi-channel campaign spanning paid social, search, and email — built around one consistent launch narrative.",
+  //   highlights: [
+  //     "3.2x return on ad spend",
+  //     "45k qualified leads generated",
+  //     "CAC reduced by 28%",
+  //   ],
+  //   tags: ["Paid Social", "SEO", "Email Marketing", "Analytics"],
+  // },
+  {
+    slug: "sahani-and-sons",
+    title: "Sahani & Son's",
+    category: "Web Development",
+    type: "Web Development",
+    img: "/images/portfolio/web/sahaniandsons.webp",
+    color: "#A7069B",
+    client: "Sahani & Son's",
+    year: "2026",
+    description:
+      "A lead-generation website for Sahani & Son's professional painting services — free-estimate form above the fold, click-to-call, customer testimonials and clear service pages, all built to turn visitors into booked jobs.",
+    highlights: [
+      "Free-estimate lead form above the fold",
+      "Click-to-call with 24/7 availability",
+      "Testimonial-driven trust building",
+    ],
+    tags: ["WordPress", "Lead Generation", "Responsive Design"],
+    link: "https://sahaniandsons.in/",
   },
 ];
 
@@ -655,6 +664,14 @@ export interface SocialPost {
   video?: string;
   /** Reel length, e.g. "0:15" — read from the source video, shown on the badge. */
   dur?: string;
+  /** Branding/performance pieces reuse this shape but aren't "social media posts" in alt text. */
+  kind?: "branding" | "performance";
+}
+
+/** Alt/aria copy shared by the grid card and the lightbox. */
+export function postAlt(post: SocialPost): string {
+  const base = post.kind ? post.title : `${post.title} social media post`;
+  return post.client ? `${base} for ${post.client}` : base;
 }
 
 export const socialPosts: SocialPost[] = [
@@ -916,6 +933,351 @@ export const socialPosts: SocialPost[] = [
     h: 1000,
     color: "#5E9929",
   },
+  // Fashion shoot reels filmed in the L&B Opticals store (their bag and
+  // displays are on camera). Posters are 506×900 frames grabbed at the
+  // 1-second mark of each reel.
+  {
+    slug: "fashion-01",
+    src: "/images/portfolio/social/fashion-01.webp",
+    title: "Fashion Reel",
+    client: "L&B Opticals",
+    w: 506,
+    h: 900,
+    color: "#631DFE",
+    video: "/videos/portfolio/fashion-01.mp4",
+    dur: "0:21",
+  },
+  {
+    slug: "fashion-02",
+    src: "/images/portfolio/social/fashion-02.webp",
+    title: "Fashion Reel",
+    client: "L&B Opticals",
+    w: 506,
+    h: 900,
+    color: "#A7069B",
+    video: "/videos/portfolio/fashion-02.mp4",
+    dur: "0:32",
+  },
+  {
+    slug: "fashion-03",
+    src: "/images/portfolio/social/fashion-03.webp",
+    title: "Fashion Reel",
+    client: "L&B Opticals",
+    w: 506,
+    h: 900,
+    color: "#5E9929",
+    video: "/videos/portfolio/fashion-03.mp4",
+    dur: "0:23",
+  },
+  {
+    slug: "fashion-04",
+    src: "/images/portfolio/social/fashion-04.webp",
+    title: "Fashion Reel",
+    client: "L&B Opticals",
+    w: 506,
+    h: 900,
+    color: "#EA9D12",
+    video: "/videos/portfolio/fashion-04.mp4",
+    dur: "0:21",
+  },
+  {
+    slug: "fashion-05",
+    src: "/images/portfolio/social/fashion-05.webp",
+    title: "Fashion Reel",
+    client: "L&B Opticals",
+    w: 506,
+    h: 900,
+    color: "#CC2829",
+    video: "/videos/portfolio/fashion-05.mp4",
+    dur: "0:21",
+  },
+  {
+    slug: "fashion-06",
+    src: "/images/portfolio/social/fashion-06.webp",
+    title: "Fashion Reel",
+    client: "L&B Opticals",
+    w: 506,
+    h: 900,
+    color: "#5B9EFE",
+    video: "/videos/portfolio/fashion-06.mp4",
+    dur: "0:19",
+  },
+  {
+    slug: "fashion-07",
+    src: "/images/portfolio/social/fashion-07.webp",
+    title: "Fashion Reel",
+    client: "L&B Opticals",
+    w: 506,
+    h: 900,
+    color: "#631DFE",
+    video: "/videos/portfolio/fashion-07.mp4",
+    dur: "0:11",
+  },
+  {
+    slug: "fashion-08",
+    src: "/images/portfolio/social/fashion-08.webp",
+    title: "Fashion Reel",
+    client: "L&B Opticals",
+    w: 506,
+    h: 900,
+    color: "#A7069B",
+    video: "/videos/portfolio/fashion-08.mp4",
+    dur: "0:22",
+  },
+];
+
+/* ============ BRANDING WORK ============ */
+// Real client logo & identity designs, delivered as square brand boards and
+// re-encoded to WebP (all 1200×1200) — same treatment as the social posts, so
+// they share the SocialPost shape, card frame, and lightbox. `kind: "branding"`
+// only switches the alt-text phrasing; there are no reels here.
+export const brandingPosts: SocialPost[] = [
+  {
+    slug: "branding-aarya-singhania",
+    src: "/images/portfolio/branding/aarya-singhania.webp",
+    title: "Logo Design",
+    client: "Aarya Singhania",
+    w: 1200,
+    h: 1200,
+    color: "#CC2829",
+    kind: "branding",
+  },
+  {
+    slug: "branding-arcadix",
+    src: "/images/portfolio/branding/arcadix.webp",
+    title: "Logo Design",
+    client: "Arcadix",
+    w: 1200,
+    h: 1200,
+    color: "#631DFE",
+    kind: "branding",
+  },
+  {
+    slug: "branding-haven-holic",
+    src: "/images/portfolio/branding/haven-holic.webp",
+    title: "Logo Design",
+    client: "Haven Holic",
+    w: 1200,
+    h: 1200,
+    color: "#EA9D12",
+    kind: "branding",
+  },
+  {
+    slug: "branding-just-another-tale",
+    src: "/images/portfolio/branding/just-another-tale.webp",
+    title: "Logo Design",
+    client: "Just Another Tale",
+    w: 1200,
+    h: 1200,
+    color: "#A7069B",
+    kind: "branding",
+  },
+  {
+    slug: "branding-lb-opticals",
+    src: "/images/portfolio/branding/lb-opticals.webp",
+    title: "Logo Design",
+    client: "L&B Opticals",
+    w: 1200,
+    h: 1200,
+    color: "#5B9EFE",
+    kind: "branding",
+  },
+  {
+    slug: "branding-minial-wave",
+    src: "/images/portfolio/branding/minial-wave.webp",
+    title: "Logo Design",
+    client: "Minial Wave",
+    w: 1200,
+    h: 1200,
+    color: "#5E9929",
+    kind: "branding",
+  },
+  {
+    slug: "branding-shitals-gift-collection",
+    src: "/images/portfolio/branding/shitals-gift-collection.webp",
+    title: "Logo Design",
+    client: "Shital's Gift Collection",
+    w: 1200,
+    h: 1200,
+    color: "#631DFE",
+    kind: "branding",
+  },
+  {
+    slug: "branding-shitals-homemade",
+    src: "/images/portfolio/branding/shitals-homemade.webp",
+    title: "Logo Design",
+    client: "Shital's Homemade",
+    w: 1200,
+    h: 1200,
+    color: "#EA9D12",
+    kind: "branding",
+  },
+  {
+    slug: "branding-shitals-homemade-bakery",
+    src: "/images/portfolio/branding/shitals-homemade-bakery.webp",
+    title: "Logo Design",
+    client: "Shital's Homemade Bakery",
+    w: 1200,
+    h: 1200,
+    color: "#CC2829",
+    kind: "branding",
+  },
+  {
+    slug: "branding-vc",
+    src: "/images/portfolio/branding/vc.webp",
+    title: "Logo Design",
+    client: "VC",
+    w: 1200,
+    h: 1200,
+    color: "#5B9EFE",
+    kind: "branding",
+  },
+];
+
+/* ============ PERFORMANCE MARKETING WORK ============ */
+// Real campaign results, delivered as square 1080×1080 screenshots — Instagram
+// insights, Meta Ads campaign tables, lead-gen and revenue dashboards —
+// re-encoded to WebP. Same SocialPost shape/card/lightbox as the other work;
+// `kind: "performance"` only switches the alt-text phrasing.
+// `client` is set only where the screenshot itself names the account.
+export const performancePosts: SocialPost[] = [
+  {
+    slug: "perf-anishas-dashboard",
+    src: "/images/portfolio/performance/perf-01.webp",
+    title: "6.4L Monthly Views",
+    client: "Anisha's Art Academy",
+    w: 1080,
+    h: 1080,
+    color: "#631DFE",
+    kind: "performance",
+  },
+  {
+    slug: "perf-90day-views",
+    src: "/images/portfolio/performance/perf-02.webp",
+    title: "1.9M Views in 90 Days",
+    w: 1080,
+    h: 1080,
+    color: "#A7069B",
+    kind: "performance",
+  },
+  {
+    slug: "perf-614k-reel",
+    src: "/images/portfolio/performance/perf-03.webp",
+    title: "614K Views Reel",
+    client: "Anisha's Art Academy",
+    w: 1080,
+    h: 1080,
+    color: "#5E9929",
+    kind: "performance",
+  },
+  {
+    slug: "perf-181k-reel",
+    src: "/images/portfolio/performance/perf-04.webp",
+    title: "181K Views Reel",
+    w: 1080,
+    h: 1080,
+    color: "#EA9D12",
+    kind: "performance",
+  },
+  {
+    slug: "perf-1m-post-views",
+    src: "/images/portfolio/performance/perf-05.webp",
+    title: "1M+ Post Views",
+    w: 1080,
+    h: 1080,
+    color: "#CC2829",
+    kind: "performance",
+  },
+  {
+    slug: "perf-reel-engagement",
+    src: "/images/portfolio/performance/perf-06.webp",
+    title: "Reel Engagement Insights",
+    w: 1080,
+    h: 1080,
+    color: "#5B9EFE",
+    kind: "performance",
+  },
+  {
+    slug: "perf-1m-reel",
+    src: "/images/portfolio/performance/perf-07.webp",
+    title: "1M Views Reel",
+    w: 1080,
+    h: 1080,
+    color: "#631DFE",
+    kind: "performance",
+  },
+  {
+    slug: "perf-ads-campaign-spend",
+    src: "/images/portfolio/performance/perf-08.webp",
+    title: "Meta Ads Campaign",
+    w: 1080,
+    h: 1080,
+    color: "#A7069B",
+    kind: "performance",
+  },
+  {
+    slug: "perf-ads-impressions",
+    src: "/images/portfolio/performance/perf-09.webp",
+    title: "8.8M Ad Impressions",
+    w: 1080,
+    h: 1080,
+    color: "#5E9929",
+    kind: "performance",
+  },
+  {
+    slug: "perf-website-leads",
+    src: "/images/portfolio/performance/perf-10.webp",
+    title: "Website Leads Overview",
+    w: 1080,
+    h: 1080,
+    color: "#EA9D12",
+    kind: "performance",
+  },
+  {
+    slug: "perf-lead-conversion",
+    src: "/images/portfolio/performance/perf-11.webp",
+    title: "5.1% Lead Conversion",
+    w: 1080,
+    h: 1080,
+    color: "#CC2829",
+    kind: "performance",
+  },
+  {
+    slug: "perf-leads-up-115",
+    src: "/images/portfolio/performance/perf-12.webp",
+    title: "Leads Up 115%",
+    w: 1080,
+    h: 1080,
+    color: "#5B9EFE",
+    kind: "performance",
+  },
+  {
+    slug: "perf-leads-daily",
+    src: "/images/portfolio/performance/perf-13.webp",
+    title: "96 Leads in a Day",
+    w: 1080,
+    h: 1080,
+    color: "#631DFE",
+    kind: "performance",
+  },
+  {
+    slug: "perf-revenue-transactions",
+    src: "/images/portfolio/performance/perf-14.webp",
+    title: "₹27.8L Client Revenue",
+    w: 1080,
+    h: 1080,
+    color: "#A7069B",
+    kind: "performance",
+  },
+  {
+    slug: "perf-revenue-growth",
+    src: "/images/portfolio/performance/perf-15.webp",
+    title: "Revenue Growth Curve",
+    w: 1080,
+    h: 1080,
+    color: "#EA9D12",
+    kind: "performance",
+  },
 ];
 
 export const portfolioCategories = [
@@ -1158,6 +1520,48 @@ export const aboutBullets = [
   { label: "Innovative Solutions", color: "#5E9929" },
   { label: "Quality & Reliability", color: "#5B9EFE" },
   { label: "Client First Approach", color: "#631DFE" },
+];
+
+// One source for the agency story: the /about page and the home about section
+// both render these paragraphs.
+export const aboutStory = [
+  "Ravenclaw was founded on a simple belief: the best ideas come from intelligent thinking. Inspired by the Ravenclaw values of intelligence, wisdom, wit, and creativity, we blend strategy, design, technology, and marketing to build brands that leave a lasting impact.",
+  "From branding and web development to digital marketing and AI, everything we create is driven by purpose, innovation, and measurable results. Our mission is simple, to help businesses grow through smart ideas and exceptional execution.",
+];
+
+// Photos live in /public/images/teammates/, named after the teammate.
+// `objectPosition` tunes the square crop per photo so the face keeps headroom —
+// portrait-ratio sources need a top-biased crop, square sources are uncropped.
+export interface TeamMember {
+  name: string;
+  role: string;
+  bio: string;
+  img: string;
+  objectPosition: string;
+  color: string;
+  /** Personal LinkedIn profile, linked from the icon under the bio. */
+  linkedin: string;
+}
+
+export const team: TeamMember[] = [
+  {
+    name: "Srushti Jaiswal",
+    role: "Founder",
+    bio: "Leads brand strategy and performance marketing, helping businesses grow with creative, data-driven solutions.",
+    img: "/images/teammates/srushti.webp",
+    objectPosition: "50% 15%",
+    color: "#EA9D12",
+    linkedin: "https://www.linkedin.com/in/srushti234/",
+  },
+  {
+    name: "Sumedh Salve",
+    role: "Co-Founder",
+    bio: "Builds high-performing, user-focused websites and creates compelling digital content that helps brands grow, engage their audience, and stand out in a competitive online landscape.",
+    img: "/images/teammates/sumedh.webp",
+    objectPosition: "50% 15%",
+    color: "#5B9EFE",
+    linkedin: "https://www.linkedin.com/in/sumedh-salve-35787b210/",
+  },
 ];
 
 export const missionVision = [

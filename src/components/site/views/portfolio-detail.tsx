@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-import { ArrowLeft, ArrowRight, Check, MessageCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Globe,
+  MessageCircle,
+  Play,
+} from "lucide-react";
 import { projects, type Project } from "@/lib/site-data";
 import { SectionLink } from "@/components/site/section-link";
 import { DetailLink } from "@/components/site/detail-link";
@@ -153,14 +160,42 @@ export function PortfolioDetail({ project }: { project: Project }) {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="mb-16 section-reveal">
+        {/* CTA — live links first (proof beats pitch), then the enquiry CTA. */}
+        <section className="mb-16 section-reveal flex flex-wrap gap-3">
+          {project.link && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 font-display font-bold text-sm text-white px-8 py-3.5 rounded-xl transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              style={{ background: project.color }}
+            >
+              <Globe size={16} />
+              Visit live website
+            </a>
+          )}
+          {project.appLink && (
+            <a
+              href={project.appLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 font-display font-bold text-sm px-8 py-3.5 rounded-xl border-2 transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              style={{ borderColor: project.color, color: project.color }}
+            >
+              <Play size={16} />
+              Get the Android app
+            </a>
+          )}
           <a
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 font-display font-bold text-sm text-white px-8 py-3.5 rounded-xl transition-transform hover:scale-[1.02] active:scale-[0.98]"
-            style={{ background: project.color }}
+            className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 font-display font-bold text-sm px-8 py-3.5 rounded-xl transition-transform hover:scale-[1.02] active:scale-[0.98] ${
+              project.link
+                ? "border-2 border-black/10 text-ink"
+                : "text-white"
+            }`}
+            style={project.link ? undefined : { background: project.color }}
           >
             <MessageCircle size={16} />
             Start a similar project

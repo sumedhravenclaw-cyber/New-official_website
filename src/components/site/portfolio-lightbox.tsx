@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { X, ChevronLeft, ChevronRight, Volume2 } from "lucide-react";
-import type { SocialPost } from "@/lib/site-data";
+import { postAlt, type SocialPost } from "@/lib/site-data";
 
 interface Props {
   posts: SocialPost[];
@@ -182,7 +182,7 @@ export function PortfolioLightbox({ posts, index, onClose, onNavigate }: Props) 
             <img
               key={post.slug}
               src={post.src}
-              alt={`${post.title} social media post${post.client ? ` for ${post.client}` : ""}`}
+              alt={postAlt(post)}
               width={post.w}
               height={post.h}
               className="max-h-[78vh] w-auto max-w-full object-contain rounded-lg block"

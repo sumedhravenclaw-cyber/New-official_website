@@ -1,17 +1,23 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Maximize2, Play, Volume2, VolumeX } from "lucide-react";
+import { ExternalLink, Maximize2, Play, Volume2, VolumeX } from "lucide-react";
 import {
   projects,
   socialPosts,
+  brandingPosts,
+  performancePosts,
   portfolioCategories,
+  postAlt,
   type SocialPost,
 } from "@/lib/site-data";
 import { PortfolioLightbox } from "@/components/site/portfolio-lightbox";
 import { ReelVideo } from "@/components/site/reel-video";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const SOCIAL = "Social Media";
+const BRANDING = "Branding";
+const PERFORMANCE = "Performance Marketing";
 
 /**
  * Masonry columns per breakpoint. Columns (not a fixed-cell grid) let every
@@ -22,12 +28,19 @@ const SOCIAL = "Social Media";
 const COLUMNS = "columns-2 sm:columns-3 lg:columns-4 xl:columns-5";
 
 /**
+ * Projects use wider columns than the social masonry: their 4:3 website
+ * screenshots need room to be legible, unlike phone-format posts.
+ */
+const PROJECT_COLUMNS = "columns-1 sm:columns-2 lg:columns-3";
+
+/**
  * Which client/subject a post belongs to, derived from its slug. Posts of the
  * same kind cluster together in the grid — gym with gym, food with food —
  * rather than being scattered. Reels and stills of a kind stay in that cluster.
  */
 function kindOf(post: SocialPost): string {
   const s = post.slug;
+  if (s.startsWith("fashion")) return "fashion";
   if (s.startsWith("fitness") || s.startsWith("gym")) return "fitness";
   if (s.startsWith("food")) return "food";
   if (s.startsWith("automotive")) return "automotive";
@@ -41,6 +54,7 @@ function kindOf(post: SocialPost): string {
 // heading shown above each block.
 const KIND_ORDER = [
   "fitness",
+  "fashion",
   "opticals",
   "food",
   "art",
@@ -51,6 +65,7 @@ const KIND_ORDER = [
 
 const KIND_LABELS: Record<string, string> = {
   fitness: "Fitness & Gym",
+  fashion: "Fashion",
   opticals: "L&B Opticals",
   food: "Food & Restaurant",
   art: "Anisha's Art Academy",
@@ -122,9 +137,7 @@ function SocialCard({
         ) : (
           <img
             src={post.src}
-            alt={`${post.title} social media post${
-              post.client ? ` for ${post.client}` : ""
-            }`}
+            alt={postAlt(post)}
             width={post.w}
             height={post.h}
             loading="lazy"
@@ -182,17 +195,39 @@ export function PortfolioSection() {
    */
   const [soundOn, setSoundOn] = useState(false);
 
+  // Filter switches unmount/remount the group blocks; the page-level observer
+  // (home-view) only saw the initial DOM, so re-observe on every filter change
+  // or remounted `.section-reveal` blocks would stay at opacity 0 forever.
+  useScrollReveal([activeFilter]);
+
   const showSocial = activeFilter === "All" || activeFilter === SOCIAL;
+  const showBranding = activeFilter === "All" || activeFilter === BRANDING;
 
   const socialGroups: KindGroup[] = useMemo(
     () => (showSocial ? groupByKind(socialPosts) : []),
     [showSocial]
   );
-  // Flat order (groups concatenated) drives the lightbox, so its prev/next
-  // walks one kind fully before the next — matching what's on screen.
+  const showPerformance =
+    activeFilter === "All" || activeFilter === PERFORMANCE;
+
+  const brandingItems: SocialPost[] = useMemo(
+    () => (showBranding ? brandingPosts : []),
+    [showBranding]
+  );
+  const performanceItems: SocialPost[] = useMemo(
+    () => (showPerformance ? performancePosts : []),
+    [showPerformance]
+  );
+  // Flat order (groups concatenated, then branding, then performance) drives
+  // the lightbox, so its prev/next walks one block fully before the next —
+  // matching what's on screen.
   const flatSocial: SocialPost[] = useMemo(
-    () => socialGroups.flatMap((g) => g.items),
-    [socialGroups]
+    () => [
+      ...socialGroups.flatMap((g) => g.items),
+      ...brandingItems,
+      ...performanceItems,
+    ],
+    [socialGroups, brandingItems, performanceItems]
   );
 
   const visibleProjects = useMemo(
@@ -305,9 +340,65 @@ export function PortfolioSection() {
               </div>
             ))}
 
+            {/* Branding block: logo & identity boards, same framed masonry
+                cards as the social work. */}
+            {brandingItems.length > 0 && (
+              <div key="group-branding" className="section-reveal">
+                <h3 className="font-display font-bold text-lg text-ink mb-5 flex items-center gap-2.5">
+                  <span
+                    className="w-2 h-2 rounded-full flex-shrink-0"
+                    style={{ background: brandingItems[0].color }}
+                  />
+                  Logo &amp; Brand Identity
+                  <span className="text-xs font-semibold text-ink/35">
+                    {brandingItems.length}
+                  </span>
+                </h3>
+                <div className={`${COLUMNS} gap-4`}>
+                  {brandingItems.map((post, i) => (
+                    <SocialCard
+                      key={post.slug}
+                      post={post}
+                      soundOn={soundOn}
+                      delayIndex={i}
+                      onOpen={() => setLightboxIndex(flatSocial.indexOf(post))}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Performance block: real campaign results — insights, ads
+                dashboards, lead & revenue proof — same framed masonry cards. */}
+            {performanceItems.length > 0 && (
+              <div key="group-performance" className="section-reveal">
+                <h3 className="font-display font-bold text-lg text-ink mb-5 flex items-center gap-2.5">
+                  <span
+                    className="w-2 h-2 rounded-full flex-shrink-0"
+                    style={{ background: performanceItems[0].color }}
+                  />
+                  Campaign Results
+                  <span className="text-xs font-semibold text-ink/35">
+                    {performanceItems.length}
+                  </span>
+                </h3>
+                <div className={`${COLUMNS} gap-4`}>
+                  {performanceItems.map((post, i) => (
+                    <SocialCard
+                      key={post.slug}
+                      post={post}
+                      soundOn={soundOn}
+                      delayIndex={i}
+                      onOpen={() => setLightboxIndex(flatSocial.indexOf(post))}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
             {visibleProjects.length > 0 && (
               <div key="group-projects" className="section-reveal">
-                {showSocial && (
+                {flatSocial.length > 0 && (
                   <h3 className="font-display font-bold text-lg text-ink mb-5 flex items-center gap-2.5">
                     <span className="w-2 h-2 rounded-full flex-shrink-0 bg-violet" />
                     Projects
@@ -316,18 +407,11 @@ export function PortfolioSection() {
                     </span>
                   </h3>
                 )}
-                <div className={`${COLUMNS} gap-4`}>
-                  {visibleProjects.map((project, i) => (
-                    <div
-                      key={project.slug}
-                      className="group relative mb-4 break-inside-avoid box-border rounded-2xl p-2 bg-transparent card-hover motion-safe:animate-fade-in-up"
-                      style={{
-                        border: `2px solid ${project.color}`,
-                        animationDelay: `${Math.min(i, 12) * 45}ms`,
-                      }}
-                    >
-                      <div className="rounded-lg overflow-hidden">
-                        {/* Stock photography carries no copy, so a uniform 4:3 crop is safe. */}
+                <div className={`${PROJECT_COLUMNS} gap-4`}>
+                  {visibleProjects.map((project, i) => {
+                    const inner = (
+                      <div className="relative rounded-lg overflow-hidden">
+                        {/* Project imagery carries no copy, so a uniform 4:3 crop is safe. */}
                         <img
                           src={project.img}
                           alt={project.title}
@@ -335,6 +419,16 @@ export function PortfolioSection() {
                           decoding="async"
                           className="w-full aspect-[4/3] object-cover block transition-transform duration-500 group-hover:scale-105"
                         />
+                        {/* Live projects open their real site; badge signals the link-out. */}
+                        {project.link && (
+                          <span
+                            className="absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300"
+                            style={{ background: `${project.color}E6` }}
+                            aria-hidden="true"
+                          >
+                            <ExternalLink size={12} className="text-white" />
+                          </span>
+                        )}
                         <div className="p-4">
                           <h3 className="font-display font-bold text-ink text-sm leading-tight">
                             {project.title}
@@ -347,8 +441,31 @@ export function PortfolioSection() {
                           </p>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                    const cardClass =
+                      "group relative block mb-4 break-inside-avoid box-border rounded-2xl p-2 bg-transparent card-hover motion-safe:animate-fade-in-up";
+                    const cardStyle = {
+                      border: `2px solid ${project.color}`,
+                      animationDelay: `${Math.min(i, 12) * 45}ms`,
+                    };
+                    return project.link ? (
+                      <a
+                        key={project.slug}
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Visit the live ${project.title} website`}
+                        className={`${cardClass} focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet`}
+                        style={cardStyle}
+                      >
+                        {inner}
+                      </a>
+                    ) : (
+                      <div key={project.slug} className={cardClass} style={cardStyle}>
+                        {inner}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
