@@ -1294,6 +1294,11 @@ export const comingSoonCategories: Record<
   string,
   { blurb: string; color: string }
 > = {
+  "UI/UX Design": {
+    blurb:
+      "Wireframes, prototypes and design systems are in progress with clients right now. The first case studies land here soon.",
+    color: "#A7069B",
+  },
   "AI Solutions": {
     blurb:
       "We're building AI agents, chatbots and workflow automation for clients right now. The first case studies land here soon.",
