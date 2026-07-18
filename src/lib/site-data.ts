@@ -19,6 +19,7 @@ import {
   Smartphone,
   Zap,
   type LucideIcon,
+  CalendarHeart,
 } from "lucide-react";
 
 /* ============ SERVICES ============ */
@@ -1135,84 +1136,42 @@ export const brandingPosts: SocialPost[] = [
 ];
 
 /* ============ PERFORMANCE MARKETING WORK ============ */
-// Real campaign results, delivered as square 1080×1080 screenshots — Instagram
-// insights, Meta Ads campaign tables, lead-gen and revenue dashboards —
-// re-encoded to WebP. Same SocialPost shape/card/lightbox as the other work;
-// `kind: "performance"` only switches the alt-text phrasing.
+// Real campaign results: Instagram insights, Meta Ads campaign tables, lead-gen
+// and revenue dashboards. Source screenshots were square exports padded with
+// dead space, so each is trimmed to its actual content — `w`/`h` below are the
+// trimmed pixel sizes, which is what gives every card a frame shaped like the
+// screenshot inside it (a stat strip stays a strip, a phone insight stays tall).
+// The order deliberately alternates tall / wide / strip so the masonry columns
+// interleave instead of clumping; it is fixed rather than randomised so server
+// and client render the same thing.
 // `client` is set only where the screenshot itself names the account.
 export const performancePosts: SocialPost[] = [
+  {
+    slug: "perf-1m-post-views",
+    src: "/images/portfolio/performance/perf-05.webp",
+    title: "1M+ Post Views",
+    w: 901,
+    h: 1080,
+    color: "#631DFE",
+    kind: "performance",
+  },
+  {
+    slug: "perf-lead-conversion",
+    src: "/images/portfolio/performance/perf-11.webp",
+    title: "5.1% Lead Conversion",
+    w: 1080,
+    h: 720,
+    color: "#5B9EFE",
+    kind: "performance",
+  },
   {
     slug: "perf-anishas-dashboard",
     src: "/images/portfolio/performance/perf-01.webp",
     title: "6.4L Monthly Views",
     client: "Anisha's Art Academy",
     w: 1080,
-    h: 1080,
+    h: 663,
     color: "#631DFE",
-    kind: "performance",
-  },
-  {
-    slug: "perf-90day-views",
-    src: "/images/portfolio/performance/perf-02.webp",
-    title: "1.9M Views in 90 Days",
-    w: 1080,
-    h: 1080,
-    color: "#A7069B",
-    kind: "performance",
-  },
-  {
-    slug: "perf-614k-reel",
-    src: "/images/portfolio/performance/perf-03.webp",
-    title: "614K Views Reel",
-    client: "Anisha's Art Academy",
-    w: 1080,
-    h: 1080,
-    color: "#5E9929",
-    kind: "performance",
-  },
-  {
-    slug: "perf-181k-reel",
-    src: "/images/portfolio/performance/perf-04.webp",
-    title: "181K Views Reel",
-    w: 1080,
-    h: 1080,
-    color: "#EA9D12",
-    kind: "performance",
-  },
-  {
-    slug: "perf-1m-post-views",
-    src: "/images/portfolio/performance/perf-05.webp",
-    title: "1M+ Post Views",
-    w: 1080,
-    h: 1080,
-    color: "#CC2829",
-    kind: "performance",
-  },
-  {
-    slug: "perf-reel-engagement",
-    src: "/images/portfolio/performance/perf-06.webp",
-    title: "Reel Engagement Insights",
-    w: 1080,
-    h: 1080,
-    color: "#5B9EFE",
-    kind: "performance",
-  },
-  {
-    slug: "perf-1m-reel",
-    src: "/images/portfolio/performance/perf-07.webp",
-    title: "1M Views Reel",
-    w: 1080,
-    h: 1080,
-    color: "#631DFE",
-    kind: "performance",
-  },
-  {
-    slug: "perf-ads-campaign-spend",
-    src: "/images/portfolio/performance/perf-08.webp",
-    title: "Meta Ads Campaign",
-    w: 1080,
-    h: 1080,
-    color: "#A7069B",
     kind: "performance",
   },
   {
@@ -1220,7 +1179,7 @@ export const performancePosts: SocialPost[] = [
     src: "/images/portfolio/performance/perf-09.webp",
     title: "8.8M Ad Impressions",
     w: 1080,
-    h: 1080,
+    h: 558,
     color: "#5E9929",
     kind: "performance",
   },
@@ -1229,16 +1188,35 @@ export const performancePosts: SocialPost[] = [
     src: "/images/portfolio/performance/perf-10.webp",
     title: "Website Leads Overview",
     w: 1080,
+    h: 530,
+    color: "#631DFE",
+    kind: "performance",
+  },
+  {
+    slug: "perf-reel-engagement",
+    src: "/images/portfolio/performance/perf-06.webp",
+    title: "Reel Engagement Insights",
+    w: 552,
     h: 1080,
+    color: "#5E9929",
+    kind: "performance",
+  },
+  {
+    slug: "perf-ads-campaign-spend",
+    src: "/images/portfolio/performance/perf-08.webp",
+    title: "Meta Ads Campaign",
+    w: 1080,
+    h: 634,
     color: "#EA9D12",
     kind: "performance",
   },
   {
-    slug: "perf-lead-conversion",
-    src: "/images/portfolio/performance/perf-11.webp",
-    title: "5.1% Lead Conversion",
+    slug: "perf-614k-reel",
+    src: "/images/portfolio/performance/perf-03.webp",
+    title: "614K Views Reel",
+    client: "Anisha's Art Academy",
     w: 1080,
-    h: 1080,
+    h: 408,
     color: "#CC2829",
     kind: "performance",
   },
@@ -1247,17 +1225,8 @@ export const performancePosts: SocialPost[] = [
     src: "/images/portfolio/performance/perf-12.webp",
     title: "Leads Up 115%",
     w: 1080,
-    h: 1080,
+    h: 105,
     color: "#5B9EFE",
-    kind: "performance",
-  },
-  {
-    slug: "perf-leads-daily",
-    src: "/images/portfolio/performance/perf-13.webp",
-    title: "96 Leads in a Day",
-    w: 1080,
-    h: 1080,
-    color: "#631DFE",
     kind: "performance",
   },
   {
@@ -1265,8 +1234,44 @@ export const performancePosts: SocialPost[] = [
     src: "/images/portfolio/performance/perf-14.webp",
     title: "₹27.8L Client Revenue",
     w: 1080,
+    h: 349,
+    color: "#CC2829",
+    kind: "performance",
+  },
+  {
+    slug: "perf-90day-views",
+    src: "/images/portfolio/performance/perf-02.webp",
+    title: "1.9M Views in 90 Days",
+    w: 633,
     h: 1080,
     color: "#A7069B",
+    kind: "performance",
+  },
+  {
+    slug: "perf-leads-daily",
+    src: "/images/portfolio/performance/perf-13.webp",
+    title: "96 Leads in a Day",
+    w: 1080,
+    h: 85,
+    color: "#5B9EFE",
+    kind: "performance",
+  },
+  {
+    slug: "perf-181k-reel",
+    src: "/images/portfolio/performance/perf-04.webp",
+    title: "181K Views Reel",
+    w: 1080,
+    h: 308,
+    color: "#EA9D12",
+    kind: "performance",
+  },
+  {
+    slug: "perf-1m-reel",
+    src: "/images/portfolio/performance/perf-07.webp",
+    title: "1M Views Reel",
+    w: 1080,
+    h: 322,
+    color: "#5E9929",
     kind: "performance",
   },
   {
@@ -1274,14 +1279,29 @@ export const performancePosts: SocialPost[] = [
     src: "/images/portfolio/performance/perf-15.webp",
     title: "Revenue Growth Curve",
     w: 1080,
-    h: 1080,
-    color: "#EA9D12",
+    h: 382,
+    color: "#A7069B",
     kind: "performance",
   },
 ];
 
+/**
+ * Categories with no published work yet. The portfolio filter renders a
+ * coming-soon panel for these instead of an empty grid, so the tab still leads
+ * somewhere. Remove a key here once that category has real work to show.
+ */
+export const comingSoonCategories: Record<
+  string,
+  { blurb: string; color: string }
+> = {
+  "AI Solutions": {
+    blurb:
+      "We're building AI agents, chatbots and workflow automation for clients right now. The first case studies land here soon.",
+    color: "#631DFE",
+  },
+};
+
 export const portfolioCategories = [
-  "All",
   "Web Development",
   "UI/UX Design",
   "Branding",
@@ -1481,7 +1501,7 @@ export interface Stat {
 export const stats: Stat[] = [
   { icon: Users, value: "50+", label: "Happy Clients" },
   { icon: Trophy, value: "120+", label: "Projects Completed" },
-  { icon: Star, value: "7+", label: "Years Experience" },
+  { icon: CalendarHeart, value: "7+", label: "Years Experience" },
   { icon: Star, value: "50+", label: "Positive Reviews" },
 ];
 
@@ -1556,7 +1576,7 @@ export const team: TeamMember[] = [
   {
     name: "Sumedh Salve",
     role: "Co-Founder",
-    bio: "Builds high-performing, user-focused websites and creates compelling digital content that helps brands grow, engage their audience, and stand out in a competitive online landscape.",
+    bio: "Builds high-performing, user-focused websites and creates content that helps brands grow, engage their audience.",
     img: "/images/teammates/sumedh.webp",
     objectPosition: "50% 15%",
     color: "#5B9EFE",
@@ -1742,8 +1762,8 @@ export const industries: Industry[] = ["All", "Food & Beverage", "SaaS", "Fitnes
 
 export const caseStudies: CaseStudy[] = [
   {
-    id: "the-bussin-plates",
-    client: "The Bussin Plates",
+    id: "Nafees",
+    client: "Nafees",
     industry: "Food & Beverage",
     summary:
       "Full brand kit and content system for a tier-2 Maharashtra food business, from zero to a recognisable local name.",
@@ -1758,8 +1778,8 @@ export const caseStudies: CaseStudy[] = [
     ]
   },
   {
-    id: "cream-and-cosmos",
-    client: "Cream & Cosmos",
+    id: "cream-and-crumbs",
+    client: "Cream & Crumbs",
     industry: "Food & Beverage",
     summary: "Naming, visual identity, and launch strategy for a tier-3 market café built to feel bigger than its city.",
     metric: "4.8k",

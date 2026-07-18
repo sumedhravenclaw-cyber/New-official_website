@@ -1,14 +1,24 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ExternalLink, Maximize2, Play, Volume2, VolumeX } from "lucide-react";
+import {
+  ExternalLink,
+  Maximize2,
+  MessageCircle,
+  Play,
+  Sparkles,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 import {
   projects,
   socialPosts,
   brandingPosts,
   performancePosts,
   portfolioCategories,
+  comingSoonCategories,
   postAlt,
+  WHATSAPP_LINK,
   type SocialPost,
 } from "@/lib/site-data";
 import { PortfolioLightbox } from "@/components/site/portfolio-lightbox";
@@ -28,10 +38,11 @@ const PERFORMANCE = "Performance Marketing";
 const COLUMNS = "columns-2 sm:columns-3 lg:columns-4 xl:columns-5";
 
 /**
- * Projects use wider columns than the social masonry: their 4:3 website
- * screenshots need room to be legible, unlike phone-format posts.
+ * Wider columns for screenshot work — website captures and analytics
+ * dashboards carry fine print (figures, axis labels, table rows) that is
+ * unreadable at the narrow width the phone-format social posts use.
  */
-const PROJECT_COLUMNS = "columns-1 sm:columns-2 lg:columns-3";
+const WIDE_COLUMNS = "columns-1 sm:columns-2 lg:columns-3";
 
 /**
  * Which client/subject a post belongs to, derived from its slug. Posts of the
@@ -186,7 +197,9 @@ function SocialCard({
 }
 
 export function PortfolioSection() {
-  const [activeFilter, setActiveFilter] = useState("All");
+  // There is no "All" tab — one category is always selected, defaulting to the
+  // first in the list.
+  const [activeFilter, setActiveFilter] = useState(portfolioCategories[0]);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   /**
    * Off by default: browsers refuse audio until the visitor clicks something,
@@ -200,15 +213,14 @@ export function PortfolioSection() {
   // or remounted `.section-reveal` blocks would stay at opacity 0 forever.
   useScrollReveal([activeFilter]);
 
-  const showSocial = activeFilter === "All" || activeFilter === SOCIAL;
-  const showBranding = activeFilter === "All" || activeFilter === BRANDING;
+  const showSocial = activeFilter === SOCIAL;
+  const showBranding = activeFilter === BRANDING;
+  const showPerformance = activeFilter === PERFORMANCE;
 
   const socialGroups: KindGroup[] = useMemo(
     () => (showSocial ? groupByKind(socialPosts) : []),
     [showSocial]
   );
-  const showPerformance =
-    activeFilter === "All" || activeFilter === PERFORMANCE;
 
   const brandingItems: SocialPost[] = useMemo(
     () => (showBranding ? brandingPosts : []),
@@ -231,14 +243,12 @@ export function PortfolioSection() {
   );
 
   const visibleProjects = useMemo(
-    () =>
-      activeFilter === "All"
-        ? projects
-        : projects.filter((p) => p.category === activeFilter),
+    () => projects.filter((p) => p.category === activeFilter),
     [activeFilter]
   );
 
   const isEmpty = flatSocial.length === 0 && visibleProjects.length === 0;
+  const comingSoon = isEmpty ? comingSoonCategories[activeFilter] : undefined;
   const hasReels = flatSocial.some((p) => p.video);
 
   return (
@@ -307,7 +317,40 @@ export function PortfolioSection() {
           </div>
         )}
 
-        {isEmpty ? (
+        {comingSoon ? (
+          /* Category with nothing published yet: say so plainly and give the
+             visitor somewhere to go, rather than a dead empty grid. */
+          <div
+            className="section-reveal max-w-xl mx-auto text-center rounded-2xl border p-10"
+            style={{
+              borderColor: `${comingSoon.color}30`,
+              background: `${comingSoon.color}0C`,
+            }}
+          >
+            <div
+              className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5"
+              style={{ background: `${comingSoon.color}20` }}
+            >
+              <Sparkles size={24} style={{ color: comingSoon.color }} />
+            </div>
+            <h3 className="font-display font-black text-2xl text-ink mb-3">
+              Coming <span className="text-gradient">Soon</span>
+            </h3>
+            <p className="text-sm text-ink/65 leading-relaxed mb-7">
+              {comingSoon.blurb}
+            </p>
+            <a
+              href={WHATSAPP_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 font-display font-bold text-sm text-white px-7 py-3 rounded-xl transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet"
+              style={{ background: comingSoon.color }}
+            >
+              <MessageCircle size={16} />
+              Talk to us about {activeFilter}
+            </a>
+          </div>
+        ) : isEmpty ? (
           <p className="text-center text-sm text-muted py-10">
             No work in this category yet.
           </p>
@@ -382,7 +425,7 @@ export function PortfolioSection() {
                     {performanceItems.length}
                   </span>
                 </h3>
-                <div className={`${COLUMNS} gap-4`}>
+                <div className={`${WIDE_COLUMNS} gap-4`}>
                   {performanceItems.map((post, i) => (
                     <SocialCard
                       key={post.slug}
@@ -407,7 +450,7 @@ export function PortfolioSection() {
                     </span>
                   </h3>
                 )}
-                <div className={`${PROJECT_COLUMNS} gap-4`}>
+                <div className={`${WIDE_COLUMNS} gap-4`}>
                   {visibleProjects.map((project, i) => {
                     const inner = (
                       <div className="relative rounded-lg overflow-hidden">
