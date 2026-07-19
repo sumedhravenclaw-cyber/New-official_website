@@ -341,9 +341,6 @@ export function PortfolioSection() {
                         style={{ background: groupPosts[0].color }}
                       />
                       {group.title}
-                      <span className="text-xs font-semibold text-ink/35">
-                        {groupPosts.length}
-                      </span>
                     </h3>
                     {/* Reel-only sets share one 9:16 aspect, so a uniform grid
                         reproduces the board page: rows across, five to a row on
@@ -382,9 +379,6 @@ export function PortfolioSection() {
                     style={{ background: brandingItems[0].color }}
                   />
                   Logo &amp; Brand Identity
-                  <span className="text-xs font-semibold text-ink/35">
-                    {brandingItems.length}
-                  </span>
                 </h3>
                 <div className={`${COLUMNS} gap-4`}>
                   {brandingItems.map((post, i) => (
@@ -410,9 +404,6 @@ export function PortfolioSection() {
                     style={{ background: performanceItems[0].color }}
                   />
                   Campaign Results
-                  <span className="text-xs font-semibold text-ink/35">
-                    {performanceItems.length}
-                  </span>
                 </h3>
                 <div className={`${WIDE_COLUMNS} gap-4`}>
                   {performanceItems.map((post, i) => (
@@ -439,9 +430,6 @@ export function PortfolioSection() {
                     style={{ background: uiuxItems[0].color }}
                   />
                   Product &amp; Website Design
-                  <span className="text-xs font-semibold text-ink/35">
-                    {uiuxItems.length}
-                  </span>
                 </h3>
                 <div className={`${WIDE_COLUMNS} gap-4`}>
                   {uiuxItems.map((post, i) => (
@@ -463,9 +451,6 @@ export function PortfolioSection() {
                   <h3 className="font-display font-bold text-lg text-ink mb-5 flex items-center gap-2.5">
                     <span className="w-2 h-2 rounded-full flex-shrink-0 bg-violet" />
                     Projects
-                    <span className="text-xs font-semibold text-ink/35">
-                      {visibleProjects.length}
-                    </span>
                   </h3>
                 )}
                 <div className={`${WIDE_COLUMNS} gap-4`}>
