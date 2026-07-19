@@ -49,83 +49,25 @@ const COLUMNS = "columns-2 sm:columns-3 lg:columns-4 xl:columns-5";
 const WIDE_COLUMNS = "columns-1 sm:columns-2 lg:columns-3";
 
 /**
- * Which client/subject a post belongs to, derived from its slug. Posts of the
- * same kind cluster together in the grid — gym with gym, food with food —
- * rather than being scattered. Reels and stills of a kind stay in that cluster.
+ * A single framed post/reel tile, shared by every group block.
+ *
+ * `row` switches from the masonry sizing (full column width, height follows the
+ * artwork) to the template's row sizing: every card shares one height and its
+ * width follows the piece's own aspect, so a square opener sits wider than the
+ * verticals beside it — exactly how the Canva board justifies the strip.
  */
-function kindOf(post: SocialPost): string {
-  const s = post.slug;
-  if (s.startsWith("fashion")) return "fashion";
-  if (s.startsWith("fitness") || s.startsWith("gym")) return "fitness";
-  if (s.startsWith("food")) return "food";
-  if (s.startsWith("automotive")) return "automotive";
-  if (s.startsWith("real-estate")) return "realestate";
-  if (s.startsWith("anishas")) return "art";
-  if (s.startsWith("lb-opticals") || s.startsWith("eyewear")) return "opticals";
-  return "other";
-}
-
-// The order the clusters appear in, largest/most-showcased first, with the
-// heading shown above each block.
-const KIND_ORDER = [
-  "fitness",
-  "fashion",
-  "opticals",
-  "food",
-  "art",
-  "automotive",
-  "realestate",
-  "other",
-];
-
-const KIND_LABELS: Record<string, string> = {
-  fitness: "Fitness & Gym",
-  fashion: "Fashion",
-  opticals: "Topical",
-  food: "Food & Restaurant",
-  art: "Creative",
-  automotive: "Automotive",
-  realestate: "Real Estate",
-  other: "More Work",
-};
-
-interface KindGroup {
-  kind: string;
-  label: string;
-  items: SocialPost[];
-}
-
-/**
- * Bucket posts into their kinds, ordered by KIND_ORDER, so each kind renders as
- * its own block — gym in one block, food in the next. Within a kind the source
- * order is kept (reels then stills). Rendering separate blocks (rather than one
- * masonry) is what makes the grouping read visually: a single CSS-columns
- * masonry would balance items across columns and scatter the clusters.
- */
-function groupByKind(posts: SocialPost[]): KindGroup[] {
-  const buckets = new Map<string, SocialPost[]>();
-  for (const p of posts) {
-    const k = kindOf(p);
-    (buckets.get(k) ?? buckets.set(k, []).get(k)!).push(p);
-  }
-  return KIND_ORDER.filter((k) => buckets.has(k)).map((kind) => ({
-    kind,
-    label: KIND_LABELS[kind] ?? "More Work",
-    items: buckets.get(kind)!,
-  }));
-}
-
-/** A single framed post/reel tile, shared by every group block. */
 function SocialCard({
   post,
   soundOn,
   onOpen,
   delayIndex,
+  row = false,
 }: {
   post: SocialPost;
   soundOn: boolean;
   onOpen: () => void;
   delayIndex: number;
+  row?: boolean;
 }) {
   return (
     <button
@@ -137,7 +79,11 @@ function SocialCard({
               post.client ? ` for ${post.client}` : ""
             } full size`
       }
-      className="group relative block w-full mb-4 break-inside-avoid box-border rounded-2xl p-2 bg-transparent card-hover text-left cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet motion-safe:animate-fade-in-up"
+      className={`group relative box-border rounded-2xl p-2 bg-transparent card-hover text-left cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet motion-safe:animate-fade-in-up ${
+        row
+          ? "flex-none h-full"
+          : "block w-full mb-4 break-inside-avoid"
+      }`}
       style={{
         border: `2px solid ${post.color}`,
         animationDelay: `${Math.min(delayIndex, 12) * 45}ms`,
@@ -146,7 +92,10 @@ function SocialCard({
       {/* The artwork sits inside the frame: a hairline brand border, a margin of
           open space (transparent, so it picks up the page), then rounded
           artwork. Matches the source post style. */}
-      <div className="relative rounded-lg overflow-hidden">
+      <div
+        className={`relative rounded-lg overflow-hidden ${row ? "h-full" : ""}`}
+        style={row ? { aspectRatio: `${post.w} / ${post.h}` } : undefined}
+      >
         {post.video ? (
           <ReelVideo post={post} soundOn={soundOn} />
         ) : (
@@ -157,7 +106,9 @@ function SocialCard({
             height={post.h}
             loading="lazy"
             decoding="async"
-            className="w-full h-auto block"
+            className={
+              row ? "w-full h-full object-cover block" : "w-full h-auto block"
+            }
           />
         )}
 
@@ -222,8 +173,12 @@ export function PortfolioSection() {
   const showPerformance = activeFilter === PERFORMANCE;
   const showUiux = activeFilter === UIUX;
 
-  const socialGroups: KindGroup[] = useMemo(
-    () => (showSocial ? groupByKind(socialPosts) : []),
+  /**
+   * Rendered in source order as one continuous run. Currently empty while the
+   * section is rebuilt from the Canva template around the Topical Days set.
+   */
+  const socialItems: SocialPost[] = useMemo(
+    () => (showSocial ? socialPosts : []),
     [showSocial]
   );
 
@@ -244,12 +199,12 @@ export function PortfolioSection() {
   // matching what's on screen.
   const flatSocial: SocialPost[] = useMemo(
     () => [
-      ...socialGroups.flatMap((g) => g.items),
+      ...socialItems,
       ...brandingItems,
       ...performanceItems,
       ...uiuxItems,
     ],
-    [socialGroups, brandingItems, performanceItems, uiuxItems]
+    [socialItems, brandingItems, performanceItems, uiuxItems]
   );
 
   const visibleProjects = useMemo(
@@ -366,32 +321,48 @@ export function PortfolioSection() {
           </p>
         ) : (
           <div className="space-y-14">
-            {/* One block per kind, so gym sits with gym, food with food. */}
-            {socialGroups.map((group) => (
-              <div key={`group-${group.kind}`} className="section-reveal">
-                <h3 className="font-display font-bold text-lg text-ink mb-5 flex items-center gap-2.5">
-                  <span
-                    className="w-2 h-2 rounded-full flex-shrink-0"
-                    style={{ background: group.items[0].color }}
-                  />
-                  {group.label}
-                  <span className="text-xs font-semibold text-ink/35">
-                    {group.items.length}
-                  </span>
-                </h3>
-                <div className={`${COLUMNS} gap-4`}>
-                  {group.items.map((post, i) => (
+            {/* Topical Days, laid out as the Canva template does: a label panel,
+                then every piece at one shared height with width following its
+                own aspect. Kept as a single strip rather than reflowed into a
+                grid — the square opener sitting wider than the verticals is the
+                whole rhythm of the template. Narrow screens scroll the strip
+                instead of breaking it. */}
+            {socialItems.length > 0 && (
+              <div key="group-social" className="section-reveal">
+                <div className="flex gap-3 overflow-x-auto pb-4 h-[290px] sm:h-[360px] lg:h-[430px]">
+                  {/* Label panel — the template's left card, carrying the set's
+                      name and size instead of a client mark. */}
+                  <div className="flex-none h-full aspect-[2/3] rounded-2xl border-2 border-black/10 bg-card p-5 flex flex-col justify-between">
+                    <div>
+                      <p className="text-[10px] font-bold tracking-widest uppercase text-ink/40">
+                        The Set
+                      </p>
+                      <h3 className="font-display font-black text-xl sm:text-2xl leading-tight mt-1.5">
+                        <span className="text-gradient">Topical Days</span>
+                      </h3>
+                    </div>
+                    <p className="text-[11px] sm:text-xs text-ink/55 leading-relaxed">
+                      Festival and calendar moments, made per client and posted
+                      on the day.
+                    </p>
+                    <p className="font-display font-black text-3xl sm:text-4xl text-ink/15 leading-none">
+                      {String(socialItems.length).padStart(2, "0")}
+                    </p>
+                  </div>
+
+                  {socialItems.map((post, i) => (
                     <SocialCard
                       key={post.slug}
                       post={post}
                       soundOn={soundOn}
                       delayIndex={i}
+                      row
                       onOpen={() => setLightboxIndex(flatSocial.indexOf(post))}
                     />
                   ))}
                 </div>
               </div>
-            ))}
+            )}
 
             {/* Branding block: logo & identity boards, same framed masonry
                 cards as the social work. */}
