@@ -665,8 +665,8 @@ export interface SocialPost {
   video?: string;
   /** Reel length, e.g. "0:15" — read from the source video, shown on the badge. */
   dur?: string;
-  /** Branding/performance pieces reuse this shape but aren't "social media posts" in alt text. */
-  kind?: "branding" | "performance";
+  /** Branding/performance/design pieces reuse this shape but aren't "social media posts" in alt text. */
+  kind?: "branding" | "performance" | "design";
 }
 
 /** Alt/aria copy shared by the grid card and the lightbox. */
@@ -1032,6 +1032,54 @@ export const socialPosts: SocialPost[] = [
 // re-encoded to WebP (all 1200×1200) — same treatment as the social posts, so
 // they share the SocialPost shape, card frame, and lightbox. `kind: "branding"`
 // only switches the alt-text phrasing; there are no reels here.
+/* ============ UI/UX DESIGN ============ */
+// Figma design boards, shown as artwork in the portfolio's UI/UX tab and opened
+// full size in the lightbox — the designs themselves, not a written case study.
+// Regenerate the images with `node figma-plugin/build-gallery.js`; the w/h below
+// are printed by that script and must match, or the masonry reserves wrong space.
+export const uiuxPosts: SocialPost[] = [
+  {
+    slug: "uiux-ravenclaw-desktop-light",
+    src: "/images/portfolio/uiux/home-desktop-light.webp",
+    title: "Home Page — Desktop, Light",
+    client: "Digital RavenClaw",
+    w: 1000,
+    h: 4046,
+    color: "#631DFE",
+    kind: "design",
+  },
+  {
+    slug: "uiux-ravenclaw-desktop-dark",
+    src: "/images/portfolio/uiux/home-desktop-dark.webp",
+    title: "Home Page — Desktop, Dark",
+    client: "Digital RavenClaw",
+    w: 1000,
+    h: 4046,
+    color: "#A7069B",
+    kind: "design",
+  },
+  {
+    slug: "uiux-ravenclaw-mobile",
+    src: "/images/portfolio/uiux/home-mobile.webp",
+    title: "Home Page — Mobile, Light & Dark",
+    client: "Digital RavenClaw",
+    w: 800,
+    h: 3101,
+    color: "#5B9EFE",
+    kind: "design",
+  },
+  {
+    slug: "uiux-ravenclaw-foundations",
+    src: "/images/portfolio/uiux/foundations.webp",
+    title: "Design Tokens & Type Scale",
+    client: "Digital RavenClaw",
+    w: 1200,
+    h: 1100,
+    color: "#EA9D12",
+    kind: "design",
+  },
+];
+
 export const brandingPosts: SocialPost[] = [
   {
     slug: "branding-aarya-singhania",

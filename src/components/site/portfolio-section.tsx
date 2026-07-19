@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import {
+  ArrowRight,
   ExternalLink,
   Maximize2,
   MessageCircle,
@@ -15,12 +16,14 @@ import {
   socialPosts,
   brandingPosts,
   performancePosts,
+  uiuxPosts,
   portfolioCategories,
   comingSoonCategories,
   postAlt,
   WHATSAPP_LINK,
   type SocialPost,
 } from "@/lib/site-data";
+import { DetailLink } from "@/components/site/detail-link";
 import { PortfolioLightbox } from "@/components/site/portfolio-lightbox";
 import { ReelVideo } from "@/components/site/reel-video";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
@@ -28,6 +31,7 @@ import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 const SOCIAL = "Social Media";
 const BRANDING = "Branding";
 const PERFORMANCE = "Performance Marketing";
+const UIUX = "UI/UX Design";
 
 /**
  * Masonry columns per breakpoint. Columns (not a fixed-cell grid) let every
@@ -77,9 +81,9 @@ const KIND_ORDER = [
 const KIND_LABELS: Record<string, string> = {
   fitness: "Fitness & Gym",
   fashion: "Fashion",
-  opticals: "L&B Opticals",
+  opticals: "Topical",
   food: "Food & Restaurant",
-  art: "Anisha's Art Academy",
+  art: "Creative",
   automotive: "Automotive",
   realestate: "Real Estate",
   other: "More Work",
@@ -216,6 +220,7 @@ export function PortfolioSection() {
   const showSocial = activeFilter === SOCIAL;
   const showBranding = activeFilter === BRANDING;
   const showPerformance = activeFilter === PERFORMANCE;
+  const showUiux = activeFilter === UIUX;
 
   const socialGroups: KindGroup[] = useMemo(
     () => (showSocial ? groupByKind(socialPosts) : []),
@@ -230,6 +235,10 @@ export function PortfolioSection() {
     () => (showPerformance ? performancePosts : []),
     [showPerformance]
   );
+  const uiuxItems: SocialPost[] = useMemo(
+    () => (showUiux ? uiuxPosts : []),
+    [showUiux]
+  );
   // Flat order (groups concatenated, then branding, then performance) drives
   // the lightbox, so its prev/next walks one block fully before the next —
   // matching what's on screen.
@@ -238,8 +247,9 @@ export function PortfolioSection() {
       ...socialGroups.flatMap((g) => g.items),
       ...brandingItems,
       ...performanceItems,
+      ...uiuxItems,
     ],
-    [socialGroups, brandingItems, performanceItems]
+    [socialGroups, brandingItems, performanceItems, uiuxItems]
   );
 
   const visibleProjects = useMemo(
@@ -439,6 +449,35 @@ export function PortfolioSection() {
               </div>
             )}
 
+            {/* UI/UX block: Figma design boards. Wide columns because the
+                boards carry fine print (labels, token values) that is
+                unreadable at the narrow width the social posts use. */}
+            {uiuxItems.length > 0 && (
+              <div key="group-uiux" className="section-reveal">
+                <h3 className="font-display font-bold text-lg text-ink mb-5 flex items-center gap-2.5">
+                  <span
+                    className="w-2 h-2 rounded-full flex-shrink-0"
+                    style={{ background: uiuxItems[0].color }}
+                  />
+                  Product &amp; Website Design
+                  <span className="text-xs font-semibold text-ink/35">
+                    {uiuxItems.length}
+                  </span>
+                </h3>
+                <div className={`${WIDE_COLUMNS} gap-4`}>
+                  {uiuxItems.map((post, i) => (
+                    <SocialCard
+                      key={post.slug}
+                      post={post}
+                      soundOn={soundOn}
+                      delayIndex={i}
+                      onOpen={() => setLightboxIndex(flatSocial.indexOf(post))}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
             {visibleProjects.length > 0 && (
               <div key="group-projects" className="section-reveal">
                 {flatSocial.length > 0 && (
@@ -462,16 +501,19 @@ export function PortfolioSection() {
                           decoding="async"
                           className="w-full aspect-[4/3] object-cover block transition-transform duration-500 group-hover:scale-105"
                         />
-                        {/* Live projects open their real site; badge signals the link-out. */}
-                        {project.link && (
-                          <span
-                            className="absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300"
-                            style={{ background: `${project.color}E6` }}
-                            aria-hidden="true"
-                          >
+                        {/* Badge signals where the card goes: out to the live
+                            site, or through to the case study on this site. */}
+                        <span
+                          className="absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300"
+                          style={{ background: `${project.color}E6` }}
+                          aria-hidden="true"
+                        >
+                          {project.link ? (
                             <ExternalLink size={12} className="text-white" />
-                          </span>
-                        )}
+                          ) : (
+                            <ArrowRight size={12} className="text-white" />
+                          )}
+                        </span>
                         <div className="p-4">
                           <h3 className="font-display font-bold text-ink text-sm leading-tight">
                             {project.title}
@@ -504,9 +546,19 @@ export function PortfolioSection() {
                         {inner}
                       </a>
                     ) : (
-                      <div key={project.slug} className={cardClass} style={cardStyle}>
+                      /* No live URL — open the case study on this site.
+                         DetailLink tags the history entry with "#portfolio" so
+                         Back returns to this section rather than the page top. */
+                      <DetailLink
+                        key={project.slug}
+                        href={`/portfolio/${project.slug}`}
+                        sectionId="portfolio"
+                        aria-label={`View the ${project.title} case study`}
+                        className={`${cardClass} focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet`}
+                        style={cardStyle}
+                      >
                         {inner}
-                      </div>
+                      </DetailLink>
                     );
                   })}
                 </div>
