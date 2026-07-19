@@ -676,13 +676,459 @@ export function postAlt(post: SocialPost): string {
 }
 
 /**
- * Social Media work — emptied on request, so the Social Media tab renders its
- * empty state instead of a grid. The removed 25-post catalogue (and the
- * socialBoardOrder / orderedSocialPosts helpers that sequenced it) live in git
- * history; the WebP posters and MP4 reels are still on disk under
- * public/images/portfolio/social/ and public/videos/portfolio/.
+ * One titled strip on the Social Media tab. Groups mirror the pages of the
+ * client-approved Canva board (design DAHP1AtF6VI, "cate") — one group per
+ * page, posts in the page's reading order. Don't resort them: the sequence is
+ * the deliverable.
  */
-export const socialPosts: SocialPost[] = [];
+export interface SocialGroup {
+  slug: string;
+  title: string;
+  /** Short line under the title on the strip's label panel. */
+  blurb: string;
+  /**
+   * Posts rendered stacked in the strip's first slot — the board's page 1
+   * opens with a wide banner sitting on top of a square post, and the stack
+   * preserves that arrangement at strip height.
+   */
+  leadStack?: SocialPost[];
+  /**
+   * Every post in the group shares one aspect (phone-format reels), so render
+   * a uniform grid in reading order — rows across, like the board page —
+   * instead of masonry columns.
+   */
+  reelGrid?: boolean;
+  posts: SocialPost[];
+}
+
+export const socialGroups: SocialGroup[] = [
+  {
+    // Board page 1. The stacked opener is the Zone banner over Gandhi Jayanti.
+    slug: "topical-days",
+    title: "Topical Days",
+    blurb:
+      "Festival and calendar moments, made per client and posted on the day.",
+    leadStack: [
+      {
+        slug: "topical-mothers-day-zone",
+        src: "/images/portfolio/social/topical-mothers-day-zone.webp",
+        title: "Mother's Day",
+        client: "Zone",
+        w: 468,
+        h: 156,
+        color: "#EA9D12",
+      },
+      {
+        slug: "topical-gandhi-jayanti",
+        src: "/images/portfolio/social/topical-gandhi-jayanti.webp",
+        title: "Gandhi Jayanti",
+        client: "L&B Opticals",
+        w: 1200,
+        h: 1200,
+        color: "#5B9EFE",
+      },
+    ],
+    posts: [
+      {
+        slug: "topical-independence-day",
+        src: "/images/portfolio/social/topical-independence-day.webp",
+        title: "4th of July",
+        client: "Anisha's Art Academy",
+        w: 1200,
+        h: 1200,
+        color: "#631DFE",
+      },
+      {
+        slug: "topical-labour-day",
+        src: "/images/portfolio/social/topical-labour-day.webp",
+        title: "Labour Day",
+        client: "L&B Opticals",
+        w: 1080,
+        h: 1920,
+        color: "#EA9D12",
+        video: "/videos/portfolio/topical-labour-day.mp4",
+        dur: "0:05",
+      },
+      {
+        slug: "topical-mahavir-jayanti",
+        src: "/images/portfolio/social/topical-mahavir-jayanti.webp",
+        title: "Mahavir Jayanti",
+        client: "L&B Opticals",
+        w: 1080,
+        h: 1920,
+        color: "#5E9929",
+      },
+      {
+        slug: "topical-mothers-day",
+        src: "/images/portfolio/social/topical-mothers-day.webp",
+        title: "Mother's Day",
+        client: "L&B Opticals",
+        w: 1080,
+        h: 1920,
+        color: "#A7069B",
+        video: "/videos/portfolio/topical-mothers-day.mp4",
+        dur: "0:05",
+      },
+      {
+        // The artwork is branded Shivam Fitness — confirmed against both the
+        // board tile and the reel itself.
+        slug: "topical-republic-day",
+        src: "/images/portfolio/social/topical-republic-day.webp",
+        title: "Republic Day",
+        client: "Shivam Fitness",
+        w: 1080,
+        h: 1920,
+        color: "#CC2829",
+        video: "/videos/portfolio/topical-republic-day.mp4",
+        dur: "0:05",
+      },
+    ],
+  },
+  {
+    // Board page 2: Sumedh's vertical reel opens, then the top row (pushups,
+    // Amey at the weight stack, three Rohit lifts), then the bottom row
+    // (Anand's two reels around Gymbros, two standing poses, the wide mirror
+    // shot closing).
+    slug: "fitness-gym",
+    title: "Fitness & Gym",
+    blurb:
+      "Reels and photography shot on the gym floor — training energy, captured raw.",
+    posts: [
+      {
+        slug: "fitness-sumedh-vertical",
+        src: "/images/portfolio/social/fitness-sumedh-vertical.webp",
+        title: "Fitness Reel",
+        w: 506,
+        h: 900,
+        color: "#631DFE",
+        video: "/videos/portfolio/fitness-sumedh-vertical.mp4",
+        dur: "0:19",
+      },
+      {
+        slug: "fitness-sumedh-horizontal",
+        src: "/images/portfolio/social/fitness-sumedh-horizontal.webp",
+        title: "Fitness Reel",
+        w: 900,
+        h: 506,
+        color: "#A7069B",
+        video: "/videos/portfolio/fitness-sumedh-horizontal.mp4",
+        dur: "0:18",
+      },
+      {
+        slug: "gym-amey-01",
+        src: "/images/portfolio/social/gym-amey-01.webp",
+        title: "Gym Photography",
+        w: 675,
+        h: 1200,
+        color: "#5E9929",
+      },
+      {
+        slug: "gym-rohit-02",
+        src: "/images/portfolio/social/gym-rohit-02.webp",
+        title: "Gym Photography",
+        w: 675,
+        h: 1200,
+        color: "#EA9D12",
+      },
+      {
+        slug: "gym-rohit-03",
+        src: "/images/portfolio/social/gym-rohit-03.webp",
+        title: "Gym Photography",
+        w: 675,
+        h: 1200,
+        color: "#CC2829",
+      },
+      {
+        slug: "gym-rohit-06",
+        src: "/images/portfolio/social/gym-rohit-06.webp",
+        title: "Gym Photography",
+        w: 675,
+        h: 1200,
+        color: "#5B9EFE",
+      },
+      {
+        slug: "fitness-anand-babydoll",
+        src: "/images/portfolio/social/fitness-anand-babydoll.webp",
+        title: "Fitness Reel",
+        w: 506,
+        h: 900,
+        color: "#631DFE",
+        video: "/videos/portfolio/fitness-anand-babydoll.mp4",
+        dur: "0:16",
+      },
+      {
+        slug: "fitness-gymbros",
+        src: "/images/portfolio/social/fitness-gymbros.webp",
+        title: "Fitness Reel",
+        w: 506,
+        h: 900,
+        color: "#A7069B",
+        video: "/videos/portfolio/fitness-gymbros.mp4",
+        dur: "0:17",
+      },
+      {
+        slug: "fitness-anand-skyfall",
+        src: "/images/portfolio/social/fitness-anand-skyfall.webp",
+        title: "Fitness Reel",
+        w: 506,
+        h: 900,
+        color: "#5E9929",
+        video: "/videos/portfolio/fitness-anand-skyfall.mp4",
+        dur: "0:29",
+      },
+      {
+        slug: "gym-rohit-04",
+        src: "/images/portfolio/social/gym-rohit-04.webp",
+        title: "Gym Photography",
+        w: 675,
+        h: 1200,
+        color: "#EA9D12",
+      },
+      {
+        slug: "gym-rohit-05",
+        src: "/images/portfolio/social/gym-rohit-05.webp",
+        title: "Gym Photography",
+        w: 675,
+        h: 1200,
+        color: "#CC2829",
+      },
+      {
+        slug: "gym-rohit-01",
+        src: "/images/portfolio/social/gym-rohit-01.webp",
+        title: "Gym Photography",
+        w: 1200,
+        h: 675,
+        color: "#5B9EFE",
+      },
+    ],
+  },
+  {
+    // Board page 3: the food grid reads food-01, food-02, food-05, food-04 —
+    // food-03 exists on disk but is not on the board, so it's not listed.
+    // Then the student feature, and the two eyewear columns (product shot over
+    // its reel), with the property tour closing.
+    slug: "small-businesses",
+    title: "Small Businesses",
+    blurb:
+      "Food, retail, real estate and education — everyday businesses given a feed worth following.",
+    posts: [
+      {
+        slug: "food-01",
+        src: "/images/portfolio/social/food-01.webp",
+        title: "Food Photography",
+        w: 1200,
+        h: 800,
+        color: "#EA9D12",
+      },
+      {
+        slug: "food-02",
+        src: "/images/portfolio/social/food-02.webp",
+        title: "Food Photography",
+        w: 800,
+        h: 1200,
+        color: "#CC2829",
+      },
+      {
+        slug: "food-05",
+        src: "/images/portfolio/social/food-05.webp",
+        title: "Food Photography",
+        w: 1200,
+        h: 800,
+        color: "#631DFE",
+      },
+      {
+        slug: "food-04",
+        src: "/images/portfolio/social/food-04.webp",
+        title: "Food Photography",
+        w: 1200,
+        h: 800,
+        color: "#A7069B",
+      },
+      {
+        slug: "anishas-art-student-feature",
+        src: "/images/portfolio/social/anishas-art-student-feature.webp",
+        title: "Student Feature",
+        client: "Anisha's Art Academy",
+        w: 474,
+        h: 1000,
+        color: "#5B9EFE",
+      },
+      {
+        // Source art is named per client: the gold pair is Spectronix, the
+        // black pair is L&B Opticals.
+        slug: "eyewear-product-01",
+        src: "/images/portfolio/social/eyewear-product-01.webp",
+        title: "Product Shot",
+        client: "Spectronix",
+        w: 820,
+        h: 820,
+        color: "#631DFE",
+      },
+      {
+        slug: "automotive-reel",
+        src: "/images/portfolio/social/automotive-reel.webp",
+        title: "Automotive Reel",
+        w: 506,
+        h: 900,
+        color: "#5B9EFE",
+        video: "/videos/portfolio/automotive-reel.mp4",
+        dur: "0:18",
+      },
+      {
+        slug: "eyewear-product-02",
+        src: "/images/portfolio/social/eyewear-product-02.webp",
+        title: "Product Shot",
+        client: "L&B Opticals",
+        w: 820,
+        h: 820,
+        color: "#EA9D12",
+      },
+      {
+        slug: "lb-opticals-reel",
+        src: "/images/portfolio/social/lb-opticals-reel.webp",
+        title: "Brand Reel",
+        client: "L&B Opticals",
+        w: 506,
+        h: 900,
+        color: "#A7069B",
+        video: "/videos/portfolio/lb-opticals-reel.mp4",
+        dur: "0:35",
+      },
+      {
+        slug: "real-estate-willow-way",
+        src: "/images/portfolio/social/real-estate-willow-way.webp",
+        title: "Property Tour",
+        w: 563,
+        h: 1000,
+        color: "#5E9929",
+        video: "/videos/portfolio/real-estate-willow-way.mp4",
+        dur: "2:00",
+      },
+    ],
+  },
+  {
+    // Board page 4: ten reels from the in-store fashion shoot, top row then
+    // bottom row. fashion-09 and fashion-10 are the two pieces new to this
+    // board; the rest carry their established slugs.
+    slug: "influencer-marketing",
+    title: "Influencer Marketing",
+    blurb:
+      "Creator collabs shot in-store — fashion-forward reels that put products on real people.",
+    reelGrid: true,
+    posts: [
+      {
+        slug: "fashion-09",
+        src: "/images/portfolio/social/fashion-09.webp",
+        title: "Fashion Reel",
+        client: "L&B Opticals",
+        w: 506,
+        h: 900,
+        color: "#631DFE",
+        video: "/videos/portfolio/fashion-09.mp4",
+        dur: "0:21",
+      },
+      {
+        slug: "fashion-06",
+        src: "/images/portfolio/social/fashion-06.webp",
+        title: "Fashion Reel",
+        client: "L&B Opticals",
+        w: 506,
+        h: 900,
+        color: "#A7069B",
+        video: "/videos/portfolio/fashion-06.mp4",
+        dur: "0:19",
+      },
+      {
+        slug: "fashion-04",
+        src: "/images/portfolio/social/fashion-04.webp",
+        title: "Fashion Reel",
+        client: "L&B Opticals",
+        w: 506,
+        h: 900,
+        color: "#5E9929",
+        video: "/videos/portfolio/fashion-04.mp4",
+        dur: "0:21",
+      },
+      {
+        slug: "fashion-05",
+        src: "/images/portfolio/social/fashion-05.webp",
+        title: "Fashion Reel",
+        client: "L&B Opticals",
+        w: 506,
+        h: 900,
+        color: "#EA9D12",
+        video: "/videos/portfolio/fashion-05.mp4",
+        dur: "0:21",
+      },
+      {
+        slug: "fashion-10",
+        src: "/images/portfolio/social/fashion-10.webp",
+        title: "Fashion Reel",
+        client: "L&B Opticals",
+        w: 506,
+        h: 900,
+        color: "#CC2829",
+        video: "/videos/portfolio/fashion-10.mp4",
+        dur: "0:36",
+      },
+      {
+        slug: "fashion-01",
+        src: "/images/portfolio/social/fashion-01.webp",
+        title: "Fashion Reel",
+        client: "L&B Opticals",
+        w: 506,
+        h: 900,
+        color: "#5B9EFE",
+        video: "/videos/portfolio/fashion-01.mp4",
+        dur: "0:21",
+      },
+      {
+        slug: "fashion-07",
+        src: "/images/portfolio/social/fashion-07.webp",
+        title: "Fashion Reel",
+        client: "L&B Opticals",
+        w: 506,
+        h: 900,
+        color: "#631DFE",
+        video: "/videos/portfolio/fashion-07.mp4",
+        dur: "0:11",
+      },
+      {
+        slug: "fashion-03",
+        src: "/images/portfolio/social/fashion-03.webp",
+        title: "Fashion Reel",
+        client: "L&B Opticals",
+        w: 506,
+        h: 900,
+        color: "#A7069B",
+        video: "/videos/portfolio/fashion-03.mp4",
+        dur: "0:23",
+      },
+      {
+        slug: "fashion-08",
+        src: "/images/portfolio/social/fashion-08.webp",
+        title: "Fashion Reel",
+        client: "L&B Opticals",
+        w: 506,
+        h: 900,
+        color: "#5E9929",
+        video: "/videos/portfolio/fashion-08.mp4",
+        dur: "0:22",
+      },
+      {
+        slug: "fashion-02",
+        src: "/images/portfolio/social/fashion-02.webp",
+        title: "Fashion Reel",
+        client: "L&B Opticals",
+        w: 506,
+        h: 900,
+        color: "#5B9EFE",
+        video: "/videos/portfolio/fashion-02.mp4",
+        dur: "0:32",
+      },
+    ],
+  },
+];
 
 /* ============ BRANDING WORK ============ */
 // Real client logo & identity designs, delivered as square brand boards and

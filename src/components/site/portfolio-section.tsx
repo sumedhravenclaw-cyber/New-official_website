@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import {
   projects,
-  socialPosts,
+  socialGroups,
   brandingPosts,
   performancePosts,
   uiuxPosts,
@@ -49,25 +49,32 @@ const COLUMNS = "columns-2 sm:columns-3 lg:columns-4 xl:columns-5";
 const WIDE_COLUMNS = "columns-1 sm:columns-2 lg:columns-3";
 
 /**
- * A single framed post/reel tile, shared by every group block.
+ * One column denser than COLUMNS from sm up — the Social Media sets run long
+ * (up to twelve pieces), so slightly smaller frames keep each set to a couple
+ * of rows without shrinking phones below two columns.
+ */
+const SOCIAL_COLUMNS = "columns-2 sm:columns-3 lg:columns-5 xl:columns-6";
+
+/**
+ * A single framed post/reel tile, shared by every group block. Masonry sizing:
+ * full column width, height follows the artwork's own aspect, so nothing is
+ * cropped — these posts carry copy baked into the artwork.
  *
- * `row` switches from the masonry sizing (full column width, height follows the
- * artwork) to the template's row sizing: every card shares one height and its
- * width follows the piece's own aspect, so a square opener sits wider than the
- * verticals beside it — exactly how the Canva board justifies the strip.
+ * `grid` drops the masonry-specific spacing for cells of a uniform reel grid,
+ * where the grid container owns both the gaps and the column widths.
  */
 function SocialCard({
   post,
   soundOn,
   onOpen,
   delayIndex,
-  row = false,
+  grid = false,
 }: {
   post: SocialPost;
   soundOn: boolean;
   onOpen: () => void;
   delayIndex: number;
-  row?: boolean;
+  grid?: boolean;
 }) {
   return (
     <button
@@ -79,10 +86,8 @@ function SocialCard({
               post.client ? ` for ${post.client}` : ""
             } full size`
       }
-      className={`group relative box-border rounded-2xl p-2 bg-transparent card-hover text-left cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet motion-safe:animate-fade-in-up ${
-        row
-          ? "flex-none h-full"
-          : "block w-full mb-4 break-inside-avoid"
+      className={`group relative box-border rounded-2xl p-2 bg-transparent card-hover text-left cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet motion-safe:animate-fade-in-up block w-full ${
+        grid ? "" : "mb-4 break-inside-avoid"
       }`}
       style={{
         border: `2px solid ${post.color}`,
@@ -92,10 +97,7 @@ function SocialCard({
       {/* The artwork sits inside the frame: a hairline brand border, a margin of
           open space (transparent, so it picks up the page), then rounded
           artwork. Matches the source post style. */}
-      <div
-        className={`relative rounded-lg overflow-hidden ${row ? "h-full" : ""}`}
-        style={row ? { aspectRatio: `${post.w} / ${post.h}` } : undefined}
-      >
+      <div className="relative rounded-lg overflow-hidden">
         {post.video ? (
           <ReelVideo post={post} soundOn={soundOn} />
         ) : (
@@ -106,9 +108,7 @@ function SocialCard({
             height={post.h}
             loading="lazy"
             decoding="async"
-            className={
-              row ? "w-full h-full object-cover block" : "w-full h-auto block"
-            }
+            className="w-full h-auto block"
           />
         )}
 
@@ -174,11 +174,15 @@ export function PortfolioSection() {
   const showUiux = activeFilter === UIUX;
 
   /**
-   * Rendered in source order as one continuous run. Currently empty while the
-   * section is rebuilt from the Canva template around the Topical Days set.
+   * Every social post in display order — groups in board-page order, each
+   * group's stacked opener before its strip run. Drives the lightbox
+   * alongside the per-group rendering below.
    */
   const socialItems: SocialPost[] = useMemo(
-    () => (showSocial ? socialPosts : []),
+    () =>
+      showSocial
+        ? socialGroups.flatMap((g) => [...(g.leadStack ?? []), ...g.posts])
+        : [],
     [showSocial]
   );
 
@@ -321,48 +325,52 @@ export function PortfolioSection() {
           </p>
         ) : (
           <div className="space-y-14">
-            {/* Topical Days, laid out as the Canva template does: a label panel,
-                then every piece at one shared height with width following its
-                own aspect. Kept as a single strip rather than reflowed into a
-                grid — the square opener sitting wider than the verticals is the
-                whole rhythm of the template. Narrow screens scroll the strip
-                instead of breaking it. */}
-            {socialItems.length > 0 && (
-              <div key="group-social" className="section-reveal">
-                <div className="flex gap-3 overflow-x-auto pb-4 h-[290px] sm:h-[360px] lg:h-[430px]">
-                  {/* Label panel — the template's left card, carrying the set's
-                      name and size instead of a client mark. */}
-                  <div className="flex-none h-full aspect-[2/3] rounded-2xl border-2 border-black/10 bg-card p-5 flex flex-col justify-between">
-                    <div>
-                      <p className="text-[10px] font-bold tracking-widest uppercase text-ink/40">
-                        The Set
-                      </p>
-                      <h3 className="font-display font-black text-xl sm:text-2xl leading-tight mt-1.5">
-                        <span className="text-gradient">Topical Days</span>
-                      </h3>
+            {/* Social Media work: one block per Canva board page, styled like
+                the Campaign Results block — a dotted heading with the count,
+                then framed masonry cards. Masonry fills columns top-to-bottom,
+                so the board's reading order flows down each column; the stacked
+                opener's banner and square simply lead the run. */}
+            {showSocial &&
+              socialGroups.map((group) => {
+                const groupPosts = [...(group.leadStack ?? []), ...group.posts];
+                return (
+                  <div key={`group-${group.slug}`} className="section-reveal">
+                    <h3 className="font-display font-bold text-lg text-ink mb-5 flex items-center gap-2.5">
+                      <span
+                        className="w-2 h-2 rounded-full flex-shrink-0"
+                        style={{ background: groupPosts[0].color }}
+                      />
+                      {group.title}
+                      <span className="text-xs font-semibold text-ink/35">
+                        {groupPosts.length}
+                      </span>
+                    </h3>
+                    {/* Reel-only sets share one 9:16 aspect, so a uniform grid
+                        reproduces the board page: rows across, five to a row on
+                        desktop, every frame at the reel's own proportions. */}
+                    <div
+                      className={
+                        group.reelGrid
+                          ? "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4"
+                          : `${SOCIAL_COLUMNS} gap-4`
+                      }
+                    >
+                      {groupPosts.map((post, i) => (
+                        <SocialCard
+                          key={post.slug}
+                          post={post}
+                          soundOn={soundOn}
+                          delayIndex={i}
+                          grid={group.reelGrid}
+                          onOpen={() =>
+                            setLightboxIndex(flatSocial.indexOf(post))
+                          }
+                        />
+                      ))}
                     </div>
-                    <p className="text-[11px] sm:text-xs text-ink/55 leading-relaxed">
-                      Festival and calendar moments, made per client and posted
-                      on the day.
-                    </p>
-                    <p className="font-display font-black text-3xl sm:text-4xl text-ink/15 leading-none">
-                      {String(socialItems.length).padStart(2, "0")}
-                    </p>
                   </div>
-
-                  {socialItems.map((post, i) => (
-                    <SocialCard
-                      key={post.slug}
-                      post={post}
-                      soundOn={soundOn}
-                      delayIndex={i}
-                      row
-                      onOpen={() => setLightboxIndex(flatSocial.indexOf(post))}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
+                );
+              })}
 
             {/* Branding block: logo & identity boards, same framed masonry
                 cards as the social work. */}
