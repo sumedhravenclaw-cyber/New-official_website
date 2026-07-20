@@ -330,7 +330,7 @@ export function PortfolioSection() {
         ) : (
           <div className="space-y-14">
             {/* Social Media work: one block per Canva board page, styled like
-                the Campaign Results block — a dotted heading with the count,
+                the performance block — a dotted heading with the count,
                 then framed masonry cards. Masonry fills columns top-to-bottom,
                 so the board's reading order flows down each column; the stacked
                 opener's banner and square simply lead the run. */}
@@ -457,7 +457,7 @@ export function PortfolioSection() {
                     className="w-2 h-2 rounded-full flex-shrink-0"
                     style={{ background: performanceItems[0].color }}
                   />
-                  Campaign Results
+                  Organic Growth &amp; Paid Ads
                 </h3>
                 <div className={`${WIDE_COLUMNS} gap-4`}>
                   {performanceItems.map((post, i) => (

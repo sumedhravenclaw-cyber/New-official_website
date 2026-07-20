@@ -1467,6 +1467,29 @@ export const performancePosts: SocialPost[] = [
     color: "#A7069B",
     kind: "performance",
   },
+  {
+    // Instagram Views insight, 15 Dec – 14 Mar: 429,197 views, 69.6% from
+    // non-followers, 83.1% carried by reels.
+    slug: "perf-90day-views-429k",
+    src: "/images/portfolio/performance/perf-16.webp",
+    title: "4.3L Views in 90 Days",
+    w: 720,
+    h: 1537,
+    color: "#631DFE",
+    kind: "performance",
+  },
+  {
+    // Profile header with the professional dashboard strip — the artwork
+    // names the account, so the client is credited.
+    slug: "perf-shivam-fitness-profile",
+    src: "/images/portfolio/performance/perf-17.webp",
+    title: "2.2L Monthly Views",
+    client: "Shivam Fitness",
+    w: 1080,
+    h: 715,
+    color: "#EA9D12",
+    kind: "performance",
+  },
 ];
 
 /**
@@ -2038,12 +2061,12 @@ export const contactInfo = [
 ];
 
 export const socialLinks = [
-  { name: "Facebook", color: "#1877F2", href: "https://www.facebook.com/" },
-  { name: "Instagram", color: "#E4405F", href: "https://www.instagram.com/" },
-  { name: "LinkedIn", color: "#0A66C2", href: "https://www.linkedin.com/" },
-  { name: "YouTube", color: "#FF0000", href: "https://youtube.com/" },
-  { name: "Twitter", color: "#d5dee6", href: "https://twitter.com/" },
-  { name: "Threads", color: "#e8dbdb", href: "https://www.threads.com/" },
+  { name: "Facebook", color: "#1877F2", href: "https://www.facebook.com/digitalravenclaw" },
+  { name: "Instagram", color: "#E4405F", href: "https://www.instagram.com/digitalravenclaw" },
+  { name: "LinkedIn", color: "#0A66C2", href: "https://www.linkedin.com/company/digitalravenclaw" },
+  { name: "YouTube", color: "#FF0000", href: "https://youtube.com/@digitalravenclaw" },
+  { name: "X", color: "#d5dee6", href: "https://X.com/digiravenclaw" },
+  { name: "Threads", color: "#e8dbdb", href: "https://www.threads.com/@digitalravenclaw" },
 ];
 
 export const WHATSAPP_LINK =
