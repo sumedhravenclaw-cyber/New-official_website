@@ -104,7 +104,7 @@ export function CareersPage() {
           </h2>
           <p className="text-sm text-ink/70 leading-relaxed">
             Send your resume, portfolio, and a short note on what you would like
-            to work on to hello@ravenclaw.com. We reply to every application.
+            to work on to hello@digitalravenclaw.com. We reply to every application.
           </p>
         </section>
 
