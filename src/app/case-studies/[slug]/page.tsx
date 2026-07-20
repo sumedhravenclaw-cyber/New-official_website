@@ -6,6 +6,14 @@ import { db } from "@/lib/db";
 
 type Props = { params: Promise<{ slug: string }> };
 
+/**
+ * Only the static studies are prerendered at build time. A DB-published study
+ * therefore renders on first request — this caches that render for an hour so
+ * it isn't re-queried per visitor, and the POST handler's revalidatePath busts
+ * it immediately on publish.
+ */
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return caseStudies.map((c) => ({ slug: c.id }));
 }

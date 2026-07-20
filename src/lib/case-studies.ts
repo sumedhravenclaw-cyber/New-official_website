@@ -1,13 +1,29 @@
+import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { caseStudies as staticCaseStudies, type CaseStudy } from "@/lib/site-data";
 
-export async function getAllCaseStudies(): Promise<CaseStudy[]> {
-  try {
+/** Cache tag for every derived view of the case-study set. */
+export const CASE_STUDIES_TAG = "case-studies";
+
+/**
+ * The DB read, memoised across requests.
+ *
+ * Deliberately *only* the query — the try/catch that falls back to static
+ * content stays outside. If the fallback were inside the cache, a momentary
+ * connection blip would pin the site to static-only results for the whole
+ * revalidate window; thrown errors aren't cached, so keeping it outside means a
+ * blip costs one request instead of an hour of degraded content.
+ *
+ * The hour is a backstop, not the primary invalidation path: publishing a case
+ * study calls revalidateTag(CASE_STUDIES_TAG) and the next read is fresh.
+ */
+const getDbCaseStudies = unstable_cache(
+  async (): Promise<CaseStudy[]> => {
     const dbStudies = await db.caseStudy.findMany({
       orderBy: { createdAt: "desc" },
     });
 
-    const mapped: CaseStudy[] = dbStudies.map((s) => ({
+    return dbStudies.map((s) => ({
       id: s.slug,
       client: s.client,
       industry: s.industry as CaseStudy["industry"],
@@ -17,8 +33,14 @@ export async function getAllCaseStudies(): Promise<CaseStudy[]> {
       image: s.image,
       content: JSON.parse(s.content),
     }));
+  },
+  ["case-studies:all"],
+  { revalidate: 3600, tags: [CASE_STUDIES_TAG] }
+);
 
-    return [...mapped, ...staticCaseStudies];
+export async function getAllCaseStudies(): Promise<CaseStudy[]> {
+  try {
+    return [...(await getDbCaseStudies()), ...staticCaseStudies];
   } catch (err) {
     // No database configured (e.g. free test deploy) — fall back to static content.
     console.warn("Case studies DB unavailable, using static data only:", err);

@@ -1571,6 +1571,8 @@ export const clients: Client[] = [
   { name: "Shital's Homemade Bakery", src: "/images/clients/38.png" },
   { name: "Shital's Homemade", src: "/images/clients/39.png" },
   { name: "Shital's Souvenir Center", src: "/images/clients/40.png" },
+  { name: "Krishi chess", src: "/images/clients/41.png" },
+  { name: "Anisha art acadamy", src: "/images/clients/42.png" },
 ];
 
 /* ============ TESTIMONIALS ============ */
@@ -1583,12 +1585,6 @@ export interface Testimonial {
   rating: number;
 }
 
-// A real 5-star Google review (share.google/HEI4vIjBtheefmQhQ, July 2026).
-// Wording kept as written, minus the signature block — the name, role and
-// company under the quote carry it instead. Avatar is the reviewer's Google
-// profile photo, self-hosted so the card doesn't depend on Google's CDN.
-// When the live Google-reviews feed is configured (GOOGLE_MAPS_API_KEY +
-// GOOGLE_PLACE_ID), it replaces this list at runtime.
 export const testimonials: Testimonial[] = [
   {
     name: "Ravi K Rajbhure",

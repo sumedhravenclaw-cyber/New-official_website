@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Send, } from "lucide-react";
 import { services } from "@/lib/site-data";
@@ -45,8 +45,29 @@ export function Footer() {
   const [status, setStatus] = useState<NewsletterStatus>("idle");
   const [statusMsg, setStatusMsg] = useState("");
 
+  // Hidden from humans — anything that ticks it is automated. See the matching
+  // note in contact-section.tsx.
+  const botcheckRef = useRef<HTMLInputElement>(null);
+
+  // Cancels the "success -> idle" timer if the footer unmounts first.
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    return () => {
+      if (resetTimer.current) clearTimeout(resetTimer.current);
+    };
+  }, []);
+
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Bot detected: mimic success, but send nothing to Web3Forms or the DB.
+    if (botcheckRef.current?.checked) {
+      setStatus("success");
+      setStatusMsg("Subscribed! You'll hear from us when we publish new work.");
+      setEmail("");
+      return;
+    }
+
     setStatus("sending");
     setStatusMsg("");
 
@@ -60,7 +81,7 @@ export function Footer() {
           from_name: "RavenClaw Newsletter",
           email,
           message: `New newsletter subscriber: ${email}`,
-          botcheck: "",
+          botcheck: botcheckRef.current?.checked ? "true" : "",
         }),
       });
       const data = await res.json();
@@ -69,7 +90,7 @@ export function Footer() {
         setStatus("success");
         setStatusMsg("Subscribed! You'll hear from us when we publish new work.");
         setEmail("");
-        setTimeout(() => setStatus("idle"), 4000);
+        resetTimer.current = setTimeout(() => setStatus("idle"), 4000);
 
         // Best-effort: keep a local record so future case-study emails can reach this subscriber
         fetch("/api/newsletter", {
@@ -181,7 +202,7 @@ export function Footer() {
                 <li key={s.slug}>
                   <DetailLink
                     href={`/services/${s.slug}`}
-                    sectionId="services"
+                    sectionId="footer"
                     className="text-sm transition-colors text-left hover:opacity-100"
                     style={{ color: "rgba(254, 254, 254, 0.4)" }}
                   >
@@ -229,11 +250,13 @@ export function Footer() {
             <form onSubmit={handleSubscribe} className="flex gap-2">
               {/* Honeypot — hidden from users, catches bots */}
               <input
+                ref={botcheckRef}
                 type="checkbox"
                 name="botcheck"
                 style={{ display: "none" }}
                 tabIndex={-1}
                 autoComplete="off"
+                aria-hidden="true"
               />
               <input
                 type="email"

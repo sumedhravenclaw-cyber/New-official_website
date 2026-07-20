@@ -41,7 +41,21 @@ const garet = localFont({
   fallback: ["sans-serif"],
 });
 
+// Absolute base for OG/Twitter image URLs. Without this Next falls back to
+// http://localhost:3000, which every social scraper then fails to fetch — so
+// shared links render with no preview image at all.
+//
+// NEXT_PUBLIC_SITE_URL is the intended source; the Vercel-provided production
+// URL is a safety net so a forgotten env var degrades to a working domain
+// rather than to localhost. The localhost fallback only applies to local dev.
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "RavenClaw — Digital Agency for Web, Design, Branding & AI",
   description:
     "RavenClaw is a digital agency crafting websites, UI/UX design, branding, social media, performance marketing, and AI solutions that help businesses grow with wisdom, creativity, and purpose.",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { contactInfo } from "@/lib/site-data";
 import { CalendlyPopupButton } from "./calendly";
@@ -18,6 +18,21 @@ export function ContactSection() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
+  // The honeypot checkbox is hidden from humans, so anything that ticks it is
+  // automated. Read via ref rather than controlled state: it must stay out of
+  // React's value flow so nothing can accidentally surface it in the UI.
+  const botcheckRef = useRef<HTMLInputElement>(null);
+
+  // Holds the "success -> idle" timer so it can be cancelled on unmount.
+  // Without this, navigating away inside the 4s window fires setState against
+  // an unmounted component.
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    return () => {
+      if (resetTimer.current) clearTimeout(resetTimer.current);
+    };
+  }, []);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -26,6 +41,15 @@ export function ContactSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Bot detected. Show the success state so the script gets no signal that it
+    // was caught, but never spend a Web3Forms submission on it.
+    if (botcheckRef.current?.checked) {
+      setStatus("success");
+      setFormData({ name: "", email: "", message: "" });
+      return;
+    }
+
     setStatus("sending");
     setErrorMsg("");
 
@@ -40,7 +64,9 @@ export function ContactSection() {
           name: formData.name,
           email: formData.email,
           message: formData.message,
-          botcheck: "",
+          // Forwarded so Web3Forms applies its own spam scoring too; the
+          // client-side bail above is the primary gate.
+          botcheck: botcheckRef.current?.checked ? "true" : "",
         }),
       });
 
@@ -48,7 +74,7 @@ export function ContactSection() {
       if (data.success) {
         setStatus("success");
         setFormData({ name: "", email: "", message: "" });
-        setTimeout(() => setStatus("idle"), 4000);
+        resetTimer.current = setTimeout(() => setStatus("idle"), 4000);
       } else {
         setStatus("error");
         setErrorMsg(data.message || "Something went wrong. Please try again.");
@@ -157,11 +183,13 @@ export function ContactSection() {
 
               {/* Honeypot — hidden from users, catches bots */}
               <input
+                ref={botcheckRef}
                 type="checkbox"
                 name="botcheck"
                 style={{ display: "none" }}
                 tabIndex={-1}
                 autoComplete="off"
+                aria-hidden="true"
               />
 
               <button
