@@ -667,6 +667,12 @@ export interface SocialPost {
   dur?: string;
   /** Branding/performance/design pieces reuse this shape but aren't "social media posts" in alt text. */
   kind?: "branding" | "performance" | "design";
+  /**
+   * Figma prototype embed URL (embed.figma.com). When set, the lightbox hosts
+   * the live, clickable prototype instead of the still; `src` stays as the
+   * grid poster. Swap the host to www.figma.com for the open-in-Figma link.
+   */
+  figmaProto?: string;
 }
 
 /** Alt/aria copy shared by the grid card and the lightbox. */
@@ -698,6 +704,13 @@ export interface SocialGroup {
    * instead of masonry columns.
    */
   reelGrid?: boolean;
+  /**
+   * Mirror the board page as a uniform six-across grid in reading order:
+   * every 9:16 piece is one cell, and consecutive landscape pieces stack
+   * inside a single double-width cell mid-row — the stack runs taller than
+   * its neighbours, exactly like the board.
+   */
+  boardGrid?: boolean;
   posts: SocialPost[];
 }
 
@@ -785,14 +798,19 @@ export const socialGroups: SocialGroup[] = [
     ],
   },
   {
-    // Board page 2: Sumedh's vertical reel opens, then the top row (pushups,
-    // Amey at the weight stack, three Rohit lifts), then the bottom row
-    // (Anand's two reels around Gymbros, two standing poses, the wide mirror
-    // shot closing).
+    // Board DAHP5wjZ7Zg ("Copy of cate"), single page, in reading order:
+    // top row of six verticals (Sumedh's towel reel, Amey at the weight
+    // stack, Anand's skyfall reel, the deadlift, Anand's babydoll reel, the
+    // overhead stretch), then the second row — two standing poses, the two
+    // landscape shots stacked double-width in the centre (pushups reel over
+    // the mirror shot), and the hands-on-hips pose with the Gymbros reel
+    // closing. Colors cycle the six-brand palette per row, offset so no
+    // frame repeats its horizontal or vertical neighbour.
     slug: "fitness-gym",
     title: "Fitness & Gym",
     blurb:
       "Reels and photography shot on the gym floor — training energy, captured raw.",
+    boardGrid: true,
     posts: [
       {
         slug: "fitness-sumedh-vertical",
@@ -805,66 +823,12 @@ export const socialGroups: SocialGroup[] = [
         dur: "0:19",
       },
       {
-        slug: "fitness-sumedh-horizontal",
-        src: "/images/portfolio/social/fitness-sumedh-horizontal.webp",
-        title: "Fitness Reel",
-        w: 900,
-        h: 506,
-        color: "#A7069B",
-        video: "/videos/portfolio/fitness-sumedh-horizontal.mp4",
-        dur: "0:18",
-      },
-      {
         slug: "gym-amey-01",
         src: "/images/portfolio/social/gym-amey-01.webp",
         title: "Gym Photography",
         w: 675,
         h: 1200,
-        color: "#5E9929",
-      },
-      {
-        slug: "gym-rohit-02",
-        src: "/images/portfolio/social/gym-rohit-02.webp",
-        title: "Gym Photography",
-        w: 675,
-        h: 1200,
-        color: "#EA9D12",
-      },
-      {
-        slug: "gym-rohit-03",
-        src: "/images/portfolio/social/gym-rohit-03.webp",
-        title: "Gym Photography",
-        w: 675,
-        h: 1200,
-        color: "#CC2829",
-      },
-      {
-        slug: "gym-rohit-06",
-        src: "/images/portfolio/social/gym-rohit-06.webp",
-        title: "Gym Photography",
-        w: 675,
-        h: 1200,
-        color: "#5B9EFE",
-      },
-      {
-        slug: "fitness-anand-babydoll",
-        src: "/images/portfolio/social/fitness-anand-babydoll.webp",
-        title: "Fitness Reel",
-        w: 506,
-        h: 900,
-        color: "#631DFE",
-        video: "/videos/portfolio/fitness-anand-babydoll.mp4",
-        dur: "0:16",
-      },
-      {
-        slug: "fitness-gymbros",
-        src: "/images/portfolio/social/fitness-gymbros.webp",
-        title: "Fitness Reel",
-        w: 506,
-        h: 900,
         color: "#A7069B",
-        video: "/videos/portfolio/fitness-gymbros.mp4",
-        dur: "0:17",
       },
       {
         slug: "fitness-anand-skyfall",
@@ -877,6 +841,32 @@ export const socialGroups: SocialGroup[] = [
         dur: "0:29",
       },
       {
+        slug: "gym-rohit-02",
+        src: "/images/portfolio/social/gym-rohit-02.webp",
+        title: "Gym Photography",
+        w: 675,
+        h: 1200,
+        color: "#EA9D12",
+      },
+      {
+        slug: "fitness-anand-babydoll",
+        src: "/images/portfolio/social/fitness-anand-babydoll.webp",
+        title: "Fitness Reel",
+        w: 506,
+        h: 900,
+        color: "#CC2829",
+        video: "/videos/portfolio/fitness-anand-babydoll.mp4",
+        dur: "0:16",
+      },
+      {
+        slug: "gym-rohit-03",
+        src: "/images/portfolio/social/gym-rohit-03.webp",
+        title: "Gym Photography",
+        w: 675,
+        h: 1200,
+        color: "#5B9EFE",
+      },
+      {
         slug: "gym-rohit-04",
         src: "/images/portfolio/social/gym-rohit-04.webp",
         title: "Gym Photography",
@@ -885,12 +875,22 @@ export const socialGroups: SocialGroup[] = [
         color: "#EA9D12",
       },
       {
-        slug: "gym-rohit-05",
-        src: "/images/portfolio/social/gym-rohit-05.webp",
+        slug: "gym-rohit-06",
+        src: "/images/portfolio/social/gym-rohit-06.webp",
         title: "Gym Photography",
         w: 675,
         h: 1200,
         color: "#CC2829",
+      },
+      {
+        slug: "fitness-sumedh-horizontal",
+        src: "/images/portfolio/social/fitness-sumedh-horizontal.webp",
+        title: "Fitness Reel",
+        w: 900,
+        h: 506,
+        color: "#5B9EFE",
+        video: "/videos/portfolio/fitness-sumedh-horizontal.mp4",
+        dur: "0:18",
       },
       {
         slug: "gym-rohit-01",
@@ -898,7 +898,25 @@ export const socialGroups: SocialGroup[] = [
         title: "Gym Photography",
         w: 1200,
         h: 675,
-        color: "#5B9EFE",
+        color: "#631DFE",
+      },
+      {
+        slug: "gym-rohit-05",
+        src: "/images/portfolio/social/gym-rohit-05.webp",
+        title: "Gym Photography",
+        w: 675,
+        h: 1200,
+        color: "#A7069B",
+      },
+      {
+        slug: "fitness-gymbros",
+        src: "/images/portfolio/social/fitness-gymbros.webp",
+        title: "Fitness Reel",
+        w: 506,
+        h: 900,
+        color: "#5E9929",
+        video: "/videos/portfolio/fitness-gymbros.mp4",
+        dur: "0:17",
       },
     ],
   },
@@ -1141,6 +1159,21 @@ export const socialGroups: SocialGroup[] = [
 // Regenerate the images with `node figma-plugin/build-gallery.js`; the w/h below
 // are printed by that script and must match, or the masonry reserves wrong space.
 export const uiuxPosts: SocialPost[] = [
+  {
+    // Client work: a Hindi news app designed in Figma. The board is composed
+    // from the file's public canvas render (splash + four content screens) —
+    // not from build-gallery.js — and the lightbox opens the live prototype.
+    slug: "uiux-e-patrakaar",
+    src: "/images/portfolio/uiux/e-patrakaar.webp",
+    title: "News App — Interactive Prototype",
+    client: "E-Patrakaar",
+    w: 1200,
+    h: 844,
+    color: "#CC2829",
+    kind: "design",
+    figmaProto:
+      "https://embed.figma.com/proto/vTTeWdrBs0W4NbOZQ8mGbT/E-Patrakaar?node-id=438-1083&page-id=0%3A1&starting-point-node-id=105%3A2&scaling=scale-down&content-scaling=fixed&hide-ui=1&embed-host=digitalravenclaw",
+  },
   {
     slug: "uiux-ravenclaw-desktop-light",
     src: "/images/portfolio/uiux/home-desktop-light.webp",
@@ -1527,50 +1560,20 @@ export interface Testimonial {
   rating: number;
 }
 
+// A real 5-star Google review (share.google/HEI4vIjBtheefmQhQ, July 2026).
+// Wording kept as written, minus the signature block — the name, role and
+// company under the quote carry it instead. Avatar is the reviewer's Google
+// profile photo, self-hosted so the card doesn't depend on Google's CDN.
+// When the live Google-reviews feed is configured (GOOGLE_MAPS_API_KEY +
+// GOOGLE_PLACE_ID), it replaces this list at runtime.
 export const testimonials: Testimonial[] = [
   {
-    name: "Aisha Kapoor",
-    company: "Luminary Retail",
-    role: "CEO",
-    img: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=200",
+    name: "Ravi K Rajbhure",
+    company: "DPARK",
+    role: "Director",
+    img: "/images/testimonials/ravi-rajbhure.jpg",
     review:
-      "RavenClaw transformed our online presence completely. Our conversion rate doubled within 3 months of launch. The design is stunning and our customers love the experience.",
-    rating: 5,
-  },
-  {
-    name: "Marcus Fernandez",
-    company: "Apex Dynamics",
-    role: "Founder",
-    img: "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=200",
-    review:
-      "The team's attention to detail is unparalleled. They understood our vision instantly and delivered something even better than we imagined. Truly world-class work.",
-    rating: 5,
-  },
-  {
-    name: "Shreya Nair",
-    company: "BloomTech",
-    role: "Product Director",
-    img: "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=200",
-    review:
-      "Our UI/UX overhaul was handled flawlessly. User satisfaction scores jumped from 3.2 to 4.8 after launch. I recommend RavenClaw to every product team I know.",
-    rating: 5,
-  },
-  {
-    name: "James Okafor",
-    company: "NovaPrime Solutions",
-    role: "CTO",
-    img: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=200",
-    review:
-      "The AI chatbot they built for us handles 70% of customer queries automatically. The ROI has been incredible. Their technical expertise is matched by their creative vision.",
-    rating: 5,
-  },
-  {
-    name: "Priyanka Rajput",
-    company: "Serene Spaces",
-    role: "Brand Manager",
-    img: "https://images.pexels.com/photos/1181695/pexels-photo-1181695.jpeg?auto=compress&cs=tinysrgb&w=200",
-    review:
-      "Our brand identity package was delivered on time and exceeded every expectation. The brand guidelines are comprehensive and our whole team loves the new visual system.",
+      "Being a consultant firm it's very difficult to make the client happy, and Ravenclaw helps us to do so by doing the awesome work and within or always before deadline. Thank you for your service. Hope the relation and reliability will continue the same in the future.",
     rating: 5,
   },
 ];

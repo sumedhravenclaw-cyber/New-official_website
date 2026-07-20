@@ -82,6 +82,10 @@ function SocialCard({
       aria-label={
         post.video
           ? `Play ${post.title} reel${post.client ? ` for ${post.client}` : ""}`
+          : post.figmaProto
+          ? // Prototype titles name themselves ("… Interactive Prototype"), so
+            // the label doesn't re-append what the title already says.
+            `Open ${post.title}${post.client ? ` for ${post.client}` : ""}`
           : `View ${post.title}${
               post.client ? ` for ${post.client}` : ""
             } full size`
@@ -342,29 +346,79 @@ export function PortfolioSection() {
                       />
                       {group.title}
                     </h3>
-                    {/* Reel-only sets share one 9:16 aspect, so a uniform grid
-                        reproduces the board page: rows across, five to a row on
-                        desktop, every frame at the reel's own proportions. */}
-                    <div
-                      className={
-                        group.reelGrid
-                          ? "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4"
-                          : `${SOCIAL_COLUMNS} gap-4`
-                      }
-                    >
-                      {groupPosts.map((post, i) => (
-                        <SocialCard
-                          key={post.slug}
-                          post={post}
-                          soundOn={soundOn}
-                          delayIndex={i}
-                          grid={group.reelGrid}
-                          onOpen={() =>
-                            setLightboxIndex(flatSocial.indexOf(post))
+                    {group.boardGrid ? (
+                      /* Board grid: reproduces the board page cell for cell —
+                         a uniform six-across grid of 9:16 pieces in reading
+                         order, with consecutive landscape shots stacked in one
+                         double-width cell that runs taller than its row, just
+                         like the board. `items-start` keeps neighbours
+                         top-aligned beside the taller stack, and dense flow
+                         back-fills around the double cell at breakpoints where
+                         the column count doesn't divide evenly. */
+                      (() => {
+                        const cells: SocialPost[][] = [];
+                        for (const post of groupPosts) {
+                          const last = cells[cells.length - 1];
+                          if (post.w > post.h && last && last[0].w > last[0].h) {
+                            last.push(post);
+                          } else {
+                            cells.push([post]);
                           }
-                        />
-                      ))}
-                    </div>
+                        }
+                        const card = (post: SocialPost) => (
+                          <SocialCard
+                            key={post.slug}
+                            post={post}
+                            soundOn={soundOn}
+                            delayIndex={groupPosts.indexOf(post)}
+                            grid
+                            onOpen={() =>
+                              setLightboxIndex(flatSocial.indexOf(post))
+                            }
+                          />
+                        );
+                        return (
+                          <div className="grid grid-flow-dense grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 items-start">
+                            {cells.map((cell) =>
+                              cell[0].w > cell[0].h ? (
+                                <div
+                                  key={cell[0].slug}
+                                  className="col-span-2 flex flex-col gap-4"
+                                >
+                                  {cell.map(card)}
+                                </div>
+                              ) : (
+                                card(cell[0])
+                              )
+                            )}
+                          </div>
+                        );
+                      })()
+                    ) : (
+                      /* Reel-only sets share one 9:16 aspect, so a uniform grid
+                         reproduces the board page: rows across, five to a row
+                         on desktop, every frame at the reel's own proportions. */
+                      <div
+                        className={
+                          group.reelGrid
+                            ? "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4"
+                            : `${SOCIAL_COLUMNS} gap-4`
+                        }
+                      >
+                        {groupPosts.map((post, i) => (
+                          <SocialCard
+                            key={post.slug}
+                            post={post}
+                            soundOn={soundOn}
+                            delayIndex={i}
+                            grid={group.reelGrid}
+                            onOpen={() =>
+                              setLightboxIndex(flatSocial.indexOf(post))
+                            }
+                          />
+                        ))}
+                      </div>
+                    )}
                   </div>
                 );
               })}

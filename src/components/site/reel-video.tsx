@@ -126,7 +126,7 @@ export function ReelVideo({
         height={post.h}
         loading="lazy"
         decoding="async"
-        className="w-full h-full block"
+        className="w-full h-full object-cover block"
       />
     );
   }
@@ -146,7 +146,10 @@ export function ReelVideo({
       preload={hoverMode ? "metadata" : "none"}
       aria-label={`${post.title} reel${post.client ? ` for ${post.client}` : ""}`}
       onError={() => setFailed(true)}
-      className="w-full h-full block"
+      // object-cover is inert while the box matches the video's own aspect,
+      // and keeps any stretched card filled edge to edge instead of
+      // letterboxed.
+      className="w-full h-full object-cover block"
     />
   );
 }

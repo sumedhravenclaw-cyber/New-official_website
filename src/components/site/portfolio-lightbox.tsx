@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { X, ChevronLeft, ChevronRight, Volume2 } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Volume2, ExternalLink } from "lucide-react";
 import { postAlt, type SocialPost } from "@/lib/site-data";
 
 interface Props {
@@ -153,7 +153,19 @@ export function PortfolioLightbox({ posts, index, onClose, onNavigate }: Props) 
           className="relative rounded-2xl p-2 shadow-2xl"
           style={{ border: `2px solid ${post.color}` }}
         >
-          {post.video ? (
+          {post.figmaProto ? (
+            /* Live Figma prototype — the visitor clicks through the actual
+               flows. A phone-shaped box: Figma letterboxes inside it on its
+               own dark chrome, so the black backing reads as intentional. */
+            <iframe
+              key={post.slug}
+              src={post.figmaProto}
+              title={`${post.title}${post.client ? ` — ${post.client}` : ""} interactive prototype`}
+              allowFullScreen
+              className="rounded-lg block bg-black"
+              style={{ width: "min(420px, 86vw)", height: "78vh", border: 0 }}
+            />
+          ) : post.video ? (
             <>
               <video
                 key={post.slug}
@@ -195,6 +207,20 @@ export function PortfolioLightbox({ posts, index, onClose, onNavigate }: Props) 
           </p>
           {post.client && (
             <p className="text-xs text-white/60 mt-0.5">{post.client}</p>
+          )}
+          {post.figmaProto && (
+            <a
+              href={post.figmaProto.replace(
+                "https://embed.figma.com",
+                "https://www.figma.com"
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 mt-2 text-xs font-semibold text-white/70 hover:text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              Open in Figma
+              <ExternalLink size={12} />
+            </a>
           )}
           <p className="text-[11px] text-white/40 mt-1.5">
             {index + 1} / {posts.length}

@@ -3,30 +3,89 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
 import { testimonials } from "@/lib/site-data";
+import type { GoogleReviewsPayload } from "@/app/api/google-reviews/route";
+
+/**
+ * One carousel card, whichever source it came from. Google reviews carry no
+ * role/company, and manual testimonials carry no timestamp, so both collapse
+ * into a single subtitle line under the reviewer's name.
+ */
+interface Slide {
+  name: string;
+  img?: string;
+  review: string;
+  rating: number;
+  subtitle: string;
+}
+
+const manualSlides: Slide[] = testimonials.map((t) => ({
+  name: t.name,
+  img: t.img,
+  review: t.review,
+  rating: t.rating,
+  subtitle: `${t.role}, ${t.company}`,
+}));
 
 export function TestimonialsSection() {
   const [current, setCurrent] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  /**
+   * Live reviews from the Business Profile, fetched after mount so the section
+   * paints immediately with the manual list. When Google answers with reviews,
+   * the carousel swaps over; when the API is unconfigured, errors, or returns
+   * nothing, the manual list simply stays — no loading state, no error state.
+   */
+  const [google, setGoogle] = useState<GoogleReviewsPayload | null>(null);
 
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    let cancelled = false;
+    fetch("/api/google-reviews")
+      .then((res) => (res.ok ? (res.json() as Promise<GoogleReviewsPayload>) : null))
+      .then((data) => {
+        if (!cancelled && data && data.reviews.length > 0) {
+          setGoogle(data);
+          setCurrent(0);
+        }
+      })
+      .catch(() => {}); // offline/failed fetch: keep the manual testimonials
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const slides: Slide[] =
+    google && google.reviews.length > 0
+      ? google.reviews.map((r) => ({
+          name: r.name,
+          img: r.img,
+          review: r.review,
+          rating: r.rating,
+          subtitle: r.time ? `${r.time} · on Google` : "on Google",
+        }))
+      : manualSlides;
+
+  useEffect(() => {
+    // A single review has nowhere to rotate to — no timer.
+    if (!isAutoPlaying || slides.length <= 1) return;
     const timer = setInterval(() => {
-      setCurrent((c) => (c + 1) % testimonials.length);
+      setCurrent((c) => (c + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [isAutoPlaying]);
+  }, [isAutoPlaying, slides.length]);
 
   const prev = () => {
     setIsAutoPlaying(false);
-    setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length);
+    setCurrent((c) => (c - 1 + slides.length) % slides.length);
   };
 
   const next = () => {
     setIsAutoPlaying(false);
-    setCurrent((c) => (c + 1) % testimonials.length);
+    setCurrent((c) => (c + 1) % slides.length);
   };
 
-  const t = testimonials[current];
+  // Modulo guards the one render where the list swaps sources while `current`
+  // still points past the shorter list's end.
+  const t = slides[current % slides.length];
 
   return (
     <section
@@ -56,6 +115,26 @@ export function TestimonialsSection() {
           >
             What Clients <span className="text-gradient">Say</span>
           </h2>
+          {/* Aggregate proof only when the live profile is feeding the
+              carousel — the manual list has no rating to aggregate. */}
+          {google?.rating && (
+            <a
+              href={google.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-2 px-4 py-2 rounded-full border border-white/15 text-sm transition-colors hover:border-white/35 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet"
+              style={{ color: "rgba(254, 254, 254, 0.75)" }}
+            >
+              <Star size={14} className="text-golden fill-golden" />
+              <span>
+                <strong style={{ color: "#FEFEFE" }}>
+                  {google.rating.toFixed(1)}
+                </strong>{" "}
+                on Google
+                {google.count ? ` · ${google.count} reviews` : ""}
+              </span>
+            </a>
+          )}
         </div>
 
         <div className="section-reveal relative">
@@ -78,8 +157,10 @@ export function TestimonialsSection() {
                   />
                 ))}
               </div>
+              {/* Google reviews run any length; clamp keeps the card composed
+                  and the full text lives one click away on the profile. */}
               <p
-                className="text-base md:text-lg leading-relaxed italic mb-8"
+                className="text-base md:text-lg leading-relaxed italic mb-8 line-clamp-6"
                 style={{ color: "rgba(254, 254, 254, 0.8)" }}
               >
                 &ldquo;{t.review}&rdquo;
@@ -87,11 +168,24 @@ export function TestimonialsSection() {
             </div>
 
             <div className="flex items-center gap-4">
-              <img
-                src={t.img}
-                alt={t.name}
-                className="w-12 h-12 rounded-full object-cover border-2 border-violet/40"
-              />
+              {t.img ? (
+                <img
+                  src={t.img}
+                  alt={t.name}
+                  // Google avatar CDN rejects some cross-site referrers.
+                  referrerPolicy="no-referrer"
+                  className="w-12 h-12 rounded-full object-cover border-2 border-violet/40"
+                />
+              ) : (
+                /* Reviewers without a profile photo get a monogram disc. */
+                <div
+                  aria-hidden="true"
+                  className="w-12 h-12 rounded-full border-2 border-violet/40 flex items-center justify-center font-display font-bold text-lg"
+                  style={{ backgroundColor: "rgba(99, 29, 254, 0.25)", color: "#FEFEFE" }}
+                >
+                  {t.name.charAt(0).toUpperCase()}
+                </div>
+              )}
               <div>
                 <p
                   className="font-display font-semibold"
@@ -103,16 +197,18 @@ export function TestimonialsSection() {
                   className="text-xs"
                   style={{ color: "rgba(254, 254, 254, 0.5)" }}
                 >
-                  {t.role}, {t.company}
+                  {t.subtitle}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Controls */}
+          {/* Controls — only when there is more than one review to move
+              between; a lone review renders as a plain quote card. */}
+          {slides.length > 1 && (
           <div className="flex items-center justify-between mt-8">
             <div className="flex gap-2">
-              {testimonials.map((_, i) => (
+              {slides.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => {
@@ -121,7 +217,7 @@ export function TestimonialsSection() {
                   }}
                   className="transition-all duration-300 rounded-full"
                   style={
-                    i === current
+                    i === current % slides.length
                       ? { width: 32, height: 8, backgroundColor: "#631DFE" }
                       : { width: 8, height: 8, backgroundColor: "rgba(254,254,254,0.2)" }
                   }
@@ -148,6 +244,7 @@ export function TestimonialsSection() {
               </button>
             </div>
           </div>
+          )}
         </div>
       </div>
     </section>
