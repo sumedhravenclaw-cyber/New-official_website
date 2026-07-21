@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   description:
     "RavenClaw is a digital agency crafting websites, UI/UX design, branding, social media, performance marketing, and AI solutions that help businesses grow with wisdom, creativity, and purpose.",
   keywords: [
-    "RavenClaw",
+    "Digital Ravenclaw",
     "digital agency",
     "web development",
     "UI/UX design",
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     "performance marketing",
     "AI solutions",
   ],
-  authors: [{ name: "RavenClaw" }],
+  authors: [{ name: "Digital Ravenclaw" }],
   // Browser-tab favicon (the same phoenix mark shown in the navbar). Served as
   // small pre-scaled PNGs rather than the 1.5MB source so the tab icon isn't a
   // full-resolution download. apple-touch-icon covers iOS home-screen bookmarks.
@@ -83,15 +83,15 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "RavenClaw — Digital Agency",
+    title: "Digital Ravenclaw — Digital Agency",
     description:
       "Websites, design, branding, marketing, and AI solutions crafted with wisdom and creativity.",
-    siteName: "RavenClaw",
+    siteName: "Digital Ravenclaw",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "RavenClaw — Digital Agency",
+    title: "Digital Ravenclaw — Digital Agency",
     description:
       "Websites, design, branding, marketing, and AI solutions crafted with wisdom and creativity.",
   },
