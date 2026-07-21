@@ -56,7 +56,7 @@ const siteUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "RavenClaw — Digital Agency for Web, Design, Branding & AI",
+  title: "Digital Ravenclaw — Digital Agency for Web, Design, Branding & AI",
   description:
     "RavenClaw is a digital agency crafting websites, UI/UX design, branding, social media, performance marketing, and AI solutions that help businesses grow with wisdom, creativity, and purpose.",
   keywords: [
