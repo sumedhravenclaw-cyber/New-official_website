@@ -70,6 +70,18 @@ export const metadata: Metadata = {
     "AI solutions",
   ],
   authors: [{ name: "RavenClaw" }],
+  // Browser-tab favicon (the same phoenix mark shown in the navbar). Served as
+  // small pre-scaled PNGs rather than the 1.5MB source so the tab icon isn't a
+  // full-resolution download. apple-touch-icon covers iOS home-screen bookmarks.
+  icons: {
+    icon: [
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
+      { url: "/favicon-192x192.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/favicon-32x32.png",
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "RavenClaw — Digital Agency",
     description:
