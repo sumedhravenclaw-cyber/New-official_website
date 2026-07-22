@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef, useSyncExternalStore } from "react";
-import { Star, Quote, ArrowUpRight, ChevronDown } from "lucide-react";
+import { useState, useEffect, useSyncExternalStore } from "react";
+import { Star, Quote, ArrowUpRight, Play, Pause } from "lucide-react";
 import {
   testimonials,
   GOOGLE_REVIEW_URL,
@@ -9,11 +9,11 @@ import {
 } from "@/lib/site-data";
 import type { GoogleReviewsPayload } from "@/app/api/google-reviews/route";
 
-/** Cards shown before the "show all" disclosure — two full rows at 3 columns. */
-const INITIAL_VISIBLE = 6;
-
-/** Stagger step between card reveals; capped per batch so a big expand isn't slow. */
-const STAGGER_MS = 45;
+/**
+ * Seconds each card spends crossing the row. Speed is defined per card rather
+ * than as a total loop time so the pace stays the same as reviews are added.
+ */
+const SECONDS_PER_CARD = 9;
 
 /**
  * One card on the wall, whichever source it came from. Google reviewers carry a
@@ -99,20 +99,11 @@ function GoogleG({ size = 14 }: { size?: number }) {
 }
 
 /**
- * A single review. Long Google reviews are clamped so the wall keeps an even
- * rhythm, with the full text one tap away rather than truncated for good.
+ * A single review card in the moving row. Long Google reviews are clamped so
+ * the cards keep an even rhythm, with the full text one tap away rather than
+ * truncated for good — the row pauses on hover, so expanding one is workable.
  */
-function ReviewCard({
-  slide,
-  delay,
-  revealed,
-  reduceMotion,
-}: {
-  slide: Slide;
-  delay: number;
-  revealed: boolean;
-  reduceMotion: boolean;
-}) {
+function ReviewCard({ slide, cloned }: { slide: Slide; cloned?: boolean }) {
   const [expanded, setExpanded] = useState(false);
   /**
    * Google's avatar CDN URLs expire and reviewers can clear their photo, so a
@@ -125,18 +116,8 @@ function ReviewCard({
 
   return (
     <div
-      className="break-inside-avoid mb-5 group"
-      style={{
-        // Reduced motion opts out of the entrance entirely rather than just
-        // dropping the easing — the reviews are the content here, so they must
-        // never depend on an animation (or its observer) to become readable.
-        opacity: revealed || reduceMotion ? 1 : 0,
-        transform: revealed || reduceMotion ? "none" : "translateY(24px)",
-        transition: reduceMotion
-          ? "none"
-          : "opacity 0.6s ease, transform 0.6s ease",
-        transitionDelay: revealed && !reduceMotion ? `${delay}ms` : "0ms",
-      }}
+      className="shrink-0 w-[320px] sm:w-[380px] mr-5 group"
+      aria-hidden={cloned || undefined}
     >
       <figure
         className="relative rounded-2xl p-6 border border-white/10 h-full transition-colors duration-300 group-hover:border-white/25"
@@ -183,7 +164,7 @@ function ReviewCard({
           </p>
         </blockquote>
 
-        {isLong && (
+        {isLong && !cloned && (
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
@@ -243,15 +224,13 @@ function ReviewCard({
 }
 
 export function TestimonialsSection() {
-  const [showAll, setShowAll] = useState(false);
-  const [revealed, setRevealed] = useState(false);
+  const [paused, setPaused] = useState(false);
   const reduceMotion = useReducedMotion();
-  const wallRef = useRef<HTMLDivElement>(null);
 
   /**
-   * Live reviews from the Business Profile, fetched after mount so the wall
+   * Live reviews from the Business Profile, fetched after mount so the row
    * paints immediately with the transcribed set. Anything Google returns that
-   * isn't already on the wall gets appended; when the API is unconfigured,
+   * isn't already in the row gets appended; when the API is unconfigured,
    * errors, or returns nothing, the transcribed set simply stands alone.
    */
   const [google, setGoogle] = useState<GoogleReviewsPayload | null>(null);
@@ -271,47 +250,38 @@ export function TestimonialsSection() {
     };
   }, []);
 
+  const liveSlides: Slide[] = (google?.reviews ?? []).map((r) => ({
+    name: r.name,
+    img: r.img,
+    review: r.review,
+    rating: r.rating,
+    subtitle: r.time || "Google review",
+    isGoogle: true,
+  }));
+
   /**
-   * The wall reveals itself rather than leaning on the global `.section-reveal`
-   * observer, which only sweeps the DOM once on mount — cards added by "show
-   * all" would never be picked up by it.
+   * Transcribed reviews first (they're curated and ordered); live ones append.
+   * The whole list is de-duplicated, not just live-against-transcribed: the
+   * same review pasted twice into site-data would otherwise render twice and
+   * collide on its React key, since the key is derived from this same digest.
    */
-  useEffect(() => {
-    const el = wallRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setRevealed(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  // Transcribed reviews first (they're curated and ordered); live ones append.
-  const seen = new Set(baseSlides.map((s) => reviewKey(s.name, s.review)));
-  const liveSlides: Slide[] = (google?.reviews ?? [])
-    .filter((r) => !seen.has(reviewKey(r.name, r.review)))
-    .map((r) => ({
-      name: r.name,
-      img: r.img,
-      review: r.review,
-      rating: r.rating,
-      subtitle: r.time || "Google review",
-      isGoogle: true,
-    }));
-
-  const slides: Slide[] = [...baseSlides, ...liveSlides];
-  const visible = showAll ? slides : slides.slice(0, INITIAL_VISIBLE);
-  const hasMore = slides.length > INITIAL_VISIBLE;
+  const seen = new Set<string>();
+  const slides: Slide[] = [...baseSlides, ...liveSlides].filter((s) => {
+    const key = reviewKey(s.name, s.review);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  /**
+   * The track holds two copies of the list so the -50% keyframe endpoint lands
+   * exactly on the seam and the loop is invisible. Duration scales with the
+   * count, keeping the cards' travel speed constant as reviews are added.
+   */
+  const duration = Math.max(slides.length, 3) * SECONDS_PER_CARD;
 
   /**
    * Only Google's own aggregate earns the star badge. Averaging the handful of
-   * reviews on the wall would produce a different (flattering) number and still
+   * reviews in the row would produce a different (flattering) number and still
    * label it "on Google" — so without the live figure the badge degrades to a
    * plain link out to the profile.
    */
@@ -386,40 +356,73 @@ export function TestimonialsSection() {
           </a>
         </div>
 
-        {/* The wall. CSS columns give a true masonry flow with no JS layout
-            pass, so nothing shifts as the cards paint.
+      </div>
 
-            The collapsed state is enforced by slicing the array, never by
-            capping the height: a max-height on a multi-column box makes the
-            overflow fragment into fresh columns sideways rather than clipping
-            at the bottom, which hid every card but the first on mobile. */}
-        <div ref={wallRef} className="columns-1 md:columns-2 lg:columns-3 gap-5">
-          {visible.map((s, i) => (
+      {/* The moving row sits outside the max-width container so cards can run
+          edge to edge — the fade at each margin is what sells the loop, and a
+          gutter would cut it short. */}
+      <div
+        className="rc-review-viewport relative z-10 mt-2"
+        style={{
+          // Old cards dissolve at the left margin and new ones resolve out of
+          // the right, so the row reads as endless rather than as a strip that
+          // starts and stops. Both spellings: WebKit still needs the prefix.
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent, #000 10%, #000 90%, transparent)",
+          maskImage:
+            "linear-gradient(to right, transparent, #000 10%, #000 90%, transparent)",
+        }}
+      >
+        {/* Every card is a direct child and carries its own trailing margin
+            instead of the track using `gap`. That keeps each card an identical
+            slice of the total width, so the -50% endpoint lands exactly on the
+            start of the second copy. A flex `gap` (or any padding on the track)
+            leaves half a gutter unaccounted for and the loop visibly jumps. */}
+        <div
+          className="rc-review-track flex w-max"
+          data-paused={paused ? "true" : "false"}
+          style={
+            { "--rc-review-duration": `${duration}s` } as React.CSSProperties
+          }
+        >
+          {slides.map((s) => (
+            <ReviewCard key={reviewKey(s.name, s.review)} slide={s} />
+          ))}
+          {/* Second copy completes the loop. These are the same reviews already
+              announced above, so they're hidden from assistive tech — and they
+              render without the "Read more" control, since a focusable element
+              inside an aria-hidden subtree is a trap for keyboard users. */}
+          {slides.map((s) => (
             <ReviewCard
-              key={reviewKey(s.name, s.review)}
+              key={`clone-${reviewKey(s.name, s.review)}`}
               slide={s}
-              // Delay resets per batch so expanding doesn't cascade slowly.
-              delay={(i % INITIAL_VISIBLE) * STAGGER_MS}
-              revealed={revealed}
-              reduceMotion={reduceMotion}
+              cloned
             />
           ))}
         </div>
+      </div>
 
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
         <div className="flex flex-wrap items-center justify-center gap-4 mt-12">
-          {hasMore && !showAll && (
+          {/* Content that moves on its own needs a way to stop it (WCAG 2.2.2).
+              Hover and focus already pause the row, but neither is available to
+              a touch user who just wants to finish reading a card. */}
+          {/* {!reduceMotion && slides.length > 1 && (
             <button
               type="button"
-              onClick={() => setShowAll(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium text-white transition-opacity hover:opacity-90 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet"
-              style={{
-                background: "linear-gradient(135deg, #631DFE, #A7069B)",
-              }}
+              onClick={() => setPaused((p) => !p)}
+              aria-pressed={paused}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/15 text-sm font-medium transition-colors hover:border-white/35 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet"
+              style={{ color: "rgba(254, 254, 254, 0.8)" }}
             >
-              Read all {slides.length} reviews
-              <ChevronDown size={16} aria-hidden="true" />
+              {paused ? (
+                <Play size={15} aria-hidden="true" />
+              ) : (
+                <Pause size={15} aria-hidden="true" />
+              )}
+              {paused ? "Resume scrolling" : "Pause scrolling"}
             </button>
-          )}
+          )} */}
 
           <a
             href={GOOGLE_REVIEW_URL}

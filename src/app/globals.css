@@ -501,6 +501,34 @@
   }
 }
 
+/* Testimonial marquee — reuses the `marquee` keyframes above but takes its
+   speed from a variable so the cards travel at a constant rate no matter how
+   many reviews are in the loop (the track holds two copies of the list, so the
+   -50% endpoint lands exactly on the seam). */
+.rc-review-track {
+  animation: marquee var(--rc-review-duration, 60s) linear infinite;
+}
+
+/* Pausing on hover *and* focus-within matters: reading a review is the whole
+   point, and a keyboard user tabbing to a card's link can't hover to stop it. */
+.rc-review-viewport:hover .rc-review-track,
+.rc-review-viewport:focus-within .rc-review-track,
+.rc-review-track[data-paused="true"] {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No drift at all; the row becomes a plain horizontal scroller so every
+     review is still reachable by swipe, wheel, or keyboard. */
+  .rc-review-track {
+    animation: none;
+  }
+
+  .rc-review-viewport {
+    overflow-x: auto;
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

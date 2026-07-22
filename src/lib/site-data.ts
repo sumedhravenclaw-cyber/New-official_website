@@ -1568,6 +1568,22 @@ export const testimonials: Testimonial[] = [
     source: "google",
   },
   {
+    name: "Niranjan",
+    img: "https://lh3.googleusercontent.com/a-/ALV-UjVztZPSIj1YG5S_16lOwdLXyb0lm-Qdt-U3lnHEFJbEOo_PMXU=w96-h96-p-rp-mo-br100",
+    review:
+      "Really impressed with the quality of work. From branding and social media to performance marketing, everything is handled professionally. Communication is smooth and they genuinely care about getting results. Happy with the experience so far.",
+    rating: 5,
+    source: "google",
+  },
+  {
+    name: "CA Manish Gurudasani",
+    img: "https://lh3.googleusercontent.com/a-/ALV-UjXdsp_OKFFEun_cIaOjsBaB8MF9DQXXjGv082VuGiACGT3rpzN6fA=w96-h96-p-rp-mo-ba12-br100",
+    review:
+      "Excellent experience with Digital Ravenclaw! Srishti and Sumedh did an outstanding photoshoot and video editing for my new car.... The quality, creativity, and professionalism were exceptional. The final results looked amazing.",
+    rating: 5,
+    source: "google",
+  },
+  {
     name: "Dinesh Gawali",
     img: "https://lh3.googleusercontent.com/a/ACg8ocKH36vdCovCfLrx9x9MByOPx0Lv4oZ2IVnCaIoKcIbpKcgV4w=w96-h96-p-rp-mo-br100",
     review:
