@@ -1507,12 +1507,34 @@ export const clients: Client[] = [
 /* ============ TESTIMONIALS ============ */
 export interface Testimonial {
   name: string;
-  company: string;
-  role: string;
-  img: string;
+  /** Omitted for Google reviewers — the profile gives no employer. */
+  company?: string;
+  role?: string;
+  /** Local headshot; Google reviewers without a photo fall back to a monogram. */
+  img?: string;
   review: string;
   rating: number;
+  /**
+   * Relative age as Google phrases it, e.g. "2 months ago". Present on reviews
+   * transcribed from the Business Profile, absent on direct client quotes.
+   */
+  time?: string;
+  /**
+   * Where the quote came from. "google" earns the verified-on-Google badge and
+   * links out to the public profile; "direct" is a quote given to us straight.
+   */
+  source?: "google" | "direct";
 }
+
+/**
+ * Public Google Business Profile links, shared by the testimonials section.
+ * `REVIEW_URL` is the short link that opens the write-a-review dialog;
+ * `PROFILE_URL` opens the place so visitors can read every review themselves —
+ * the wall below shows the ones transcribed here, not the complete list.
+ */
+export const GOOGLE_REVIEW_URL = "https://g.page/r/CaIut1eUy187EAE/review";
+export const GOOGLE_PROFILE_URL =
+  "https://www.google.com/maps/place/?q=place_id:ChIJeQrzHodJ0wcRoi63V5TLXzs";
 
 export const testimonials: Testimonial[] = [
   {
@@ -1523,6 +1545,35 @@ export const testimonials: Testimonial[] = [
     review:
       "Being a consultant firm it's very difficult to make the client happy, and Ravenclaw helps us to do so by doing the awesome work and within or always before deadline. Thank you for your service. Hope the relation and reliability will continue the same in the future.",
     rating: 5,
+    source: "direct",
+  },
+
+  // ── Google Business Profile reviews ───────────────────────────────────────
+  // Transcribed from the profile at GOOGLE_PROFILE_URL. Google's Places API
+  // only ever returns its five "most relevant" reviews, so the full set lives
+  // here by hand; anything the API does return and isn't listed here is
+  // appended to the wall automatically (see testimonials-section.tsx).
+  // Add new entries as: { name, review, rating, time, source: "google" }
+  //
+  // `time` is deliberately left off: Google phrases it relatively ("an hour
+  // ago"), which is only true at the moment it's copied. Without it the card
+  // reads "Google review", which stays true. The live API fills in a real
+  // relative time for whatever it returns.
+  {
+    name: "Viplav Nagrare",
+    img: "https://lh3.googleusercontent.com/a-/ALV-UjXTBakYd-MD0TYFBq6slFxaRxTDIG8fHf7hwwpl0LnQXHqI26jJ=w96-h96-p-rp-mo-br100",
+    review:
+      "Digital Ravenclaw helped me a lot to bring my business on a digital platform. They made the UI design and Social Media Marketing so upto the mark that it reached the targeted audiences and made my business grow. Special thanks to the Founder Srushti for dedicated support.!!",
+    rating: 5,
+    source: "google",
+  },
+  {
+    name: "Dinesh Gawali",
+    img: "https://lh3.googleusercontent.com/a/ACg8ocKH36vdCovCfLrx9x9MByOPx0Lv4oZ2IVnCaIoKcIbpKcgV4w=w96-h96-p-rp-mo-br100",
+    review:
+      "I had a great experience working with you. Your photo editing skills are truly impressive, with excellent attention to detail and a professional finish. You always delivered high-quality work on time and were open to feedback. I highly recommend your services to anyone looking for creative, reliable, and skilled photo editing. Wishing you all the best in your new journey!",
+    rating: 5,
+    source: "google",
   },
 ];
 
