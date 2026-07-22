@@ -491,42 +491,45 @@ export interface Project {
 }
 
 export const projects: Project[] = [
-  // {
-  //   slug: "social-growth-engine",
-  //   title: "Social Growth Engine",
-  //   category: "Social Media",
-  //   type: "Social Media",
-  //   img: "https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  //   color: "#EA9D12",
-  //   client: "GlowUp Skincare",
-  //   year: "2026",
-  //   description:
-  //     "A full-funnel social presence across Instagram, LinkedIn and YouTube — strategy, scripting, editing, and done-for-you posting that turned a quiet brand into a consistent inbound channel.",
-  //   highlights: [
-  //     "Followers up 4.3x in five months",
-  //     "1.2M organic monthly views",
-  //     "38% of new leads sourced from social",
-  //   ],
-  //   tags: ["Instagram", "LinkedIn", "YouTube", "Content Strategy"],
-  // },
-  // {
-  //   slug: "ai-support-copilot",
-  //   title: "AI Support Copilot",
-  //   category: "AI Solutions",
-  //   type: "AI Solutions",
-  //   img: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  //   color: "#631DFE",
-  //   client: "Nimbus SaaS",
-  //   year: "2026",
-  //   description:
-  //     "A retrieval-augmented support copilot trained on the client's docs and tickets — deflecting routine questions and drafting agent replies grounded in real, approved content.",
-  //   highlights: [
-  //     "62% of tickets auto-resolved",
-  //     "First-response time down 74%",
-  //     "Grounded on 4,000+ help articles",
-  //   ],
-  //   tags: ["RAG", "LLM", "Automation", "Support"],
-  // },
+  {
+    slug: "travilo",
+    title: "Travilo",
+    category: "Web Development",
+    type: "Web Development",
+    img: "/images/portfolio/web/travilo.webp",
+    color: "#CC2829",
+    client: "Travilo",
+    year: "2026",
+    description:
+      "The product site for Travilo, an AI-powered travel reimbursement platform — sales teams submit a whole trip from one photo of their receipts, while finance gets automatic policy checks, duplicate detection and cleaner approvals. The site pairs with Travilo's Android app on Google Play.",
+    highlights: [
+      "One-image trip submission, AI receipt capture",
+      "Policy checks & duplicate-claim flags for finance",
+      "Companion Android app live on Google Play",
+    ],
+    tags: ["SaaS", "AI Product", "Android", "WordPress"],
+    link: "https://travilo.in/",
+    appLink: "https://play.google.com/store/apps/details?id=com.travilo.app",
+  },
+  {
+    slug: "orbix",
+    title: "ORBIX",
+    category: "Web Development",
+    type: "Web Development",
+    img: "/images/portfolio/web/orbix.webp",
+    color: "#631DFE",
+    client: "ORBIX",
+    year: "2026",
+    description:
+      "A live orbital tracking console that propagates the public CelesTrak catalogue — 18,813 satellites and debris objects — through SGP4 physics and renders every one of them on a 3D WebGL Earth. Time can be scrubbed forward and back to 240× real speed, layers filter the sky down to a single constellation or debris cloud, and any object can be pulled up and followed from a searchable catalogue.",
+    highlights: [
+      "18,813 objects propagated live from real TLE data",
+      "3D WebGL Earth with ±240× time scrubbing",
+      "12 filterable layers across LEO, MEO, GEO and HEO",
+    ],
+    tags: ["React", "Three.js", "SGP4 Propagation", "Vercel"],
+    link: "https://orbix-murex.vercel.app/",
+  },
   {
     slug: "aj-design-co",
     title: "AJ Design Co.",
@@ -547,81 +550,6 @@ export const projects: Project[] = [
     link: "https://www.ajdesignco.in/",
   },
   {
-    slug: "travilo",
-    title: "Travilo",
-    category: "Web Development",
-    type: "Web Development",
-    img: "/images/portfolio/web/travilo.webp",
-    color: "#CC2829",
-    client: "Travilo",
-    year: "2026",
-    description:
-      "The product site for Travilo, an AI-powered travel reimbursement platform — sales teams submit a whole trip from one photo of their receipts, while finance gets automatic policy checks, duplicate detection and cleaner approvals. The site pairs with Travilo's Android app on Google Play.",
-    highlights: [
-      "One-image trip submission, AI receipt capture",
-      "Policy checks & duplicate-claim flags for finance",
-      "Companion Android app live on Google Play",
-    ],
-    tags: ["SaaS", "AI Product", "Android", "WordPress"],
-    link: "https://travilo.in/",
-    appLink: "https://play.google.com/store/apps/details?id=com.travilo.app",
-  }
-  ,
-  // {
-  //   slug: "brand-identity",
-  //   title: "Brand Identity",
-  //   category: "Branding",
-  //   type: "Branding",
-  //   img: "https://images.pexels.com/photos/3944405/pexels-photo-3944405.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  //   color: "#EA9D12",
-  //   client: "Serene Spaces",
-  //   year: "2024",
-  //   description:
-  //     "A ground-up identity system — logo, palette, type, and a guidelines doc the client's team uses across every touchpoint.",
-  //   highlights: [
-  //     "Full brand guidelines delivered",
-  //     "Launch-ready social & print kit",
-  //     "Consistent identity across 12 channels",
-  //   ],
-  //   tags: ["Brand Strategy", "Logo Design", "Guidelines", "Packaging"],
-  // },
-  // {
-  //   slug: "dashboard-ui",
-  //   title: "Dashboard UI",
-  //   category: "UI/UX Design",
-  //   type: "UI/UX Design",
-  //   img: "https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  //   color: "#631DFE",
-  //   client: "NovaPrime Solutions",
-  //   year: "2025",
-  //   description:
-  //     "An internal analytics dashboard redesigned around the tasks users actually do daily — fewer clicks, clearer data, less training.",
-  //   highlights: [
-  //     "Task completion time down 45%",
-  //     "Support tickets down 30%",
-  //     "Full component library handed off",
-  //   ],
-  //   tags: ["Figma", "Design System", "Data Visualization"],
-  // },
-  // {
-  //   slug: "marketing-campaign",
-  //   title: "Marketing Campaign",
-  //   category: "Performance Marketing",
-  //   type: "Performance Marketing",
-  //   img: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  //   color: "#A7069B",
-  //   client: "BloomTech",
-  //   year: "2025",
-  //   description:
-  //     "A quarter-long, multi-channel campaign spanning paid social, search, and email — built around one consistent launch narrative.",
-  //   highlights: [
-  //     "3.2x return on ad spend",
-  //     "45k qualified leads generated",
-  //     "CAC reduced by 28%",
-  //   ],
-  //   tags: ["Paid Social", "SEO", "Email Marketing", "Analytics"],
-  // },
-  {
     slug: "sahani-and-sons",
     title: "Sahani & Son's",
     category: "Web Development",
@@ -640,6 +568,7 @@ export const projects: Project[] = [
     tags: ["WordPress", "Lead Generation", "Responsive Design"],
     link: "https://sahaniandsons.in/",
   },
+
 ];
 
 export function getProjectBySlug(slug: string | undefined): Project | undefined {

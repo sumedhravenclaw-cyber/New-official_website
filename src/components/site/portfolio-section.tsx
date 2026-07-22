@@ -49,6 +49,14 @@ const COLUMNS = "columns-2 sm:columns-3 lg:columns-4 xl:columns-5";
 const WIDE_COLUMNS = "columns-1 sm:columns-2 lg:columns-3";
 
 /**
+ * Projects are the one block that isn't masonry: every card is a uniform 4:3
+ * site capture with a one-line caption, so a real grid lays them out in reading
+ * order with aligned rows. Masonry balanced them into the first two columns and
+ * left the third empty. Two-up keeps full-page screenshots wide enough to read.
+ */
+const PROJECT_GRID = "grid grid-cols-1 sm:grid-cols-2 gap-4 items-stretch";
+
+/**
  * One column denser than COLUMNS from sm up — the Social Media sets run long
  * (up to twelve pieces), so slightly smaller frames keep each set to a couple
  * of rows without shrinking phones below two columns.
@@ -507,17 +515,19 @@ export function PortfolioSection() {
                     Projects
                   </h3>
                 )}
-                <div className={`${WIDE_COLUMNS} gap-4`}>
+                <div className={PROJECT_GRID}>
                   {visibleProjects.map((project, i) => {
                     const inner = (
-                      <div className="relative rounded-lg overflow-hidden">
+                      <div className="relative rounded-lg overflow-hidden flex flex-col h-full">
                         {/* Project imagery carries no copy, so a uniform 4:3 crop is safe. */}
                         <img
                           src={project.img}
                           alt={project.title}
                           loading="lazy"
                           decoding="async"
-                          className="w-full aspect-[4/3] object-cover block transition-transform duration-500 group-hover:scale-105"
+                          width={1200}
+                          height={900}
+                          className="w-full aspect-[4/3] object-cover block shrink-0 transition-transform duration-500 group-hover:scale-105"
                         />
                         {/* Badge signals where the card goes: out to the live
                             site, or through to the case study on this site. */}
@@ -545,8 +555,11 @@ export function PortfolioSection() {
                         </div>
                       </div>
                     );
+                    /* `h-full` so a card whose caption wraps to two lines
+                       stretches its row-mates to match instead of leaving a
+                       stub of bare background under the shorter one. */
                     const cardClass =
-                      "group relative block mb-4 break-inside-avoid box-border rounded-2xl p-2 bg-transparent card-hover motion-safe:animate-fade-in-up";
+                      "group relative block h-full box-border rounded-2xl p-2 bg-transparent card-hover motion-safe:animate-fade-in-up";
                     const cardStyle = {
                       border: `2px solid ${project.color}`,
                       animationDelay: `${Math.min(i, 12) * 45}ms`,
