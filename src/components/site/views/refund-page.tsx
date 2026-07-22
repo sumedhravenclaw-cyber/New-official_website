@@ -112,7 +112,7 @@ export function RefundPage() {
             How to Request
           </h2>
           <p className="text-sm text-ink/70 leading-relaxed">
-            Email hello@ravenclaw.com within 7 days of the charge with your
+            Email hello@digitalravenclaw.com within 7 days of the charge with your
             project details.
           </p>
         </section>

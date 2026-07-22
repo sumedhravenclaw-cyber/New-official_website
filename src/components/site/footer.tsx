@@ -309,7 +309,7 @@ export function Footer() {
           style={{ color: "rgba(254, 254, 254, 0.3)" }}
         >
           <p>
-            &copy; {new Date().getFullYear()} DigitalRavenclaw. All rights reserved.
+            &copy; {new Date().getFullYear()} Digital Ravenclaw. All rights reserved.
           </p>
           <p>
             Made with <span className="text-crimson">&hearts;</span> for your

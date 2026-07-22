@@ -130,7 +130,7 @@ export function PrivacyPage() {
             Contact Us
           </h2>
           <p className="text-sm text-ink/70 leading-relaxed">
-            Email hello@ravenclaw.com for privacy-related questions.
+            Email hello@digitalravenclaw.com for privacy-related questions.
           </p>
         </section>
       </div>

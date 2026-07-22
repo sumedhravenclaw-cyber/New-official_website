@@ -141,7 +141,7 @@ export function TermsPage() {
             Contact Us
           </h2>
           <p className="text-sm text-ink/70 leading-relaxed">
-            Email hello@ravenclaw.com for questions about these terms.
+            Email hello@digitalravenclaw.com for questions about these terms.
           </p>
         </section>
       </div>
