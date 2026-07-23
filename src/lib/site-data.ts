@@ -2073,7 +2073,7 @@ export const openRoles: Role[] = [
 /* ============ CONTACT ============ */
 export const contactInfo = [
   { icon: "Mail", label: "Email Us", value: "hello@digitalravenclaw.com", color: "#631DFE" },
-  { icon: "Phone", label: "Call Us", value: "+91 80100 49620", color: "#A7069B" },
+  { icon: "Phone", label: "Call Us", value: "+91 93737 42648", color: "#A7069B" },
   { icon: "MapPin", label: "Location", value: "India", color: "#EA9D12" },
 ];
 
