@@ -692,13 +692,15 @@ export const socialGroups: SocialGroup[] = [
         dur: "0:05",
       },
       {
-        slug: "topical-mahavir-jayanti",
-        src: "/images/portfolio/social/topical-mahavir-jayanti.webp",
-        title: "Mahavir Jayanti",
-        client: "L&B Opticals",
+        slug: "Happy-canada-day",
+        src: "/images/portfolio/social/happy-canada-day.webp",
+        title: "Happy Canada Day",
+        client: "Himanshu kakkd",
         w: 1080,
         h: 1920,
         color: "#5E9929",
+        video: "/videos/portfolio/happy-canada-day.mp4",
+        dur: "0:05",
       },
       {
         slug: "topical-mothers-day",
@@ -1588,6 +1590,29 @@ export const testimonials: Testimonial[] = [
     img: "https://lh3.googleusercontent.com/a/ACg8ocKH36vdCovCfLrx9x9MByOPx0Lv4oZ2IVnCaIoKcIbpKcgV4w=w96-h96-p-rp-mo-br100",
     review:
       "I had a great experience working with you. Your photo editing skills are truly impressive, with excellent attention to detail and a professional finish. You always delivered high-quality work on time and were open to feedback. I highly recommend your services to anyone looking for creative, reliable, and skilled photo editing. Wishing you all the best in your new journey!",
+    rating: 5,
+    source: "google",
+  },
+  {
+    name: "Abhay A. Dande",
+    img: "https://lh3.googleusercontent.com/a/ACg8ocIX-1Vpb5C40nV-Kfg-HRwk7E7znlTBFi08A43YNLyJGhqCAQ=w96-h96-p-rp-mo-br100",
+    review:
+      "I had the pleasure of working with Srushti Jaiswal from Digital Ravenclaw, a highly skilled and dedicated Digital Marketing Specialist. She has strong expertise in digital growth strategies, social media marketing, SEO, and online brand development. Her creative thinking and analytical approach consistently contribute to effective marketing campaigns. Srushti is a reliable, proactive, and collaborative professional who always delivers quality work. I highly recommend her to any organization looking for a talented digital marketing and growth expert.",
+    rating: 5,
+    source: "google",
+  },
+  {
+    name: "Satyam Magar",
+    img: "https://lh3.googleusercontent.com/a/ACg8ocI_92Y66Sguzm60Ny960aU8auBrgPe1reUg-Pw9fZ_zQI4qZw=w96-h96-p-rp-mo-br100",
+    review:
+      "Wonderful and innovative advertising ideas... best experience. I would recommend this company to anyone looking for website designs and social media advertising. One of the best business promoter I have met. Srushti and Sumedh help me to expand my business... Thanks @digitalravenclaw🤝",
+    rating: 5,
+    source: "google",
+  },
+  {
+    name: "Ashok Laddhad",
+    img: "https://lh3.googleusercontent.com/a-/ALV-UjUl1cFiPDMEm193fR0Y4yKwwqTuRX_WYi_sD8n-cSbNa6s3SwQ=w96-h96-p-rp-mo-br100",
+    review: "Overall very good 👍",
     rating: 5,
     source: "google",
   },
